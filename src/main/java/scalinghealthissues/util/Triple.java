@@ -1,11 +1,13 @@
 package scalinghealthissues.util;
 
-public class Pair<L,R> {
+public class Triple<L,M,R> {
     public final L left;
+    public final M middle;
     public final R right;
 
-    public Pair(L left, R right) {
+    public Triple(L left, M middle, R right) {
         this.left = left;
+        this.middle = middle;
         this.right = right;
     }
 }

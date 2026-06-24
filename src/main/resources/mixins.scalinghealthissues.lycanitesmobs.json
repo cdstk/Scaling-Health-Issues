@@ -6,11 +6,12 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "vanilla.DamageSource_DeathMessageMixin",
-    "vanilla.EntityDamageSource_DeathMessageMixin",
-    "vanilla.EntityDamageSourceIndirect_DeathMessageMixin"
+    "lycanitesmobs.Spawner_MobEventRequirementMixin"
   ],
   "injectors": {
     "maxShiftBy": 10
-  }
+  },
+  "client": [
+    "lycanitesmobs.client.MobEventPlayerClient_MaxHeartRequirementMixin"
+  ]
 }

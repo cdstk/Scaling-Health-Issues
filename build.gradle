@@ -58,8 +58,15 @@ dependencies {
 
     implementation fg.deobf("curse.maven:fermiumbooter-${fermiumbooter_version}")
 
+    implementation fg.deobf("curse.maven:silentlib-${silentlib_version}")
     implementation fg.deobf("curse.maven:scalinghealth-${scalinghealth_version}")
     implementation fg.deobf("curse.maven:jei-${jei_version}")
+
+    implementation fg.deobf("curse.maven:bloodmoon-${bloodmoon_version}")
+    implementation fg.deobf("curse.maven:champions-${champions_version}")
+    implementation fg.deobf("curse.maven:atomicstrykers-infernal-mobs-${infernalmobs_version}")
+    implementation fg.deobf("curse.maven:lycanitesmobs-${lycanitesmobs_version}")
+    implementation fg.deobf("curse.maven:rlmixins-${rlmixins_version}")
 }
 
 mixin {

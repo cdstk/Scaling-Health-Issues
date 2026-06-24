@@ -6,9 +6,7 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "vanilla.DamageSource_DeathMessageMixin",
-    "vanilla.EntityDamageSource_DeathMessageMixin",
-    "vanilla.EntityDamageSourceIndirect_DeathMessageMixin"
+    "champions.EventHandlerCommon_DeathMessageMixin"
   ],
   "injectors": {
     "maxShiftBy": 10

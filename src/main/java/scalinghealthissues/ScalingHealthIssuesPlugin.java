@@ -1,18 +1,25 @@
 package scalinghealthissues;
 
-import java.util.Map;
-import org.spongepowered.asm.launch.MixinBootstrap;
+import fermiumbooter.FermiumRegistryAPI;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
+import org.spongepowered.asm.launch.MixinBootstrap;
+
+import java.util.Map;
 
 @IFMLLoadingPlugin.MCVersion("1.12.2")
 public class ScalingHealthIssuesPlugin implements IFMLLoadingPlugin {
 
 	public ScalingHealthIssuesPlugin() {
 		MixinBootstrap.init();
-		//False for Vanilla/Coremod mixins, true for regular mod mixins
-		//FermiumRegistryAPI.enqueueMixin(false, "mixins.scalinghealthissues.vanilla.json");
-		//FermiumRegistryAPI.enqueueMixin(true, "mixins.scalinghealthissues.jei.json", () -> Loader.isModLoaded("jei"));
-		//--> Replaced by @MixinConfig.MixinToggle in ForgeConfigHandler. This way is still an option for more complicated conditions
+
+		FermiumRegistryAPI.enqueueMixin(false, "mixins.scalinghealthissues.vanilla.json");
+
+		FermiumRegistryAPI.enqueueMixin(true, "mixins.scalinghealthissues.scalinghealth.json");
+
+//		if(FermiumRegistryAPI.isModPresent("fermiummixins")) {
+//			// Older patch, uses redirect so no chaining
+//			FermiumRegistryAPI.removeMixin("mixins.fermiummixins.late.champions.deathmessage.json");
+//		}
 	}
 
 	@Override

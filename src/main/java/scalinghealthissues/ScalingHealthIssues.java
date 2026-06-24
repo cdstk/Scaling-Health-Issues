@@ -1,5 +1,6 @@
 package scalinghealthissues;
 
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -7,8 +8,11 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import scalinghealthissues.capability.CapabilityExampleHandler;
-import scalinghealthissues.handlers.ModRegistry;
+import scalinghealthissues.compat.ModLoadedUtil;
+import scalinghealthissues.compat.handlers.InfernalMobsHandler;
+import scalinghealthissues.config.ForgeConfigHandler;
+import scalinghealthissues.handlers.BetterBlightHandler;
+import scalinghealthissues.handlers.BetterDifficultyHandler;
 import scalinghealthissues.proxy.CommonProxy;
 
 @Mod(
@@ -17,7 +21,8 @@ import scalinghealthissues.proxy.CommonProxy;
         name = ScalingHealthIssues.NAME,
         dependencies =
                 "required-after:fermiumbooter;" +
-                "required-after:scalinghealth;"
+                "required-after:scalinghealth;",
+        acceptableRemoteVersions = "*" // TODO CHECK IF SIDED BEFORE RELEASE
 )
 public class ScalingHealthIssues {
     public static final String MODID = "scalinghealthissues";
@@ -34,14 +39,20 @@ public class ScalingHealthIssues {
 	
 	@Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        ModRegistry.init();
         ScalingHealthIssues.PROXY.preInit();
 
-        CapabilityExampleHandler.registerCapability();
+        MinecraftForge.EVENT_BUS.register(BetterBlightHandler.class);
+        MinecraftForge.EVENT_BUS.register(BetterDifficultyHandler.class);
+
+        if(ModLoadedUtil.INFERNAL_MOBS.isLoaded()) {
+            MinecraftForge.EVENT_BUS.register(InfernalMobsHandler.class);
+        }
     }
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
+        ForgeConfigHandler.initConfig();
+
         completedLoading = true;
     }
 }

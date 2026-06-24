@@ -1,16 +1,13 @@
 package scalinghealthissues.proxy;
 
-import net.minecraft.client.model.ModelBiped;
-import net.minecraft.item.Item;
-
-import java.util.Map;
+import scalinghealthissues.ScalingHealthIssues;
+import scalinghealthissues.network.PacketHandler;
 
 public class CommonProxy {
 
     public void preInit() {
+        PacketHandler.registerMessages(ScalingHealthIssues.MODID);
     }
 
-    public Map<Item, ModelBiped> getExampleArmor() {
-        return null;
-    }
+    public boolean isSinglePlayer() { return false; }
 }

@@ -1,0 +1,19 @@
+{
+  "required": true,
+  "package": "scalinghealthissues.mixin",
+  "refmap": "mixins.scalinghealthissues.refmap.json",
+  "compatibilityLevel": "JAVA_8",
+  "target": "@env(DEFAULT)",
+  "minVersion": "0.8",
+  "mixins": [
+    "bloodmoon.BloodmoonEventHandler_MaxHeartRequirementMixin",
+    "bloodmoon.BloodmoonHandler_MaxHeartRequirementMixin",
+    "bloodmoon.BloodmoonSpawner_MaxHeartRequirementMixin"
+  ],
+  "injectors": {
+    "maxShiftBy": 10
+  },
+  "client": [
+    "bloodmoon.client.BloodmoonEventHandler_MaxHeartRequirementMixin"
+  ]
+}
