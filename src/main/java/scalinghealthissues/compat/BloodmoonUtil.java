@@ -3,7 +3,7 @@ package scalinghealthissues.compat;
 import net.minecraft.entity.player.EntityPlayer;
 import net.silentchaos512.scalinghealth.config.Config;
 import net.silentchaos512.scalinghealth.utils.SHPlayerDataHandler;
-import scalinghealthissues.config.ForgeConfigHandler;
+import scalinghealthissues.config.ScalingHealthIssuesConfigHandler;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -16,8 +16,9 @@ public abstract class BloodmoonUtil {
         if(CURRENTLY_SAFE.contains(player)) return false;
 
         SHPlayerDataHandler.PlayerData data = SHPlayerDataHandler.get(player);
-        if (data != null) {
-            return Config.Items.Heart.increaseHealth && data.getHealth() >= 2F * ForgeConfigHandler.compat.bloodmoonHeartContainersRequired;
+        if (data != null && Config.Items.Heart.increaseHealth) {
+            float containerHealth = data.getMaxHealth() - Config.Player.Health.startingHealth;
+            return containerHealth >= 2F * ScalingHealthIssuesConfigHandler.compat.bloodmoonHeartContainersRequired;
         }
         return true;
     }

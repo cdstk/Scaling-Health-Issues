@@ -3,6 +3,7 @@ package scalinghealthissues;
 import fermiumbooter.FermiumRegistryAPI;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
 import org.spongepowered.asm.launch.MixinBootstrap;
+import scalinghealthissues.compat.ModLoadedUtil;
 
 import java.util.Map;
 
@@ -15,6 +16,8 @@ public class ScalingHealthIssuesPlugin implements IFMLLoadingPlugin {
 		FermiumRegistryAPI.enqueueMixin(false, "mixins.scalinghealthissues.vanilla.json");
 
 		FermiumRegistryAPI.enqueueMixin(true, "mixins.scalinghealthissues.scalinghealth.json");
+
+		FermiumRegistryAPI.enqueueMixin(true, "mixins.scalinghealthissues.firstaid.json", () -> FermiumRegistryAPI.isModPresent(ModLoadedUtil.FIRST_AID_MODID));
 
 //		if(FermiumRegistryAPI.isModPresent("fermiummixins")) {
 //			// Older patch, uses redirect so no chaining

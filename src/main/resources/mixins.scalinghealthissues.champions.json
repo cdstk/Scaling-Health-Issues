@@ -6,7 +6,7 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "champions.EventHandlerCommon_DeathMessageMixin"
+    "modcompat.champions.EventHandlerCommon_DeathMessageMixin"
   ],
   "injectors": {
     "maxShiftBy": 10

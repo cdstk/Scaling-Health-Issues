@@ -8,9 +8,14 @@
   "mixins": [
     "scalinghealth.BlightHandler_BetterMixin",
     "scalinghealth.BlightHandler_InvokerMixin",
+    "scalinghealth.DamageScaling_InvokerMixin",
+    "scalinghealth.DamageScaling_PoisonDamageMixin",
     "scalinghealth.DifficultyHandler_BetterMixin",
     "scalinghealth.DifficultyHandler_InvokerMixin",
-    "scalinghealth.EntityBlightFire_ParentIDMixin"
+    "scalinghealth.EntityBlightFire_ParentIDMixin",
+    "scalinghealth.packetfix.BlightHandler_PacketFixMixin",
+    "scalinghealth.packetfix.CommandRecalculate_PacketFixMixin",
+    "scalinghealth.packetfix.DifficultyHandler_PacketFixMixin"
   ],
   "injectors": {
     "maxShiftBy": 10

@@ -6,9 +6,10 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "vanilla.DamageSource_DeathMessageMixin",
-    "vanilla.EntityDamageSource_DeathMessageMixin",
-    "vanilla.EntityDamageSourceIndirect_DeathMessageMixin"
+    "vanilla.DamageSource_BlightDeathMessageMixin",
+    "vanilla.EntityDamageSource_BlightDeathMessageMixin",
+    "vanilla.EntityDamageSourceIndirect_DeathMessageMixin",
+    "vanilla.Potion_PoisonDamageScalingMixin"
   ],
   "injectors": {
     "maxShiftBy": 10

@@ -6,9 +6,8 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "modcompat.infernalmobs.vanilla.DamageSource_InfernalDeathMessageMixin",
-    "modcompat.infernalmobs.vanilla.EntityDamageSource_InfernalDeathMessageMixin",
-    "modcompat.infernalmobs.vanilla.EntityDamageSourceIndirect_InfernalDeathMessageMixin"
+    "modcompat.firstaid.FirstAidRegistryImpl_Mixin",
+    "modcompat.firstaid.PotionPoisonPatched_Mixin"
   ],
   "injectors": {
     "maxShiftBy": 10

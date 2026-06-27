@@ -6,9 +6,7 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "modcompat.infernalmobs.vanilla.DamageSource_InfernalDeathMessageMixin",
-    "modcompat.infernalmobs.vanilla.EntityDamageSource_InfernalDeathMessageMixin",
-    "modcompat.infernalmobs.vanilla.EntityDamageSourceIndirect_InfernalDeathMessageMixin"
+    "scalinghealth.overhaul.DamageScaling_OverhaulMixin"
   ],
   "injectors": {
     "maxShiftBy": 10

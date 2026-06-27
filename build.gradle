@@ -64,6 +64,7 @@ dependencies {
 
     implementation fg.deobf("curse.maven:bloodmoon-${bloodmoon_version}")
     implementation fg.deobf("curse.maven:champions-${champions_version}")
+    implementation fg.deobf("curse.maven:first-aid-${firstaid_version}")
     implementation fg.deobf("curse.maven:atomicstrykers-infernal-mobs-${infernalmobs_version}")
     implementation fg.deobf("curse.maven:lycanitesmobs-${lycanitesmobs_version}")
     implementation fg.deobf("curse.maven:rlmixins-${rlmixins_version}")

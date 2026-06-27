@@ -8,18 +8,14 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.silentchaos512.scalinghealth.event.DifficultyHandler;
-import net.silentchaos512.scalinghealth.network.NetworkHandler;
 import org.apache.logging.log4j.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import scalinghealthissues.ScalingHealthIssues;
-import scalinghealthissues.config.ForgeConfigHandler;
+import scalinghealthissues.config.ScalingHealthIssuesConfigHandler;
 import scalinghealthissues.handlers.BetterBlightHandler;
 import scalinghealthissues.handlers.BetterDifficultyHandler;
 import scalinghealthissues.network.PacketEntityDifficulty;
@@ -90,19 +86,10 @@ public abstract class DifficultyHandler_BetterMixin {
             remap = false
     )
     private void scalingHealthIssues_shDifficultyHandler_makeEntityBlightFakeFixed(EntityLiving entityLiving, Random rand, CallbackInfo ci){
-        if(ForgeConfigHandler.debug.logBlights && BetterBlightHandler.isFakeBlight(entityLiving)) {
+        if(ScalingHealthIssuesConfigHandler.debug.logBlights && BetterBlightHandler.isFakeBlight(entityLiving)) {
             ScalingHealthIssues.LOGGER.log(Level.INFO, "Recalculated a fake blight: {}", entityLiving);
         }
         entityLiving.getEntityData().setBoolean(BetterBlightHandler.NBT_BLIGHT_PROCESSED, true);
-    }
-
-    @WrapOperation(
-            method = "makeEntityBlight",
-            at = @At(value = "INVOKE", target = "Lnet/minecraftforge/fml/common/network/simpleimpl/SimpleNetworkWrapper;sendToAllAround(Lnet/minecraftforge/fml/common/network/simpleimpl/IMessage;Lnet/minecraftforge/fml/common/network/NetworkRegistry$TargetPoint;)V"),
-            remap = false
-    )
-    private void scalingHealthIssues_shDifficultyHandler_makeEntityBlightUpdateTracking(SimpleNetworkWrapper instance, IMessage message, NetworkRegistry.TargetPoint point, Operation<Void> original, EntityLiving entityLiving){
-        NetworkHandler.INSTANCE.sendToAllTracking(message, entityLiving);
     }
 
     @ModifyExpressionValue(

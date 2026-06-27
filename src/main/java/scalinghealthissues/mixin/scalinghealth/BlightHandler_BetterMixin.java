@@ -9,15 +9,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.silentchaos512.lib.util.ChatHelper;
 import net.silentchaos512.scalinghealth.event.BlightHandler;
-import net.silentchaos512.scalinghealth.network.NetworkHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import scalinghealthissues.handlers.BetterDifficultyHandler;
 
 @Mixin(BlightHandler.class)
 public abstract class BlightHandler_BetterMixin {
@@ -28,9 +23,9 @@ public abstract class BlightHandler_BetterMixin {
             remap = false
     )
     private void scalingHealthIssues_shBlightHandler_onBlightKilledDifficulty(EntityPlayer player, String translationKey, Object[] args, Operation<Void> original, LivingDeathEvent event, @Local(name = "blight") EntityLivingBase blight, @Local(name = "actualKiller") EntityLivingBase actualKiller){
-        ITextComponent deathMessage = BetterDifficultyHandler.prependBlightText(event.getSource().getDeathMessage(blight), blight);
-
-        BetterDifficultyHandler.addDifficultyHoverText(deathMessage, blight, actualKiller);
+        ITextComponent deathMessage = event.getSource().getDeathMessage(blight);
+//        deathMessage = BetterDifficultyHandler.prependBlightText(deathMessage, blight);
+//        BetterDifficultyHandler.addDifficultyHoverText(deathMessage, blight, actualKiller);
 
         player.sendMessage(deathMessage);
     }
@@ -41,7 +36,7 @@ public abstract class BlightHandler_BetterMixin {
     )
     private ITextComponent scalingHealthIssues_shBlightHandler_onBlightKilledBlightNewMessage(DamageSource instance, EntityLivingBase entity, Operation<ITextComponent> original){
         ITextComponent deathMessage = original.call(instance, entity);
-        deathMessage = BetterDifficultyHandler.prependBlightText(deathMessage, entity);
+//        deathMessage = BetterDifficultyHandler.prependBlightText(deathMessage, entity);
         for (EntityPlayer p : entity.world.getPlayers(EntityPlayer.class, e -> true))
             ChatHelper.sendMessage(p, deathMessage);
         return deathMessage;
@@ -53,15 +48,6 @@ public abstract class BlightHandler_BetterMixin {
             remap = false
     )
     private boolean scalingHealthIssues_shBlightHandler_onBlightKilledBlightOriginalMessage(EntityPlayer player, ITextComponent component, @Local(argsOnly = true) LivingDeathEvent event, @Local EntityLivingBase blight){
-        return false;
-    }
-
-    @WrapOperation(
-            method = "onBlightUpdate",
-            at = @At(value = "INVOKE", target = "Lnet/minecraftforge/fml/common/network/simpleimpl/SimpleNetworkWrapper;sendToAllAround(Lnet/minecraftforge/fml/common/network/simpleimpl/IMessage;Lnet/minecraftforge/fml/common/network/NetworkRegistry$TargetPoint;)V"),
-            remap = false
-    )
-    private void scalingHealthIssues_shBlightHandler_onBlightUpdatePacketTracking(SimpleNetworkWrapper instance, IMessage message, NetworkRegistry.TargetPoint point, Operation<Void> original, @Local EntityLivingBase entityLiving){
-        NetworkHandler.INSTANCE.sendToAllTracking(message, entityLiving);
+        return false; // Should not be called because of the TextComponentTranslation instance check, but just in case
     }
 }

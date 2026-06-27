@@ -4,15 +4,17 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import scalinghealthissues.compat.ModLoadedUtil;
 import scalinghealthissues.compat.handlers.InfernalMobsHandler;
-import scalinghealthissues.config.ForgeConfigHandler;
+import scalinghealthissues.config.ScalingHealthIssuesConfigHandler;
 import scalinghealthissues.handlers.BetterBlightHandler;
 import scalinghealthissues.handlers.BetterDifficultyHandler;
+import scalinghealthissues.handlers.DamageScalingOverhaulHandler;
 import scalinghealthissues.proxy.CommonProxy;
 
 @Mod(
@@ -44,14 +46,22 @@ public class ScalingHealthIssues {
         MinecraftForge.EVENT_BUS.register(BetterBlightHandler.class);
         MinecraftForge.EVENT_BUS.register(BetterDifficultyHandler.class);
 
+        if(ScalingHealthIssuesConfigHandler.dmgScale.overhaulDamageScaling)
+            MinecraftForge.EVENT_BUS.register(DamageScalingOverhaulHandler.class);
+
         if(ModLoadedUtil.INFERNAL_MOBS.isLoaded()) {
             MinecraftForge.EVENT_BUS.register(InfernalMobsHandler.class);
         }
     }
 
     @Mod.EventHandler
+    public void init(FMLInitializationEvent event) {
+
+    }
+
+    @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-        ForgeConfigHandler.initConfig();
+        ScalingHealthIssuesConfigHandler.initConfig();
 
         completedLoading = true;
     }
