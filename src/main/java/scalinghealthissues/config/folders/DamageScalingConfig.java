@@ -45,6 +45,7 @@ public class DamageScalingConfig {
     private static final Set<Class<?>> generalWhitelist = new HashSet<>();
     private static final Set<Class<?>> generalBlacklist = new HashSet<>();
 
+    // TODO One to many map bc I forgot they existed lmao and use Predicate for mixed Class + ID
     private static final Map<String, Float> nullTrueSourceScales = new THashMap<>();
     private static final Map<Class<?>, Float> wildcardTrueSourceScales = new THashMap<>();
     private static final Map<String, Map<Class<?>, Float>> classTrueSourceScales = new THashMap<>();

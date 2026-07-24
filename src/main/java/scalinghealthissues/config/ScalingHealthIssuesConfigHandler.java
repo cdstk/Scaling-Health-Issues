@@ -1,5 +1,6 @@
 package scalinghealthissues.config;
 
+import fermiumbooter.annotations.MixinConfig;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
@@ -22,8 +23,8 @@ public class ScalingHealthIssuesConfigHandler {
 	@Config.Name("Damage Scaling")
 	public static final DamageScalingConfig dmgScale = new DamageScalingConfig();
 
-//	@Config.Name("Mixin Toggles")
-//	public static final MixinToggleConfig mixin = new MixinToggleConfig();
+	@Config.Name("Mixin Toggles")
+	public static final MixinToggleConfig mixin = new MixinToggleConfig();
 
 	public static final DebugConfig debug = new DebugConfig();
 
@@ -48,22 +49,17 @@ public class ScalingHealthIssuesConfigHandler {
 		public final BlightConfig blight = new BlightConfig();
 	}
 
-//	@MixinConfig(name = ScalingHealthIssues.MODID)
-//	public static class MixinToggleConfig {
-//
-//		@Config.Comment({
-//				"Death messages will state if a Blight was involved.",
-//				"Hovering over the message will show the Scaling Health mod Difficulty of involved entities."
-//		})
-//		@Config.Name("Blights and Difficulty in Death Messages)")
-//		@MixinConfig.MixinToggle(earlyMixin = "mixins.scalinghealthissues.vanilla.json", defaultValue = true)
-//		public boolean scalingHealthDeathMessage = true;
-//
-//		@Config.Comment("Example Late Mixin Toggle Config")
-//		@Config.Name("Enable JEI Init Mixin (JEI)")
-//		@MixinConfig.MixinToggle(lateMixin = "mixins.scalinghealthissues.scalinghealth.json", defaultValue = true)
-//		public boolean enableJeiMixin = true;
-//	}
+	@MixinConfig(name = ScalingHealthIssues.MODID)
+	public static class MixinToggleConfig {
+
+		@Config.Comment({
+				"Fixes the Blight configs \"Armor Piece Chance\" and \"Hand Piece Chance\" being inverted.",
+				"ex. A config value of 1.0, or 100% was incorrectly treated as 0% chance."
+		})
+		@Config.Name("Fix Inverted Config For Equipment Piece Chances")
+		@MixinConfig.MixinToggle(lateMixin = "mixins.scalinghealthissues.fixconfigblight.json", defaultValue = false)
+		public boolean fixConfigEquipmentChance = false;
+	}
 
 	@Mod.EventBusSubscriber(modid = ScalingHealthIssues.MODID)
 	private static class EventHandler{
