@@ -11,7 +11,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import scalinghealthissues.compat.ModLoadedUtil;
 import scalinghealthissues.compat.handlers.InfernalMobsHandler;
-import scalinghealthissues.config.ScalingHealthIssuesConfigHandler;
+import scalinghealthissues.config.ForgeConfigHandler;
 import scalinghealthissues.handlers.BetterBlightHandler;
 import scalinghealthissues.handlers.BetterDifficultyHandler;
 import scalinghealthissues.handlers.DamageScalingOverhaulHandler;
@@ -46,7 +46,7 @@ public class ScalingHealthIssues {
         MinecraftForge.EVENT_BUS.register(BetterBlightHandler.class);
         MinecraftForge.EVENT_BUS.register(BetterDifficultyHandler.class);
 
-        if(ScalingHealthIssuesConfigHandler.dmgScale.overhaulDamageScaling)
+        if(ForgeConfigHandler.dmgScale.overhaulDamageScaling)
             MinecraftForge.EVENT_BUS.register(DamageScalingOverhaulHandler.class);
 
         if(ModLoadedUtil.INFERNAL_MOBS.isLoaded()) {
@@ -61,7 +61,7 @@ public class ScalingHealthIssues {
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-        ScalingHealthIssuesConfigHandler.initConfig();
+        ForgeConfigHandler.initConfig();
 
         completedLoading = true;
     }

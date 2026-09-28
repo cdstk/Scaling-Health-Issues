@@ -12,7 +12,7 @@ public class CompatibilityConfig {
             "Death messages involving Champions will display their Rank.",
             "Hovering over the Rank will show all their modifiers."
     })
-    @Config.Name("Mixin: Champions in Death Messages (Champions)")
+    @Config.Name("Mixin: Champions in Death Messages (Champions/Vanilla)")
     @MixinConfig.MixinToggle(
             earlyMixin = "mixins.scalinghealthissues.vanilla.champions.json",
             lateMixin = "mixins.scalinghealthissues.champions.json",
@@ -41,7 +41,7 @@ public class CompatibilityConfig {
             "Death messages involving Infernal mobs will display their Classification.",
             "Hovering over the Classification will show all their modifiers."
     })
-    @Config.Name("Mixin: Infernal Classifications in Death Messages (Infernal Mobs)")
+    @Config.Name("Mixin: Infernal Classifications in Death Messages (Vanilla)")
     @MixinConfig.MixinToggle(earlyMixin = "mixins.scalinghealthissues.vanilla.infernalmobs.json", defaultValue = true)
     @MixinConfig.CompatHandling(
             modid = ModLoadedUtil.INFERNAL_MOBS_MODID,

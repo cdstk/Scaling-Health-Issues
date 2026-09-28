@@ -15,7 +15,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.silentchaos512.scalinghealth.event.DifficultyHandler;
 import org.apache.logging.log4j.Level;
 import scalinghealthissues.ScalingHealthIssues;
-import scalinghealthissues.config.ScalingHealthIssuesConfigHandler;
+import scalinghealthissues.config.ForgeConfigHandler;
 
 import java.util.UUID;
 
@@ -97,7 +97,7 @@ public class PacketEntityDifficulty implements IMessage {
                 if (entity instanceof EntityLivingBase)
                     entity.getEntityData().setShort(DifficultyHandler.NBT_ENTITY_DIFFICULTY, message.entityDifficulty);
 
-                if(ScalingHealthIssuesConfigHandler.debug.logDifficulty)
+                if(ForgeConfigHandler.debug.logDifficulty)
                     ScalingHealthIssues.LOGGER.log(Level.INFO, "Sync Difficulty {} -> {}", message.entityDifficulty, entity);
             });
             return null;

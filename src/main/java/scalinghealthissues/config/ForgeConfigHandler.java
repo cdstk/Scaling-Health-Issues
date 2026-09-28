@@ -12,7 +12,7 @@ import scalinghealthissues.config.folders.CompatibilityConfig;
 import scalinghealthissues.config.folders.DamageScalingConfig;
 
 @Config(modid = ScalingHealthIssues.MODID)
-public class ScalingHealthIssuesConfigHandler {
+public class ForgeConfigHandler {
 
 	@Config.Name("Compatibility")
 	public static final CompatibilityConfig compat = new CompatibilityConfig();
@@ -75,7 +75,7 @@ public class ScalingHealthIssuesConfigHandler {
 	}
 
 	public static void initConfig() {
-		ScalingHealthIssuesConfigHandler.mob.blight.init();
-		ScalingHealthIssuesConfigHandler.dmgScale.init();
+		ForgeConfigHandler.mob.blight.init();
+		ForgeConfigHandler.dmgScale.init();
 	}
 }

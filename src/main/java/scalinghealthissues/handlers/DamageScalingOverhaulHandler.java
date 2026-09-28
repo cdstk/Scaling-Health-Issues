@@ -9,7 +9,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.silentchaos512.scalinghealth.event.DamageScaling;
 import org.apache.logging.log4j.Level;
 import scalinghealthissues.ScalingHealthIssues;
-import scalinghealthissues.config.ScalingHealthIssuesConfigHandler;
+import scalinghealthissues.config.ForgeConfigHandler;
 import scalinghealthissues.config.folders.DamageScalingConfig;
 import scalinghealthissues.mixin.scalinghealth.DamageScaling_InvokerMixin;
 import scalinghealthissues.util.DamageSources;
@@ -60,7 +60,7 @@ public abstract class DamageScalingOverhaulHandler {
 
             event.setAmount(newAmount);
 
-            if (ScalingHealthIssuesConfigHandler.debug.logDamageScale) {
+            if (ForgeConfigHandler.debug.logDamageScale) {
                 ScalingHealthIssues.LOGGER.log(Level.DEBUG,
                         "{} on {} from {}: {} -> {} (scale={}, affected={}, change={})",
                         source.damageType, entity.getName(), source.getTrueSource() == null ? "NULL" : source.getTrueSource().getName(),

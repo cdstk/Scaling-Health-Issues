@@ -11,10 +11,12 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.event.HoverEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.silentchaos512.scalinghealth.ScalingHealth;
 import net.silentchaos512.scalinghealth.api.ScalingHealthAPI;
 import net.silentchaos512.scalinghealth.event.DifficultyHandler;
+import scalinghealthissues.ScalingHealthIssues;
 import scalinghealthissues.mixin.scalinghealth.DifficultyHandler_InvokerMixin;
 import scalinghealthissues.network.PacketEntityDifficulty;
 import scalinghealthissues.network.PacketHandler;
@@ -22,6 +24,8 @@ import scalinghealthissues.network.PacketHandler;
 import javax.annotation.Nullable;
 
 public abstract class BetterDifficultyHandler {
+
+    public static final String VANILLA_INITIAL_SPAWN = ScalingHealthIssues.MODID + ":VanillaInitialSpawn";
 
     public static final String NBT_DIFFICULTY_PROCESSED = ScalingHealth.MOD_ID_OLD + "Issues.DifficultyProcessed";
 
@@ -63,10 +67,18 @@ public abstract class BetterDifficultyHandler {
 
     // Rehandled Tick events canceled by mixins and replaced with theses
     // World Spawner, Mob Spawner, and Mob Egg instead of every tick
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOW)
     public static void onLivingSpecialSpawn(LivingSpawnEvent.SpecialSpawn event) {
         if(DifficultyHandler.INSTANCE instanceof DifficultyHandler_InvokerMixin) {
             ((DifficultyHandler_InvokerMixin) DifficultyHandler.INSTANCE).scalingHealthIssues$invokeProcess(event.getEntityLiving());
+
+            NBTTagCompound nbt = event.getEntityLiving().getEntityData();
+            if(nbt.hasKey(VANILLA_INITIAL_SPAWN)) {
+                if(!nbt.getBoolean(VANILLA_INITIAL_SPAWN))
+                    event.setCanceled(true); // Don't run vanilla onInitialSpawn
+
+                nbt.removeTag(VANILLA_INITIAL_SPAWN);
+            }
         }
     }
 

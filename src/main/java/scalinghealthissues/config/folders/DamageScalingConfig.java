@@ -26,7 +26,7 @@ import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import org.apache.logging.log4j.Level;
 import scalinghealthissues.ScalingHealthIssues;
-import scalinghealthissues.config.ScalingHealthIssuesConfigHandler;
+import scalinghealthissues.config.ForgeConfigHandler;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
@@ -360,7 +360,7 @@ public class DamageScalingConfig {
         if(classSet.contains(Object.class))
             classSet.removeIf(clazz -> clazz != Object.class);
 
-        if(ScalingHealthIssuesConfigHandler.debug.logConfig)
+        if(ForgeConfigHandler.debug.logConfig)
             ScalingHealthIssues.LOGGER.log(Level.DEBUG, "Damage Scaling Config: {} -> {}", configName, classSet);
     }
 
@@ -406,7 +406,7 @@ public class DamageScalingConfig {
                 }
             }
         }
-        if(ScalingHealthIssuesConfigHandler.debug.logConfig) {
+        if(ForgeConfigHandler.debug.logConfig) {
             ScalingHealthIssues.LOGGER.log(Level.DEBUG, "Damage Scaling Config: {} Null -> {}", configName, nullMap);
             ScalingHealthIssues.LOGGER.log(Level.DEBUG, "Damage Scaling Config: {} Wildcards -> {}", configName, wildcardMap);
             ScalingHealthIssues.LOGGER.log(Level.DEBUG, "Damage Scaling Config: {} Sources -> {}", configName, sourceMap);
@@ -460,7 +460,7 @@ public class DamageScalingConfig {
                 }
             }
         }
-        if(ScalingHealthIssuesConfigHandler.debug.logConfig) {
+        if(ForgeConfigHandler.debug.logConfig) {
             ScalingHealthIssues.LOGGER.log(Level.DEBUG, "Damage Scaling Config: {} Wildcards -> {}", configName, wildcardMap);
             ScalingHealthIssues.LOGGER.log(Level.DEBUG, "Damage Scaling Config: {} Mods -> {}", configName, modMap);
             ScalingHealthIssues.LOGGER.log(Level.DEBUG, "Damage Scaling Config: {} Entities -> {}", configName, entityMap);

@@ -6,7 +6,7 @@ import net.minecraftforge.common.config.Config;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import org.apache.logging.log4j.Level;
 import scalinghealthissues.ScalingHealthIssues;
-import scalinghealthissues.config.ScalingHealthIssuesConfigHandler;
+import scalinghealthissues.config.ForgeConfigHandler;
 import scalinghealthissues.util.Pair;
 
 import java.util.Arrays;
@@ -15,7 +15,6 @@ import java.util.Map;
 
 public class BlightConfig {
 
-//    private static final Map<Potion, Triple<Integer, Integer, Integer>> blightPotions = new HashMap<>();
     private static final Map<Potion, Pair<Integer, Integer>> blightPotions = new HashMap<>();
 
     @Config.Name("Equipment")
@@ -107,7 +106,7 @@ public class BlightConfig {
     public void init() {
         blightPotions.clear();
 
-        Arrays.stream(ScalingHealthIssuesConfigHandler.mob.blight.potion.blightPotions).forEach(line -> {
+        Arrays.stream(ForgeConfigHandler.mob.blight.potion.blightPotions).forEach(line -> {
             String[] split = line.split(",");
             int amp = 0;
             int duration = 0;
