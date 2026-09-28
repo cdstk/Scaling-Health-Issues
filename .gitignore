@@ -20,6 +20,8 @@ gradle-app.setting
 .idea
 **/run/
 !src/**/run/
+**/runPack/
+!src/**/runPack/
 **/libs/
 !src/**/libs/
 **/out/

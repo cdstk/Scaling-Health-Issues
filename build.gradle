@@ -16,12 +16,11 @@ minecraft {
     mappings channel: mappings_channel, version: mappings_version
 
     runs {
-        client {
-            args "--username=InDev"
-
+        server {
             jvmArg "-Dfml.coreMods.load=${mixin_loader_class}"
-            jvmArg "-Dmixin.hotSwap=true"
+//            jvmArg "-Dmixin.hotSwap=true"
             jvmArg "-Dmixin.checks.interfaces=true"
+            jvmArg "-Dmixin.debug.export=true"
 
             workingDirectory project.file('run')
 
@@ -29,16 +28,22 @@ minecraft {
             property 'forge.logging.console.level', 'debug'
         }
 
-        server {
+        client {
+            parent minecraft.runs.server
 
-            jvmArg "-Dfml.coreMods.load=${mixin_loader_class}"
-            jvmArg "-Dmixin.hotSwap=true"
-            jvmArg "-Dmixin.checks.interfaces=true"
+            args "--username=InDev"
+        }
 
-            workingDirectory project.file('run')
+        clientAllMods {
+            parent minecraft.runs.client
 
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-            property 'forge.logging.console.level', 'debug'
+            workingDirectory project.file('runPack')
+        }
+
+        serverAllMods {
+            parent minecraft.runs.server
+
+            workingDirectory project.file('runPack')
         }
     }
 }
@@ -47,6 +52,19 @@ repositories {
     flatDir { dirs 'libs' }
     maven { url = 'https://www.cursemaven.com' }
 }
+
+def runOptionalMods = gradle.startParameter.taskNames.any { it.startsWith('run') && it.endsWith('AllMods')}
+def optionalRuntime = [
+        "curse.maven:jei-${jei_version}",
+]
+def optionalImplementation = [
+        "curse.maven:bloodmoon-${bloodmoon_version}",
+        "curse.maven:champions-${champions_version}",
+        "curse.maven:first-aid-${firstaid_version}",
+        "curse.maven:atomicstrykers-infernal-mobs-${infernalmobs_version}",
+        "curse.maven:lycanitesmobs-${lycanitesmobs_version}",
+        "curse.maven:rlmixins-${rlmixins_version}"
+]
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
@@ -60,14 +78,14 @@ dependencies {
 
     implementation fg.deobf("curse.maven:silentlib-${silentlib_version}")
     implementation fg.deobf("curse.maven:scalinghealth-${scalinghealth_version}")
-    implementation fg.deobf("curse.maven:jei-${jei_version}")
 
-    implementation fg.deobf("curse.maven:bloodmoon-${bloodmoon_version}")
-    implementation fg.deobf("curse.maven:champions-${champions_version}")
-    implementation fg.deobf("curse.maven:first-aid-${firstaid_version}")
-    implementation fg.deobf("curse.maven:atomicstrykers-infernal-mobs-${infernalmobs_version}")
-    implementation fg.deobf("curse.maven:lycanitesmobs-${lycanitesmobs_version}")
-    implementation fg.deobf("curse.maven:rlmixins-${rlmixins_version}")
+    optionalRuntime.each { dep ->
+        if (runOptionalMods) runtimeOnly fg.deobf(dep)
+    }
+    optionalImplementation.each { dep ->
+        if (runOptionalMods) implementation fg.deobf(dep)
+        else compileOnly fg.deobf(dep)
+    }
 }
 
 mixin {
@@ -80,6 +98,24 @@ fancyGradle {
         coremods
         asm
         mergetool
+    }
+}
+
+// For indev run
+def mcpMappingsDir = file('mcp')
+
+tasks.register('prepareMinecraftMappings', Copy) {
+    dependsOn 'extractMappings'
+    from(layout.buildDirectory.dir('extractMappings')) {
+        include 'fields.csv'
+        include 'methods.csv'
+    }
+    into(mcpMappingsDir)
+}
+
+tasks.configureEach {
+    if (name.startsWith('prepareRun')) {
+        dependsOn 'prepareMinecraftMappings'
     }
 }
 
@@ -113,27 +149,8 @@ jar {
         attr['FMLCorePlugin']               = mixin_loader_class
         attr['FMLCorePluginContainsFMLMod'] = 'true'
         attr['TweakClass']                  = 'org.spongepowered.asm.launch.MixinTweaker'
-        attr['ForceLoadAsMod'] = "true"
-
-        def currentTasks = gradle.startParameter.taskNames
-        if (currentTasks[0] == 'build' || currentTasks[0] == 'assemble')
-            attr['ForceLoadAsMod'] = "true"
+        attr['ForceLoadAsMod'] = gradle.startParameter.taskNames.any { !it.startsWith('runClient') && !it.startsWith('runServer')}
         attributes(attr)
-    }
-}
-
-//This task is only for copying output.jar into run/mods/ so when running indev fermiumbooter finds the jar to check for @MixinConfig annotations
-tasks.register("copyReobfJar", Copy) {
-    dependsOn("reobfJar")
-
-    from(layout.buildDirectory.file("reobfJar/output.jar"))
-    into(layout.projectDirectory.dir("run/mods"))
-    rename("output.jar", "${mod_name}-${mod_version}.jar")
-}
-
-afterEvaluate {
-    tasks.matching { it.name.startsWith("reobfJar") }.configureEach {
-        finalizedBy("copyReobfJar")
     }
 }
 
