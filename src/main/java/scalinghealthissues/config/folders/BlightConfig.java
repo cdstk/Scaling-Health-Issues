@@ -6,7 +6,7 @@ import net.minecraftforge.common.config.Config;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import org.apache.logging.log4j.Level;
 import scalinghealthissues.ScalingHealthIssues;
-import scalinghealthissues.config.ForgeConfigHandler;
+import scalinghealthissues.config.ConfigHandler;
 import scalinghealthissues.util.Pair;
 
 import java.util.Arrays;
@@ -17,50 +17,8 @@ public class BlightConfig {
 
     private static final Map<Potion, Pair<Integer, Integer>> blightPotions = new HashMap<>();
 
-    @Config.Name("Equipment")
-    public EquipmentConfig equipment = new EquipmentConfig();
-
-    @Config.Name("Equipment Enchants")
-    public EnchantConfig enchant = new EnchantConfig();
-
     @Config.Name("Potion")
     public PotionConfig potion = new PotionConfig();
-
-    public static class EquipmentConfig {
-
-        @Config.Name("Enable Spawn Enchantments")
-        public boolean enableEnchantments = true;
-
-        @Config.Name("Enchanted Armor Piece Chance")
-        public double enchantArmorChance = 0.5D;
-
-        @Config.Name("Enchanted Hand Chance")
-        public double enchantHandChance = 0.5D;
-
-        @Config.Name("Minimum Enchantment Tier")
-        public int minimumEnchantmentTier = 1;
-
-        @Config.Name("Enchantment Tier Up Chance")
-        public double enchantTierUpChance = 0.95D;
-    }
-
-    public static class EnchantConfig {
-
-        @Config.Name("Enable Spawn Enchantments")
-        public boolean enableEnchantments = true;
-
-        @Config.Name("Enchanted Armor Piece Chance")
-        public double enchantArmorChance = 0.5D;
-
-        @Config.Name("Enchanted Hand Chance")
-        public double enchantHandChance = 0.5D;
-
-        @Config.Name("Minimum Enchantment Tier")
-        public int minimumEnchantmentTier = 1;
-
-        @Config.Name("Enchantment Tier Up Chance")
-        public double enchantTierUpChance = 0.95D;
-    }
 
     public static class PotionConfig {
 
@@ -106,7 +64,7 @@ public class BlightConfig {
     public void init() {
         blightPotions.clear();
 
-        Arrays.stream(ForgeConfigHandler.mob.blight.potion.blightPotions).forEach(line -> {
+        Arrays.stream(ConfigHandler.mob.blight.potion.blightPotions).forEach(line -> {
             String[] split = line.split(",");
             int amp = 0;
             int duration = 0;

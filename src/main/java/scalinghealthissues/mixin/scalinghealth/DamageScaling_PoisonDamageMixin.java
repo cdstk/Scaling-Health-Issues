@@ -7,7 +7,7 @@ import net.silentchaos512.scalinghealth.event.DamageScaling;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
-import scalinghealthissues.util.DamageSources;
+import scalinghealthissues.util.IDamageSources_NonLethalMixin;
 
 @Mixin(DamageScaling.class)
 public abstract class DamageScaling_PoisonDamageMixin {
@@ -19,8 +19,9 @@ public abstract class DamageScaling_PoisonDamageMixin {
             remap = false
     )
     private float scalingHealthIssues_shDamageScaling_onPlayerHurtFixFatalPoison(float value, @Local EntityLivingBase entity, @Local DamageSource source){
-        if(source == DamageSources.POISON)
+        if(source instanceof IDamageSources_NonLethalMixin && ((IDamageSources_NonLethalMixin) source).scalingHealthIssues$isNonLethal())
             return Math.min(value, entity.getHealth() - 1F);
+
         return value;
     }
 }

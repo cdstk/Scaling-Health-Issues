@@ -16,7 +16,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.silentchaos512.scalinghealth.ScalingHealth;
 import net.silentchaos512.scalinghealth.api.ScalingHealthAPI;
 import net.silentchaos512.scalinghealth.event.DifficultyHandler;
-import scalinghealthissues.ScalingHealthIssues;
+import scalinghealthissues.Tags;
 import scalinghealthissues.mixin.scalinghealth.DifficultyHandler_InvokerMixin;
 import scalinghealthissues.network.PacketEntityDifficulty;
 import scalinghealthissues.network.PacketHandler;
@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
 
 public abstract class BetterDifficultyHandler {
 
-    public static final String VANILLA_INITIAL_SPAWN = ScalingHealthIssues.MODID + ":VanillaInitialSpawn";
+    public static final String VANILLA_INITIAL_SPAWN = Tags.MODID + ":VanillaInitialSpawn";
 
     public static final String NBT_DIFFICULTY_PROCESSED = ScalingHealth.MOD_ID_OLD + "Issues.DifficultyProcessed";
 

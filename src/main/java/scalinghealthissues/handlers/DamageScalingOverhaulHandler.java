@@ -9,10 +9,10 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.silentchaos512.scalinghealth.event.DamageScaling;
 import org.apache.logging.log4j.Level;
 import scalinghealthissues.ScalingHealthIssues;
-import scalinghealthissues.config.ForgeConfigHandler;
+import scalinghealthissues.config.ConfigHandler;
 import scalinghealthissues.config.folders.DamageScalingConfig;
 import scalinghealthissues.mixin.scalinghealth.DamageScaling_InvokerMixin;
-import scalinghealthissues.util.DamageSources;
+import scalinghealthissues.util.IDamageSources_NonLethalMixin;
 
 public abstract class DamageScalingOverhaulHandler {
 
@@ -21,22 +21,12 @@ public abstract class DamageScalingOverhaulHandler {
         EntityLivingBase entity = event.getEntityLiving();
         if (entity.world.isRemote) return;
 
-        DamageScaling_InvokerMixin config = (DamageScaling_InvokerMixin) (Object) DamageScaling.INSTANCE;
-
         if(!(entity instanceof EntityPlayer)) {
-            Boolean shouldScale;
-            shouldScale = DamageScalingConfig.isHostileScalable(entity);
-
-            if (shouldScale == null)
-                shouldScale = DamageScalingConfig.isPassiveScalable(entity);
-
-            if (shouldScale == null)
-                shouldScale = DamageScalingConfig.isEntityScalable(entity);
-
-            if (!shouldScale)
+            if (!DamageScalingConfig.getVictimReceivesScaledDamage(entity))
                 return;
         }
 
+        DamageScaling_InvokerMixin config = (DamageScaling_InvokerMixin) (Object) DamageScaling.INSTANCE;
         DamageSource source = event.getSource();
 
         // Get scaling factor from map, if it exists. Otherwise, use the generic scale.
@@ -54,13 +44,13 @@ public abstract class DamageScalingOverhaulHandler {
         float change = scale * affectedAmount * original;
         if (change != 0) {
             float newAmount = config.scalingHealthIssues$invokeMakeSane(event.getAmount() + change);
-            // TODO More Non Lethal conditions? Test First Aid more Thoroughly as Health Boost 255 possible fatal but very over 128 part hp cap
-            if(source == DamageSources.POISON)
+
+            if(source instanceof IDamageSources_NonLethalMixin && ((IDamageSources_NonLethalMixin) source).scalingHealthIssues$isNonLethal())
                 newAmount = Math.min(newAmount, entity.getHealth() - 1F);
 
             event.setAmount(newAmount);
 
-            if (ForgeConfigHandler.debug.logDamageScale) {
+            if (ConfigHandler.debug.logDamageScale) {
                 ScalingHealthIssues.LOGGER.log(Level.DEBUG,
                         "{} on {} from {}: {} -> {} (scale={}, affected={}, change={})",
                         source.damageType, entity.getName(), source.getTrueSource() == null ? "NULL" : source.getTrueSource().getName(),

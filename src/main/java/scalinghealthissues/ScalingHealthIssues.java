@@ -11,32 +11,31 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import scalinghealthissues.compat.ModLoadedUtil;
 import scalinghealthissues.compat.handlers.InfernalMobsHandler;
-import scalinghealthissues.config.ForgeConfigHandler;
+import scalinghealthissues.config.ConfigHandler;
 import scalinghealthissues.handlers.BetterBlightHandler;
 import scalinghealthissues.handlers.BetterDifficultyHandler;
 import scalinghealthissues.handlers.DamageScalingOverhaulHandler;
 import scalinghealthissues.proxy.CommonProxy;
+import scalinghealthissues.util.DamageSources;
 
 @Mod(
-        modid = ScalingHealthIssues.MODID,
-        version = ScalingHealthIssues.VERSION,
-        name = ScalingHealthIssues.NAME,
+        modid = Tags.MODID,
+        version = Tags.VERSION,
+        name = Tags.NAME,
         dependencies =
                 "required-after:fermiumbooter;" +
+                "required-after:betterconfig@[1.3.0,);" +
                 "required-after:scalinghealth;",
         acceptableRemoteVersions = "*" // TODO CHECK IF SIDED BEFORE RELEASE
 )
 public class ScalingHealthIssues {
-    public static final String MODID = "scalinghealthissues";
-    public static final String VERSION = "0.0.0";
-    public static final String NAME = "Scaling Health Issues";
     public static final Logger LOGGER = LogManager.getLogger();
     public static boolean completedLoading = false;
 	
     @SidedProxy(clientSide = "scalinghealthissues.proxy.ClientProxy", serverSide = "scalinghealthissues.proxy.CommonProxy")
     public static CommonProxy PROXY;
 
-	@Instance(MODID)
+	@Instance(Tags.MODID)
 	public static ScalingHealthIssues instance;
 	
 	@Mod.EventHandler
@@ -46,7 +45,7 @@ public class ScalingHealthIssues {
         MinecraftForge.EVENT_BUS.register(BetterBlightHandler.class);
         MinecraftForge.EVENT_BUS.register(BetterDifficultyHandler.class);
 
-        if(ForgeConfigHandler.dmgScale.overhaulDamageScaling)
+        if(ConfigHandler.dmgScale.overhaulDamageScaling)
             MinecraftForge.EVENT_BUS.register(DamageScalingOverhaulHandler.class);
 
         if(ModLoadedUtil.INFERNAL_MOBS.isLoaded()) {
@@ -61,7 +60,9 @@ public class ScalingHealthIssues {
 
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-        ForgeConfigHandler.initConfig();
+        ConfigHandler.initConfig();
+
+        DamageSources.postInitDamageSourceFlags();
 
         completedLoading = true;
     }

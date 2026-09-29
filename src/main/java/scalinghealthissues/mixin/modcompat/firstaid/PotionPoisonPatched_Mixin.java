@@ -8,7 +8,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import scalinghealthissues.config.ForgeConfigHandler;
+import scalinghealthissues.config.ConfigHandler;
 
 @Mixin(PotionPoisonPatched.class)
 public abstract class PotionPoisonPatched_Mixin extends Potion {
@@ -21,7 +21,7 @@ public abstract class PotionPoisonPatched_Mixin extends Potion {
             method = "performEffect"
     )
     private void scalingHealthIssues_firstAidPotionPoisonPatched_performEffectPoisonFix(EntityLivingBase entity, int amplifier, Operation<Void> original){
-        if(ForgeConfigHandler.compat.firstAidPoisonFix) { // Fully use Vanilla Poison
+        if(ConfigHandler.compat.firstAidPoisonFix) { // Fully use Vanilla Poison
             super.performEffect(entity, amplifier);
         }
         else {
@@ -37,7 +37,7 @@ public abstract class PotionPoisonPatched_Mixin extends Potion {
         // This only runs if First Aid Poison is called
         int hurtResistantTimeBefore = entityLivingBaseIn.hurtResistantTime;
         original.call(instance, entityLivingBaseIn, amplifier);
-        if(ForgeConfigHandler.compat.firstAidPoisonUnfixAll)
+        if(ConfigHandler.compat.firstAidPoisonUnfixAll)
             entityLivingBaseIn.hurtResistantTime = hurtResistantTimeBefore;
     }
 }

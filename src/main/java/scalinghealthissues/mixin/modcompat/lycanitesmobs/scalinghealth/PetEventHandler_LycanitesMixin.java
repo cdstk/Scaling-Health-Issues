@@ -7,7 +7,7 @@ import net.silentchaos512.scalinghealth.event.PetEventHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
-import scalinghealthissues.config.ForgeConfigHandler;
+import scalinghealthissues.config.ConfigHandler;
 
 @Mixin(PetEventHandler.class)
 public abstract class PetEventHandler_LycanitesMixin {
@@ -22,7 +22,7 @@ public abstract class PetEventHandler_LycanitesMixin {
         if(entity instanceof BaseCreatureEntity) {
             BaseCreatureEntity creature = (BaseCreatureEntity) entity;
             if(creature.isTamed() && !creature.isTemporary)
-                if(!creature.isBoundPet() || ForgeConfigHandler.compat.lycanitesPetRegenSoulbind)
+                if(!creature.isBoundPet() || ConfigHandler.compat.lycanitesPetRegenSoulbind)
                     return true;
 
         }

@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import scalinghealthissues.ScalingHealthIssues;
-import scalinghealthissues.config.ForgeConfigHandler;
+import scalinghealthissues.config.ConfigHandler;
 import scalinghealthissues.handlers.BetterBlightHandler;
 import scalinghealthissues.handlers.BetterDifficultyHandler;
 import scalinghealthissues.network.PacketEntityDifficulty;
@@ -86,7 +86,7 @@ public abstract class DifficultyHandler_BetterMixin {
             remap = false
     )
     private void scalingHealthIssues_shDifficultyHandler_makeEntityBlightFakeFixed(EntityLiving entityLiving, Random rand, CallbackInfo ci){
-        if(ForgeConfigHandler.debug.logBlights && BetterBlightHandler.isFakeBlight(entityLiving)) {
+        if(ConfigHandler.debug.logBlights && BetterBlightHandler.isFakeBlight(entityLiving)) {
             ScalingHealthIssues.LOGGER.log(Level.INFO, "Recalculated a fake blight: {}", entityLiving);
         }
         entityLiving.getEntityData().setBoolean(BetterBlightHandler.NBT_BLIGHT_PROCESSED, true);

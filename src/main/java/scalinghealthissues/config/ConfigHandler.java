@@ -1,32 +1,36 @@
 package scalinghealthissues.config;
 
 import fermiumbooter.annotations.MixinConfig;
+import meldexun.betterconfig.api.BetterConfig;
+import meldexun.betterconfig.api.BetterConfigManager;
 import net.minecraftforge.common.config.Config;
-import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import scalinghealthissues.ScalingHealthIssues;
+import scalinghealthissues.Tags;
 import scalinghealthissues.config.folders.BlightConfig;
 import scalinghealthissues.config.folders.CompatibilityConfig;
 import scalinghealthissues.config.folders.DamageScalingConfig;
 
-@Config(modid = ScalingHealthIssues.MODID)
-public class ForgeConfigHandler {
+@BetterConfig(
+		modid = Tags.MODID,
+		version = Tags.CFG_VERSION
+)
+public class ConfigHandler {
 
 	@Config.Name("Compatibility")
-	public static final CompatibilityConfig compat = new CompatibilityConfig();
+	public static CompatibilityConfig compat = new CompatibilityConfig();
 
 	@Config.Name("Mob")
-	public static final MobConfig mob = new MobConfig();
+	public static MobConfig mob = new MobConfig();
 
 	@Config.Name("Damage Scaling")
-	public static final DamageScalingConfig dmgScale = new DamageScalingConfig();
+	public static DamageScalingConfig dmgScale = new DamageScalingConfig();
 
 	@Config.Name("Mixin Toggles")
-	public static final MixinToggleConfig mixin = new MixinToggleConfig();
+	public static MixinToggleConfig mixin = new MixinToggleConfig();
 
-	public static final DebugConfig debug = new DebugConfig();
+	public static DebugConfig debug = new DebugConfig();
 
 	public static class DebugConfig {
 
@@ -46,10 +50,10 @@ public class ForgeConfigHandler {
 	public static class MobConfig {
 
 		@Config.Name("Blights")
-		public final BlightConfig blight = new BlightConfig();
+		public BlightConfig blight = new BlightConfig();
 	}
 
-	@MixinConfig(name = ScalingHealthIssues.MODID)
+	@MixinConfig(name = Tags.MODID)
 	public static class MixinToggleConfig {
 
 		@Config.Comment({
@@ -61,13 +65,13 @@ public class ForgeConfigHandler {
 		public boolean fixConfigEquipmentChance = false;
 	}
 
-	@Mod.EventBusSubscriber(modid = ScalingHealthIssues.MODID)
+	@Mod.EventBusSubscriber(modid = Tags.MODID)
 	private static class EventHandler{
 
 		@SubscribeEvent
 		public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
-			if(event.getModID().equals(ScalingHealthIssues.MODID)) {
-				ConfigManager.sync(ScalingHealthIssues.MODID, Config.Type.INSTANCE);
+			if(event.getModID().equals(Tags.MODID)) {
+				BetterConfigManager.sync(Tags.MODID);
 
 				initConfig();
 			}
@@ -75,7 +79,7 @@ public class ForgeConfigHandler {
 	}
 
 	public static void initConfig() {
-		ForgeConfigHandler.mob.blight.init();
-		ForgeConfigHandler.dmgScale.init();
+		ConfigHandler.mob.blight.init();
+		ConfigHandler.dmgScale.init();
 	}
 }

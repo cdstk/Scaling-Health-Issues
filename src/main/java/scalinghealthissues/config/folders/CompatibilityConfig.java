@@ -2,10 +2,10 @@ package scalinghealthissues.config.folders;
 
 import fermiumbooter.annotations.MixinConfig;
 import net.minecraftforge.common.config.Config;
-import scalinghealthissues.ScalingHealthIssues;
+import scalinghealthissues.Tags;
 import scalinghealthissues.compat.ModLoadedUtil;
 
-@MixinConfig(name = ScalingHealthIssues.MODID)
+@MixinConfig(name = Tags.MODID)
 public class CompatibilityConfig {
 
     @Config.Comment({

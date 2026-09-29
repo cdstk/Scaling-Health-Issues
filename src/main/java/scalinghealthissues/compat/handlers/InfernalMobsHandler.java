@@ -8,14 +8,14 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import scalinghealthissues.compat.InfernalMobsUtil;
-import scalinghealthissues.config.ForgeConfigHandler;
+import scalinghealthissues.config.ConfigHandler;
 
 public class InfernalMobsHandler {
 
     @SubscribeEvent
     public static void onLivingDeath(LivingDeathEvent event) {
         if(event.getEntityLiving().world.isRemote) return;
-        if(!ForgeConfigHandler.compat.infernalKilledByPlayerMessage) return;
+        if(!ConfigHandler.compat.infernalKilledByPlayerMessage) return;
 
         EntityLivingBase victim = event.getEntityLiving();
         Entity killer = event.getSource().getTrueSource();
@@ -25,7 +25,7 @@ public class InfernalMobsHandler {
         }
 
         if(!InfernalMobsUtil.isModified(victim)) return;
-        if(InfernalMobsUtil.getModifierCount(victim) < ForgeConfigHandler.compat.infernalKilledByPlayerModifiers) return;
+        if(InfernalMobsUtil.getModifierCount(victim) < ConfigHandler.compat.infernalKilledByPlayerModifiers) return;
 
         ITextComponent messageWrapper = InfernalMobsUtil.createInfernalText(victim);
         ITextComponent message = victim.getCombatTracker().getDeathMessage();

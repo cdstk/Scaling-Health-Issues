@@ -7,12 +7,17 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.text.ITextComponent;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import scalinghealthissues.Wrapper.ScalingHealthWrapper;
+import scalinghealthissues.util.IDamageSources_NonLethalMixin;
 
 
 @Mixin(DamageSource.class)
-public abstract class DamageSource_BlightDeathMessageMixin {
+public abstract class DamageSource_ScalingHealthIssuesMixin implements IDamageSources_NonLethalMixin {
+
+    @Unique
+    private boolean scalingHealthIssues$isNonLethal = false;
 
     @WrapOperation(
             method = "getDeathMessage",
@@ -34,5 +39,16 @@ public abstract class DamageSource_BlightDeathMessageMixin {
     )
     private ITextComponent scalingHealthIssues_vanillaDamageSourceIndirect_getDeathMessageDifficulty(ITextComponent original, EntityLivingBase victim){
         return ScalingHealthWrapper.wrapDifficultyHoverText(original, victim, victim.getAttackingEntity());
+    }
+
+    @Override
+    public boolean scalingHealthIssues$isNonLethal() {
+        return this.scalingHealthIssues$isNonLethal;
+    }
+
+    @Override
+    public DamageSource scalingHealthIssues$setNonLethal(){
+        this.scalingHealthIssues$isNonLethal = true;
+        return (DamageSource) (Object) this;
     }
 }

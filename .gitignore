@@ -26,3 +26,4 @@ gradle-app.setting
 !src/**/libs/
 **/out/
 !src/**/out/
+**/mcp/

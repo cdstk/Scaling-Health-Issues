@@ -7,7 +7,7 @@ import ichttt.mods.firstaid.common.damagesystem.distribution.RandomDamageDistrib
 import net.minecraft.util.DamageSource;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import scalinghealthissues.util.DamageSources;
+import scalinghealthissues.util.IDamageSources_NonLethalMixin;
 
 @Mixin(FirstAidRegistryImpl.class)
 public abstract class FirstAidRegistryImpl_Mixin {
@@ -18,7 +18,9 @@ public abstract class FirstAidRegistryImpl_Mixin {
             remap = false
     )
     private IDamageDistribution scalingHealthIssues_firstAidFirstAidRegistryImpl_getDamageDistributionForSourcePoisonDamage(IDamageDistribution original, DamageSource source){
-        if(source == DamageSources.POISON) return RandomDamageDistribution.ANY_NOKILL;
+        if(source instanceof IDamageSources_NonLethalMixin && ((IDamageSources_NonLethalMixin) source).scalingHealthIssues$isNonLethal())
+            return RandomDamageDistribution.ANY_NOKILL;
+
         return original;
     }
 }
