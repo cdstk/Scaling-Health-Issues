@@ -14,8 +14,6 @@ import java.util.Map;
 public class ScalingHealthIssuesPlugin implements IFMLLoadingPlugin {
 
 	public ScalingHealthIssuesPlugin() {
-		MixinBootstrap.init();
-
 		FermiumRegistryAPI.enqueueMixin(false, "mixins.scalinghealthissues.vanilla.json");
 
 		FermiumRegistryAPI.enqueueMixin(true, "mixins.scalinghealthissues.scalinghealth.json");

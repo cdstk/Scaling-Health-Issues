@@ -23,7 +23,7 @@ import scalinghealthissues.util.DamageSources;
         version = Tags.VERSION,
         name = Tags.NAME,
         dependencies =
-                "required-after:fermiumbooter;" +
+                "required-after:fermiumbooter@[1.3.2,);" +
                 "required-after:betterconfig@[1.3.0,);" +
                 "required-after:scalinghealth;",
         acceptableRemoteVersions = "*" // TODO CHECK IF SIDED BEFORE RELEASE
