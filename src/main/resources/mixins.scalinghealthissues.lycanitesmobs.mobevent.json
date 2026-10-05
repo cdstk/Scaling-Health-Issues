@@ -6,7 +6,8 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "modcompat.lycanitesmobs.Spawner_MobEventRequirementMixin"
+    "modcompat.lycanitesmobs.Spawner_MobEventRequirementMixin",
+    "modcompat.lycanitesmobs.scalinghealth.ItemHeartContainer_UnlockMobEventMixin"
   ],
   "injectors": {
     "maxShiftBy": 10

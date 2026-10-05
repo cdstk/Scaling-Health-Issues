@@ -31,11 +31,17 @@ public abstract class BloodmoonHandler_MaxHeartRequirementMixin {
             remap = false
     )
     private void scalingHealthIssues_bloodmoonBloodmoonHandler_playerJoinedWorldSafe(SimpleNetworkWrapper instance, IMessage message, EntityPlayerMP player, Operation<Void> original){
-        if(!BloodmoonUtil.canExperienceBloodmoon(player)) {
+        if(!BloodmoonUtil.isSafeFromActive(player) && !BloodmoonUtil.canExperienceBloodmoon(player)) {
             BloodmoonUtil.addSafePlayer(player);
 
-            if(!ScalingHealthIssues.PROXY.isSinglePlayer())
+            ITextComponent safeText = new TextComponentTranslation("scalinghealthissues.heartcontainer.lockedevent");
+            safeText.getStyle().setColor(TextFormatting.GREEN);
+            safeText.appendText(" ").appendSibling((new TextComponentTranslation("text.bloodmoon.notify")).setStyle((new Style()).setColor(TextFormatting.RED)));
+            player.sendMessage(safeText);
+
+            if(!ScalingHealthIssues.PROXY.isSinglePlayer()) {
                 player.sendMessage((new TextComponentTranslation("text.bloodmoon.nosleep")).setStyle((new Style()).setColor(TextFormatting.RED)));
+            }
         }
         else
             original.call(instance, message, player);
@@ -46,8 +52,14 @@ public abstract class BloodmoonHandler_MaxHeartRequirementMixin {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/EntityPlayer;sendMessage(Lnet/minecraft/util/text/ITextComponent;)V")
     )
     private void scalingHealthIssues_bloodmoonBloodmoonHandler_endWorldTickSafe(EntityPlayer player, ITextComponent component, Operation<Void> original, @Local World world){
-        if(!BloodmoonUtil.canExperienceBloodmoon(player)) {
+        if(!BloodmoonUtil.isSafeFromActive(player) && !BloodmoonUtil.canExperienceBloodmoon(player)) {
             BloodmoonUtil.addSafePlayer(player);
+
+            ITextComponent safeText = new TextComponentTranslation("scalinghealthissues.heartcontainer.lockedevent");
+            safeText.getStyle().setColor(TextFormatting.GREEN);
+            safeText.appendText(" ").appendSibling((new TextComponentTranslation("text.bloodmoon.notify")).setStyle((new Style()).setColor(TextFormatting.RED)));
+            player.sendMessage(safeText);
+
             if (player instanceof EntityPlayerMP) {
                 PacketHandler.INSTANCE.sendTo(new MessageBloodmoonStatus(false), (EntityPlayerMP) player);
             }

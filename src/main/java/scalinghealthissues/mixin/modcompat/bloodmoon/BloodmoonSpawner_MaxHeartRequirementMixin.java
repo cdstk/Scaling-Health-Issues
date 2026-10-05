@@ -16,6 +16,6 @@ public class BloodmoonSpawner_MaxHeartRequirementMixin {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/EntityPlayer;isSpectator()Z")
     )
     private boolean scalingHealthIssues_bloodmoonBloodmoonSpawner_findChunksForSpawningAllowed(boolean isSpectator, @Local EntityPlayer entityplayer){
-        return isSpectator || !BloodmoonUtil.canExperienceBloodmoon(entityplayer);
+        return isSpectator || BloodmoonUtil.isSafeFromActive(entityplayer);
     }
 }

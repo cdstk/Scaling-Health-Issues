@@ -6,9 +6,12 @@ plugins {
     id 'wtf.gofancy.fancygradle' version "${fancy_gradle_version}"
 }
 
+// Temporary indev runs naming for FermiumBooter spaces in jar name
+def isIndevRun = gradle.startParameter.taskNames.any { it.startsWith('runClient') || it.startsWith('runServer') }
+
 version = mod_version
 group = mod_id
-base.archivesName = mod_name
+base.archivesName = isIndevRun ? mod_id : mod_name
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(8)
 
@@ -151,6 +154,10 @@ jar {
                 "FMLCorePluginContainsFMLMod": "true",
         ])
     }
+}
+
+tasks.named('compileJava') {
+    options.incremental = false
 }
 
 jar.finalizedBy('reobfJar')

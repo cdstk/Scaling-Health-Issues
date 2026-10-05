@@ -17,7 +17,7 @@ public abstract class BloodmoonEventHandler_MaxHeartRequirementMixin {
             remap = false
     )
     private boolean scalingHealthIssues_bloodmoonBloodmoonEventHandler_sleepInBedAllowed(boolean isBloodmoon, PlayerSleepInBedEvent event){
-        if(ScalingHealthIssues.PROXY.isSinglePlayer() && !BloodmoonUtil.canExperienceBloodmoon(event.getEntityPlayer()))
+        if(ScalingHealthIssues.PROXY.isSinglePlayer() && BloodmoonUtil.isSafeFromActive(event.getEntityPlayer()))
             return false;
 
         return isBloodmoon;

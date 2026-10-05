@@ -9,6 +9,26 @@ import scalinghealthissues.compat.ModLoadedUtil;
 public class CompatibilityConfig {
 
     @Config.Comment({
+            "Players will not experience Bloodmoons until they have used a specified number of Heart Containers.",
+            "The server will set a Bloodmoon but only eligible players will experience their spawns.",
+            "Singleplayer will be allowed to sleep through Bloodmoon nights that they can not experience."
+    })
+    @Config.Name("Mixin: Bloodmoon Heart Container Requirement (Bloodmoon)")
+    @MixinConfig.MixinToggle(lateMixin = "mixins.scalinghealthissues.bloodmoon.json", defaultValue = true)
+    @MixinConfig.CompatHandling(
+            modid = ModLoadedUtil.BLOODMOON_MODID,
+            desired = true,
+            reason = "Mod needed for this Mixin to properly work",
+            warnIngame = false
+    )
+    @Config.RequiresMcRestart
+    public boolean bloodmoonHeartRequirement = true;
+
+    @Config.Comment("The number of Heart Containers that must be used in order to experience Bloodmoons")
+    @Config.Name("Bloodmoon Heart Container Requirement")
+    public int bloodmoonHeartContainersRequired = 3;
+
+    @Config.Comment({
             "Death messages involving Champions will display their Rank.",
             "Hovering over the Rank will show all their modifiers."
     })
@@ -64,26 +84,6 @@ public class CompatibilityConfig {
     })
     @Config.Name("Infernal Killed by Player Message Modifier Count")
     public int infernalKilledByPlayerModifiers = 11;
-
-    @Config.Comment({
-            "Players will not experience Bloodmoons until they have used a specified number of Heart Containers.",
-            "The server will set a Bloodmoon but only eligible players will experience their spawns.",
-            "Singleplayer will be allowed to sleep through Bloodmoon nights that they can not experience."
-    })
-    @Config.Name("Mixin: Bloodmoon Heart Container Requirement (Bloodmoon)")
-    @MixinConfig.MixinToggle(lateMixin = "mixins.scalinghealthissues.bloodmoon.json", defaultValue = true)
-    @MixinConfig.CompatHandling(
-            modid = ModLoadedUtil.BLOODMOON_MODID,
-            desired = true,
-            reason = "Mod needed for this Mixin to properly work",
-            warnIngame = false
-    )
-    @Config.RequiresMcRestart
-    public boolean bloodmoonHeartRequirement = true;
-
-    @Config.Comment("The number of Heart Containers that must be used in order to experience Bloodmoons")
-    @Config.Name("Bloodmoon Heart Container Requirement")
-    public int bloodmoonHeartContainersRequired = 3;
 
     @Config.Comment({
             "Players will not experience Lycanites Mob Events until they have used a specified number of Heart Containers.",

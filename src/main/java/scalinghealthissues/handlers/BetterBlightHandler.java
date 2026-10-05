@@ -117,21 +117,17 @@ public abstract class BetterBlightHandler {
     }
 
     // Instantly recover potion
-    private static boolean handlingRemove = false;
     @SubscribeEvent
     public static void onPotionRemove(PotionEvent.PotionRemoveEvent event) {
-        if(handlingRemove) return;
         PotionEffect effect = event.getPotionEffect();
         if(effect == null) return;
         EntityLivingBase entity = event.getEntityLiving();
         if(entity.world.isRemote) return;
+        if(event.isCanceled()) return;
         if(!ScalingHealthAPI.isBlight(entity)) return;
 
-        // Refresh effect, less complicated than canceling the event
         if(isBlightPotion(event.getPotion())) {
-            handlingRemove = true;
-            entity.addPotionEffect(initBlightPotionEffect(effect.getPotion()));
-            handlingRemove = false;
+            event.setCanceled(true);
         }
     }
 

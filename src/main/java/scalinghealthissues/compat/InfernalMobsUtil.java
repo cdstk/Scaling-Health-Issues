@@ -87,7 +87,14 @@ public abstract class InfernalMobsUtil {
         if(message.getStyle().getHoverEvent() == null) {
             MobModifier modifier = InfernalMobsCore.getMobModifiers(entity);
             if(modifier != null) {
-                message.getStyle().setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponentString(modifier.getLinkedModName())));
+                String[] untranslated = modifier.getLinkedModNameUntranslated().split(" ");
+                TextComponentTranslation headText = new TextComponentTranslation("translation.infernalmobs:mod." + untranslated[0]);
+
+                for(int i = 1; i < untranslated.length; i++) {
+                    headText.appendText(" ").appendSibling(new TextComponentTranslation("translation.infernalmobs:mod." + untranslated[i]));
+                }
+
+                message.getStyle().setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, headText));
             }
         }
         return message;

@@ -10,4 +10,9 @@ public interface DifficultyHandler_InvokerMixin {
 
     @Invoker(value = "process", remap = false)
     boolean scalingHealthIssues$invokeProcess(EntityLivingBase entity);
+
+    @Invoker(value = "isProcessed", remap = false)
+    static boolean scalingHealthIssues$invokeIsProcessed(EntityLivingBase entity) {
+        throw new AssertionError();
+    }
 }

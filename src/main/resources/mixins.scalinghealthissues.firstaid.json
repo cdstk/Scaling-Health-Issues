@@ -6,6 +6,7 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
+    "modcompat.firstaid.EventHandler_NonLethalMixin",
     "modcompat.firstaid.FirstAidRegistryImpl_Mixin",
     "modcompat.firstaid.PotionPoisonPatched_Mixin"
   ],

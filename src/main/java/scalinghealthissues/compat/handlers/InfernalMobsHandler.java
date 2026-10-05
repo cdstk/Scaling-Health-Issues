@@ -4,7 +4,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import scalinghealthissues.compat.InfernalMobsUtil;
@@ -27,18 +26,13 @@ public class InfernalMobsHandler {
         if(!InfernalMobsUtil.isModified(victim)) return;
         if(InfernalMobsUtil.getModifierCount(victim) < ConfigHandler.compat.infernalKilledByPlayerModifiers) return;
 
-        ITextComponent messageWrapper = InfernalMobsUtil.createInfernalText(victim);
-        ITextComponent message = victim.getCombatTracker().getDeathMessage();
-        messageWrapper.appendText(" ");
-
-        if(message.getStyle().getColor() == null) message.getStyle().setColor(TextFormatting.RESET);
-        messageWrapper.appendSibling(message);
+        ITextComponent deathMessage = victim.getCombatTracker().getDeathMessage();
 
         if(victim.getServer() != null) {
-            victim.getServer().getPlayerList().sendMessage(messageWrapper);
+            victim.getServer().getPlayerList().sendMessage(deathMessage);
         }
         else {
-            victim.world.playerEntities.forEach(player -> player.sendMessage(messageWrapper));
+            victim.world.playerEntities.forEach(player -> player.sendMessage(deathMessage));
         }
     }
 }

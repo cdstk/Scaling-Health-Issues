@@ -13,14 +13,16 @@ public abstract class BloodmoonUtil {
     private static final Collection<EntityPlayer> CURRENTLY_SAFE = new HashSet<>();
 
     public static boolean canExperienceBloodmoon(EntityPlayer player) {
-        if(CURRENTLY_SAFE.contains(player)) return false;
-
         SHPlayerDataHandler.PlayerData data = SHPlayerDataHandler.get(player);
         if (data != null && Config.Items.Heart.increaseHealth) {
             float containerHealth = data.getMaxHealth() - Config.Player.Health.startingHealth;
             return containerHealth >= 2F * ConfigHandler.compat.bloodmoonHeartContainersRequired;
         }
         return true;
+    }
+
+    public static boolean isSafeFromActive(EntityPlayer player) {
+        return CURRENTLY_SAFE.contains(player);
     }
 
     public static void addSafePlayer(EntityPlayer entityPlayer) {

@@ -2,12 +2,8 @@ package scalinghealthissues.mixin.scalinghealth;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.nbt.NBTTagCompound;
 import net.silentchaos512.scalinghealth.event.DifficultyHandler;
 import org.apache.logging.log4j.Level;
 import org.spongepowered.asm.mixin.Mixin;
@@ -17,9 +13,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import scalinghealthissues.ScalingHealthIssues;
 import scalinghealthissues.config.ConfigHandler;
 import scalinghealthissues.handlers.BetterBlightHandler;
-import scalinghealthissues.handlers.BetterDifficultyHandler;
-import scalinghealthissues.network.PacketEntityDifficulty;
-import scalinghealthissues.network.PacketHandler;
 
 import java.util.Random;
 
@@ -36,36 +29,6 @@ public abstract class DifficultyHandler_BetterMixin {
             return false;
 
         return isNaturalBlight;
-    }
-
-    @WrapMethod(
-            method = "process",
-            remap = false
-    )
-    private boolean scalingHealthIssues_shDifficultyHandler_processDifficultyFinish(EntityLivingBase entity, Operation<Boolean> original){
-        boolean result = original.call(entity);
-        if(result)
-            entity.getEntityData().setBoolean(BetterDifficultyHandler.NBT_DIFFICULTY_PROCESSED, true);
-
-        return result;
-    }
-
-    @WrapOperation(
-            method = "process",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/nbt/NBTTagCompound;setShort(Ljava/lang/String;S)V")
-    )
-    private void scalingHealthIssues_shDifficultyHandler_processDifficultySync(NBTTagCompound instance, String key, short value, Operation<Void> original, EntityLivingBase entity){
-        original.call(instance, key, value);
-        PacketHandler.instance.sendToAllTracking(new PacketEntityDifficulty(entity), entity);
-    }
-
-    @WrapOperation(
-            method = "increaseEntityHealth",
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/nbt/NBTTagCompound;setShort(Ljava/lang/String;S)V")
-    )
-    private void scalingHealthIssues_shDifficultyHandler_increaseEntityHealthDifficultySync(NBTTagCompound instance, String key, short value, Operation<Void> original, EntityLivingBase entity){
-        original.call(instance, key, value);
-        PacketHandler.instance.sendToAllTracking(new PacketEntityDifficulty(entity), entity);
     }
 
     @ModifyReturnValue(

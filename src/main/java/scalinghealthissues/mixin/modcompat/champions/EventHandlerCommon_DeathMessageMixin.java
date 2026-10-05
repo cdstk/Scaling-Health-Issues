@@ -21,14 +21,6 @@ public abstract class EventHandlerCommon_DeathMessageMixin {
             at = @At(value = "INVOKE", target = "Lnet/minecraft/server/management/PlayerList;sendMessage(Lnet/minecraft/util/text/ITextComponent;)V")
     )
     private void scalingHealthIssues_championsEventHandlerCommon_livingDeathHover(PlayerList instance, ITextComponent deathMessage, Operation<Void> original, @Local EntityLivingBase entityLivingBase, @Local IChampionship chp){
-        // Color doesn't display correctly, only affects first word
-//        ITextComponent messageWrapper = new TextComponentString("");
-//        ITextComponent champName = new TextComponentString(chp.getName());
-//        champName.getStyle().setColor(HexToColorMap.nearestColor(chp.getRank().getColor()));
-//
-//        messageWrapper.appendSibling(champName);
-//        deathMessage.getSiblings().forEach(messageWrapper::appendSibling);
-
         if(entityLivingBase instanceof EntityLiving)
             ChampionsUtil.addChampionHoverText(deathMessage, (EntityLiving) entityLivingBase);
 

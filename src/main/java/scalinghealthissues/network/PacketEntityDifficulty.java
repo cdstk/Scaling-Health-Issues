@@ -19,6 +19,7 @@ import scalinghealthissues.config.ConfigHandler;
 
 import java.util.UUID;
 
+// Currently not used, difficulty in death message is from server
 public class PacketEntityDifficulty implements IMessage {
 
     private boolean toServer;

@@ -8,12 +8,10 @@
   "mixins": [
     "modcompat.bloodmoon.BloodmoonEventHandler_MaxHeartRequirementMixin",
     "modcompat.bloodmoon.BloodmoonHandler_MaxHeartRequirementMixin",
-    "modcompat.bloodmoon.BloodmoonSpawner_MaxHeartRequirementMixin"
+    "modcompat.bloodmoon.BloodmoonSpawner_MaxHeartRequirementMixin",
+    "modcompat.bloodmoon.scalinghealth.ItemHeartContainer_UnlockBloodmoonMixin"
   ],
   "injectors": {
     "maxShiftBy": 10
-  },
-  "client": [
-    "modcompat.bloodmoon.client.BloodmoonEventHandler_MaxHeartRequirementMixin"
-  ]
+  }
 }

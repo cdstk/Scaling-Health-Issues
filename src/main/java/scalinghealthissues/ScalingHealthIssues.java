@@ -10,6 +10,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import scalinghealthissues.compat.ModLoadedUtil;
+import scalinghealthissues.compat.handlers.FirstAidHandler;
 import scalinghealthissues.compat.handlers.InfernalMobsHandler;
 import scalinghealthissues.config.ConfigHandler;
 import scalinghealthissues.handlers.BetterBlightHandler;
@@ -26,7 +27,7 @@ import scalinghealthissues.util.DamageSources;
                 "required-after:fermiumbooter@[1.3.2,);" +
                 "required-after:betterconfig@[1.3.0,);" +
                 "required-after:scalinghealth;",
-        acceptableRemoteVersions = "*" // TODO CHECK IF SIDED BEFORE RELEASE
+        acceptableRemoteVersions = "*"
 )
 public class ScalingHealthIssues {
     public static final Logger LOGGER = LogManager.getLogger();
@@ -47,6 +48,10 @@ public class ScalingHealthIssues {
 
         if(ConfigHandler.dmgScale.overhaulDamageScaling)
             MinecraftForge.EVENT_BUS.register(DamageScalingOverhaulHandler.class);
+
+        if(ModLoadedUtil.FIRST_AID.isLoaded()) {
+            MinecraftForge.EVENT_BUS.register(FirstAidHandler.class);
+        }
 
         if(ModLoadedUtil.INFERNAL_MOBS.isLoaded()) {
             MinecraftForge.EVENT_BUS.register(InfernalMobsHandler.class);

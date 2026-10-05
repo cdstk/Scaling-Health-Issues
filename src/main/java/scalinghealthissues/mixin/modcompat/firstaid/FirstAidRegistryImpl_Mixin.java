@@ -12,6 +12,8 @@ import scalinghealthissues.util.IDamageSources_NonLethalMixin;
 @Mixin(FirstAidRegistryImpl.class)
 public abstract class FirstAidRegistryImpl_Mixin {
 
+    // One part of handling Non-Lethal Damage
+    // This currently makes any Non-Lethal Damage Sources use the Random No Kill Distribution
     @ModifyReturnValue(
             method = "getDamageDistributionForSource",
             at = @At("RETURN"),

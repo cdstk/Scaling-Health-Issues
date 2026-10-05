@@ -28,9 +28,6 @@ public abstract class ChampionsUtil {
             IChampionship championship = CapabilityChampionship.getChampionship((EntityLiving) entity);
             if(championship != null) {
                 ITextComponent championText = new TextComponentTranslation("champions.identifier");
-//                ITextComponent championText = new TextComponentTranslation("champions.champion_egg.tooltip.tier", championship.getRank().getTier());
-//                championText.appendText(" ").appendSibling(new TextComponentTranslation("champions.identifier"));
-
                 championText.getStyle().setColor(HexToColorMap.nearestColor(championship.getRank().getColor()));
 
                 addChampionHoverText(championText, (EntityLiving) entity);

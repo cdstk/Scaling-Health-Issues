@@ -22,11 +22,9 @@ public abstract class BlightHandler_BetterMixin {
             at = @At(value = "INVOKE", target = "Lnet/silentchaos512/lib/util/ChatHelper;translate(Lnet/minecraft/entity/player/EntityPlayer;Ljava/lang/String;[Ljava/lang/Object;)V"),
             remap = false
     )
-    private void scalingHealthIssues_shBlightHandler_onBlightKilledDifficulty(EntityPlayer player, String translationKey, Object[] args, Operation<Void> original, LivingDeathEvent event, @Local(name = "blight") EntityLivingBase blight, @Local(name = "actualKiller") EntityLivingBase actualKiller){
-        ITextComponent deathMessage = event.getSource().getDeathMessage(blight);
-//        deathMessage = BetterDifficultyHandler.prependBlightText(deathMessage, blight);
-//        BetterDifficultyHandler.addDifficultyHoverText(deathMessage, blight, actualKiller);
-
+    private void scalingHealthIssues_shBlightHandler_onBlightKilledDifficulty(EntityPlayer player, String translationKey, Object[] args, Operation<Void> original, LivingDeathEvent event, @Local(name = "blight") EntityLivingBase blight){
+        // Send the vanilla death message with mixin'd format modifications
+        ITextComponent deathMessage = blight.getCombatTracker().getDeathMessage();
         player.sendMessage(deathMessage);
     }
 
@@ -36,7 +34,6 @@ public abstract class BlightHandler_BetterMixin {
     )
     private ITextComponent scalingHealthIssues_shBlightHandler_onBlightKilledBlightNewMessage(DamageSource instance, EntityLivingBase entity, Operation<ITextComponent> original){
         ITextComponent deathMessage = original.call(instance, entity);
-//        deathMessage = BetterDifficultyHandler.prependBlightText(deathMessage, entity);
         for (EntityPlayer p : entity.world.getPlayers(EntityPlayer.class, e -> true))
             ChatHelper.sendMessage(p, deathMessage);
         return deathMessage;
