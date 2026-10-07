@@ -3,14 +3,12 @@ package scalinghealthissues.handlers;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.MobEffects;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.silentchaos512.scalinghealth.ScalingHealth;
 import net.silentchaos512.scalinghealth.api.ScalingHealthAPI;
 import net.silentchaos512.scalinghealth.config.Config;
 import net.silentchaos512.scalinghealth.event.DifficultyHandler;
@@ -19,10 +17,9 @@ import net.silentchaos512.scalinghealth.network.message.MessageMarkBlight;
 import scalinghealthissues.compat.RLMixinsUtil;
 import scalinghealthissues.config.folders.BlightConfig;
 import scalinghealthissues.mixin.scalinghealth.BlightHandler_InvokerMixin;
+import scalinghealthissues.mixin.scalinghealth.DifficultyHandler_InvokerMixin;
 
 public abstract class BetterBlightHandler {
-
-    public static final String NBT_BLIGHT_PROCESSED = ScalingHealth.MOD_ID_OLD + "Issues.BlightProcessed";
 
     // ******************
     // * Blight marking *
@@ -31,8 +28,7 @@ public abstract class BetterBlightHandler {
     // Need to be more thorough than checking the Processed tag as it will not equip armor
     public static boolean isFakeBlight(EntityLivingBase entityLivingBase) {
         if(ScalingHealthAPI.isBlight(entityLivingBase)) {
-            NBTTagCompound nbt = entityLivingBase.getEntityData();
-            return !nbt.hasKey(NBT_BLIGHT_PROCESSED) || !nbt.getBoolean(NBT_BLIGHT_PROCESSED);
+            return !DifficultyHandler_InvokerMixin.scalingHealthIssues$invokeIsProcessed(entityLivingBase);
         }
         return false;
     }
