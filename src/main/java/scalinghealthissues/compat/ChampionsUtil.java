@@ -8,6 +8,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.event.HoverEvent;
 import scalinghealthissues.util.HexToColorMap;
 
@@ -20,6 +21,16 @@ public abstract class ChampionsUtil {
 
         IChampionship championship = CapabilityChampionship.getChampionship((EntityLiving) entity);
         return championship != null && ChampionHelper.isElite(championship.getRank());
+    }
+
+    /** Returns a new TextComponent, DOES NOT modify existing **/
+    public static ITextComponent prependChampionText(ITextComponent message, @Nullable Entity entity) {
+        ITextComponent messageWrapper = ChampionsUtil.createChampionText(entity);
+        messageWrapper.appendText(" ");
+
+        if(message.getStyle().getColor() == null) message.getStyle().setColor(TextFormatting.RESET);
+        messageWrapper.appendSibling(message);
+        return messageWrapper;
     }
 
     /** Creates a new TextComponent **/

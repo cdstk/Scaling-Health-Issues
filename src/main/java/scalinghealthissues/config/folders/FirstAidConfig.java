@@ -35,7 +35,7 @@ public class FirstAidConfig {
 
     @Config.Comment("Sound Event Resource Location for the sound effect that will play when preventing a one-shot")
     @Config.Name("Morphine Rework - Sound Event")
-    public ResourceLocation morphineSoundEvent = new ResourceLocation("minecraft", "entity.witch.drink");
+    public ResourceLocation morphineSoundEvent = new ResourceLocation("entity.witch.drink");
 
     @Config.Comment({
             "Tweak to obtaining and losing the Morphine Potion Effect:",

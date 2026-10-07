@@ -7,7 +7,7 @@ import net.silentchaos512.scalinghealth.event.DamageScaling;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
-import scalinghealthissues.util.IDamageSources_NonLethalMixin;
+import scalinghealthissues.mixininterface.IDamageSources_NonLethalMixin;
 
 @Mixin(DamageScaling.class)
 public abstract class DamageScaling_PoisonDamageMixin {

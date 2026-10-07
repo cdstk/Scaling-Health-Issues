@@ -27,6 +27,14 @@ public abstract class BetterDifficultyHandler {
     public static final String VANILLA_INITIAL_SPAWN = Tags.MODID + ":VanillaInitialSpawn";
 
     /** Returns a new TextComponent, DOES NOT modify existing **/
+    public static ITextComponent wrapDifficultyHoverText(ITextComponent originalMessage, Entity victim, Entity killer) {
+        ITextComponent messageWrapper = new TextComponentString("");
+        BetterDifficultyHandler.addDifficultyHoverText(messageWrapper, victim, killer);
+        messageWrapper.appendSibling(originalMessage);
+        return messageWrapper;
+    }
+
+    /** Returns a new TextComponent, DOES NOT modify existing **/
     public static ITextComponent prependBlightText(ITextComponent message, Entity entity) {
         ITextComponent messageWrapper = new TextComponentTranslation("blight.scalinghealth.name", "");
         addDifficultyHoverText(messageWrapper, entity, null);

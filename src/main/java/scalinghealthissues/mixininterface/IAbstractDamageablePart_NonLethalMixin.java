@@ -1,4 +1,4 @@
-package scalinghealthissues.util;
+package scalinghealthissues.mixininterface;
 
 import ichttt.mods.firstaid.api.damagesystem.AbstractDamageablePart;
 

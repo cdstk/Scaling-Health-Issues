@@ -25,8 +25,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import scalinghealthissues.compat.handlers.FirstAidHandler;
 import scalinghealthissues.config.ConfigHandler;
-import scalinghealthissues.util.IAbstractDamageablePart_NonLethalMixin;
-import scalinghealthissues.util.IDamageSources_NonLethalMixin;
+import scalinghealthissues.mixininterface.IAbstractDamageablePart_NonLethalMixin;
+import scalinghealthissues.mixininterface.IDamageSources_NonLethalMixin;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

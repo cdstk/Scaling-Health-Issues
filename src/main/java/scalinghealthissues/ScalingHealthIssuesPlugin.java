@@ -17,6 +17,7 @@ public class ScalingHealthIssuesPlugin implements IFMLLoadingPlugin {
 
 		FermiumRegistryAPI.enqueueMixin(true, "mixins.scalinghealthissues.scalinghealth.json");
 
+		FermiumRegistryAPI.enqueueMixin(false, "mixins.scalinghealthissues.vanilla.firstaid.json", () -> FermiumRegistryAPI.isModPresent(ModLoadedUtil.FIRST_AID_MODID));
 		FermiumRegistryAPI.enqueueMixin(true, "mixins.scalinghealthissues.firstaid.json", () -> FermiumRegistryAPI.isModPresent(ModLoadedUtil.FIRST_AID_MODID));
 	}
 

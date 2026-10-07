@@ -12,7 +12,7 @@ import scalinghealthissues.ScalingHealthIssues;
 import scalinghealthissues.config.ConfigHandler;
 import scalinghealthissues.config.folders.DamageScalingConfig;
 import scalinghealthissues.mixin.scalinghealth.DamageScaling_InvokerMixin;
-import scalinghealthissues.util.IDamageSources_NonLethalMixin;
+import scalinghealthissues.mixininterface.IDamageSources_NonLethalMixin;
 
 public abstract class DamageScalingOverhaulHandler {
 

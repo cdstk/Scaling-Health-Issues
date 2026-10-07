@@ -6,10 +6,7 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "vanilla.DamageSource_ScalingHealthIssuesMixin",
-    "vanilla.EntityDamageSource_BlightDeathMessageMixin",
-    "vanilla.EntityDamageSourceIndirect_DeathMessageMixin",
-    "vanilla.Potion_PoisonDamageScalingMixin"
+    "vanilla.CommandEffect_MorphineMixin"
   ],
   "injectors": {
     "maxShiftBy": 10

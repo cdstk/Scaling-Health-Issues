@@ -28,6 +28,7 @@ public abstract class BetterBlightHandler {
     // * Blight marking *
     // ******************
 
+    // Need to be more thorough than checking the Processed tag as it will not equip armor
     public static boolean isFakeBlight(EntityLivingBase entityLivingBase) {
         if(ScalingHealthAPI.isBlight(entityLivingBase)) {
             NBTTagCompound nbt = entityLivingBase.getEntityData();
@@ -43,7 +44,7 @@ public abstract class BetterBlightHandler {
         }
 
         // Respect this mod
-        if(BlightConfig.isBlightPotion(potion))
+        if(BlightConfig.BLIGHT_POTIONS.containsKey(potion))
             return true;
 
         // Respect Scaling Health
@@ -68,7 +69,7 @@ public abstract class BetterBlightHandler {
             return RLMixinsUtil.getBlightPotionAmplifier(potion);
         }
 
-        int amp = BlightConfig.getBlightPotionAmplifier(potion);
+        int amp = BlightConfig.BLIGHT_POTIONS.get(potion).amplifier;
         if(amp != 0)
             return amp;
 
@@ -83,7 +84,7 @@ public abstract class BetterBlightHandler {
     }
 
     public static int getBlightPotionDuration(Potion potion) {
-        return BlightConfig.getBlightPotionDuration(potion);
+        return BlightConfig.BLIGHT_POTIONS.get(potion).duration;
     }
 
     public static PotionEffect initBlightPotionEffect(Potion potion) {
@@ -139,24 +140,5 @@ public abstract class BetterBlightHandler {
 
         if(isBlightPotion(event.getPotionEffect().getPotion()))
             event.setResult(Event.Result.ALLOW);
-    }
-
-    // Instantly recover potion
-    private static boolean handlingExpire = false;
-    @SubscribeEvent
-    public static void onPotionExpiry(PotionEvent.PotionExpiryEvent event) {
-        if(handlingExpire) return;
-        if(event.getPotionEffect() == null) return;
-        EntityLivingBase entity = event.getEntityLiving();
-        if(entity.world.isRemote) return;
-        if(!ScalingHealthAPI.isBlight(entity)) return;
-        Potion potion = event.getPotionEffect().getPotion();
-
-        // Refresh effect
-        if(isBlightPotion(potion)) {
-            handlingExpire = true;
-            entity.addPotionEffect(initBlightPotionEffect(potion));
-            handlingExpire = false;
-        }
     }
 }
