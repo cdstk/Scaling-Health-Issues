@@ -18,6 +18,7 @@ import scalinghealthissues.config.folders.DamageScalingConfig;
 )
 public class ConfigHandler {
 
+	@Config.Comment("Mod Compat Mixin Toggles and other Settings")
 	@Config.Name("Compatibility")
 	public static CompatibilityConfig compat = new CompatibilityConfig();
 

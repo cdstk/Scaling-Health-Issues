@@ -16,7 +16,7 @@ public abstract class BloodmoonUtil {
         SHPlayerDataHandler.PlayerData data = SHPlayerDataHandler.get(player);
         if (data != null && Config.Items.Heart.increaseHealth) {
             float containerHealth = data.getMaxHealth() - Config.Player.Health.startingHealth;
-            return containerHealth >= 2F * ConfigHandler.compat.bloodmoonHeartContainersRequired;
+            return containerHealth >= 2F * ConfigHandler.compat.bloodmoon.heartContainersRequired;
         }
         return true;
     }

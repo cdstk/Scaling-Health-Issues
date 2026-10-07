@@ -22,7 +22,7 @@ public abstract class PetEventHandler_LycanitesMixin {
         if(entity instanceof BaseCreatureEntity) {
             BaseCreatureEntity creature = (BaseCreatureEntity) entity;
             if(creature.isTamed() && !creature.isTemporary)
-                if(!creature.isBoundPet() || ConfigHandler.compat.lycanitesPetRegenSoulbind)
+                if(!creature.isBoundPet() || ConfigHandler.compat.lycanitesMobs.petRegenSoulbind)
                     return true;
 
         }

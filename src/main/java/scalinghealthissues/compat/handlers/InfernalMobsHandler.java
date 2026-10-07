@@ -14,7 +14,7 @@ public class InfernalMobsHandler {
     @SubscribeEvent
     public static void onLivingDeath(LivingDeathEvent event) {
         if(event.getEntityLiving().world.isRemote) return;
-        if(!ConfigHandler.compat.infernalKilledByPlayerMessage) return;
+        if(!ConfigHandler.compat.infernalMobs.killedByPlayerMessage) return;
 
         EntityLivingBase victim = event.getEntityLiving();
         Entity killer = event.getSource().getTrueSource();
@@ -24,7 +24,7 @@ public class InfernalMobsHandler {
         }
 
         if(!InfernalMobsUtil.isModified(victim)) return;
-        if(InfernalMobsUtil.getModifierCount(victim) < ConfigHandler.compat.infernalKilledByPlayerModifiers) return;
+        if(InfernalMobsUtil.getModifierCount(victim) < ConfigHandler.compat.infernalMobs.killedByPlayerModifiers) return;
 
         ITextComponent deathMessage = victim.getCombatTracker().getDeathMessage();
 
