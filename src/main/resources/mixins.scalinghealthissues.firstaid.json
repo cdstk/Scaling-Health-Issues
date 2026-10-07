@@ -6,11 +6,17 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "modcompat.firstaid.EventHandler_NonLethalMixin",
-    "modcompat.firstaid.FirstAidRegistryImpl_Mixin",
+    "modcompat.firstaid.AbstractDamageablePart_LethalityMixin",
+    "modcompat.firstaid.DamageDistribution_LethalityMixin",
+    "modcompat.firstaid.DamageDistributions_LethalityMixin",
+    "modcompat.firstaid.EventHandler_LethalityMixin",
+    "modcompat.firstaid.PlayerDamageModel_MorphineMixin",
     "modcompat.firstaid.PotionPoisonPatched_Mixin"
   ],
   "injectors": {
     "maxShiftBy": 10
-  }
+  },
+  "client": [
+    "modcompat.firstaid.client.ClientEventHandler_Mixin"
+  ]
 }

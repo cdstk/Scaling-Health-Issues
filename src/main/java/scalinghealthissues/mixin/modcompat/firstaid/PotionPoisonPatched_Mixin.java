@@ -21,7 +21,7 @@ public abstract class PotionPoisonPatched_Mixin extends Potion {
             method = "performEffect"
     )
     private void scalingHealthIssues_firstAidPotionPoisonPatched_performEffectPoisonFix(EntityLivingBase entity, int amplifier, Operation<Void> original){
-        if(ConfigHandler.compat.firstAidPoisonFix) { // Fully use Vanilla Poison
+        if(ConfigHandler.compat.firstAid.poisonIFramesFix) { // Fully use Vanilla Poison
             super.performEffect(entity, amplifier);
         }
         else {
@@ -37,7 +37,7 @@ public abstract class PotionPoisonPatched_Mixin extends Potion {
         // This only runs if First Aid Poison is called
         int hurtResistantTimeBefore = entityLivingBaseIn.hurtResistantTime;
         original.call(instance, entityLivingBaseIn, amplifier);
-        if(ConfigHandler.compat.firstAidPoisonUnfixAll)
+        if(ConfigHandler.compat.firstAid.poisonIFramesUnfix)
             entityLivingBaseIn.hurtResistantTime = hurtResistantTimeBefore;
     }
 }

@@ -5,6 +5,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.silentchaos512.scalinghealth.api.ScalingHealthAPI;
+import scalinghealthissues.compat.handlers.FirstAidHandler;
 import scalinghealthissues.handlers.BetterDifficultyHandler;
 
 public abstract class ScalingHealthWrapper {
@@ -27,5 +28,10 @@ public abstract class ScalingHealthWrapper {
         BetterDifficultyHandler.addDifficultyHoverText(messageWrapper, victim, killer);
         messageWrapper.appendSibling(originalMessage);
         return messageWrapper;
+    }
+
+    public static void setMorphineInternal() {
+        FirstAidHandler.morphineAppliedInternally = true;
+        FirstAidHandler.morphineRemovedInternally = true;
     }
 }

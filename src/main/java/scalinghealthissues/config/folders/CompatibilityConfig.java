@@ -8,6 +8,8 @@ import scalinghealthissues.compat.ModLoadedUtil;
 @MixinConfig(name = Tags.MODID)
 public class CompatibilityConfig {
 
+    public FirstAidConfig firstAid = new FirstAidConfig();
+
     @Config.Comment({
             "Players will not experience Bloodmoons until they have used a specified number of Heart Containers.",
             "The server will set a Bloodmoon but only eligible players will experience their spawns.",
@@ -45,17 +47,6 @@ public class CompatibilityConfig {
     )
     @Config.RequiresMcRestart
     public boolean championDeathMessage = true;
-
-    @Config.Comment({
-            "Fixes First Aid's Poison handling ignoring Player Immunity Frames",
-            "Also allows the damage to be modified by other mods (such as Scaling Health damage scaling)"
-    })
-    @Config.Name("First Aid Poison Damage IFrame Bug Fix (First Aid)")
-    public boolean firstAidPoisonFix = true;
-
-    @Config.Comment("If IFrame ignoring poison is desirable, extend this aspect to all mobs instead of only players.")
-    @Config.Name("First Aid Poison Damage IFrame Bug UnFix All (First Aid)")
-    public boolean firstAidPoisonUnfixAll = false;
 
     @Config.Comment({
             "Death messages involving Infernal mobs will display their Classification.",

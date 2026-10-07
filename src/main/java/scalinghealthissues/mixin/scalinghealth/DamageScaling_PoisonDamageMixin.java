@@ -19,7 +19,7 @@ public abstract class DamageScaling_PoisonDamageMixin {
             remap = false
     )
     private float scalingHealthIssues_shDamageScaling_onPlayerHurtFixFatalPoison(float value, @Local EntityLivingBase entity, @Local DamageSource source){
-        if(source instanceof IDamageSources_NonLethalMixin && ((IDamageSources_NonLethalMixin) source).scalingHealthIssues$isNonLethal())
+        if(IDamageSources_NonLethalMixin.isNonLethal(source))
             return Math.min(value, entity.getHealth() - 1F);
 
         return value;

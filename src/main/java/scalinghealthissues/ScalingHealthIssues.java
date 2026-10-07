@@ -60,7 +60,9 @@ public class ScalingHealthIssues {
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
-
+        if(ModLoadedUtil.FIRST_AID.isLoaded()) {
+            FirstAidHandler.registerDefaults();
+        }
     }
 
     @Mod.EventHandler

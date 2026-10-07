@@ -6,6 +6,7 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
+    "vanilla.CommandEffect_MorphineMixin",
     "vanilla.DamageSource_ScalingHealthIssuesMixin",
     "vanilla.EntityDamageSource_BlightDeathMessageMixin",
     "vanilla.EntityDamageSourceIndirect_DeathMessageMixin",
