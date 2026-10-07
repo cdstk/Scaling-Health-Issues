@@ -11,7 +11,12 @@ import ichttt.mods.firstaid.api.event.FirstAidLivingDamageEvent;
 import ichttt.mods.firstaid.common.damagesystem.distribution.DamageDistribution;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -19,6 +24,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import scalinghealthissues.compat.handlers.FirstAidHandler;
+import scalinghealthissues.config.ConfigHandler;
 import scalinghealthissues.util.IAbstractDamageablePart_NonLethalMixin;
 import scalinghealthissues.util.IDamageSources_NonLethalMixin;
 
@@ -94,7 +100,17 @@ public abstract class DamageDistribution_LethalityMixin {
         }
 
         if(sendMessage) {
-            player.sendMessage(new TextComponentTranslation("scalinghealthissues.firstaid.sturdy.activated"));
+            ITextComponent activateText = new TextComponentTranslation("scalinghealthissues.firstaid.sturdy.activated");
+            TextFormatting format = TextFormatting.getValueByName(ConfigHandler.compat.firstAid.morphineMessageFormat);
+            if(format != null) {
+                activateText.getStyle().setColor(format);
+            }
+            player.sendMessage(activateText);
+
+            SoundEvent soundEvent = ForgeRegistries.SOUND_EVENTS.getValue(ConfigHandler.compat.firstAid.morphineSoundEvent);
+            if(soundEvent != null) {
+                player.world.playSound(null, player.posX, player.posY, player.posZ, soundEvent, SoundCategory.PLAYERS, 0.8F, (player.world.rand.nextFloat() - player.world.rand.nextFloat()) * 0.1F + 0.8F);
+            }
         }
         return result;
     }

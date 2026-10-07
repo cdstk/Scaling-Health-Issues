@@ -35,7 +35,7 @@ public class FirstAidHandler {
     }
 
     public static int getRandMorphineDuration(int min, int max, int stepSize) {
-        int randBound = Math.max(1, (max - min) / stepSize);
+        int randBound = 1 + Math.max(0, (max - min) / stepSize);
         return 20 * ((EventHandler.rand.nextInt(randBound) * stepSize) + min);
     }
 

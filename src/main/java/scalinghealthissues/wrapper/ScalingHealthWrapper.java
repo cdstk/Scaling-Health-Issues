@@ -1,4 +1,4 @@
-package scalinghealthissues.Wrapper;
+package scalinghealthissues.wrapper;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;

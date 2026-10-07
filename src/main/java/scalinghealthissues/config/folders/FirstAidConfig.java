@@ -1,6 +1,7 @@
 package scalinghealthissues.config.folders;
 
 import meldexun.betterconfig.api.Sync;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Config;
 
 @Sync
@@ -27,6 +28,14 @@ public class FirstAidConfig {
     })
     @Config.Name("Morphine Rework")
     public boolean morphineRework = true;
+
+    @Config.Comment("Text Formatting Value-By-Name for the chat message when preventing a one-shot")
+    @Config.Name("Morphine Rework - Message Formatting")
+    public String morphineMessageFormat = "YELLOW";
+
+    @Config.Comment("Sound Event Resource Location for the sound effect that will play when preventing a one-shot")
+    @Config.Name("Morphine Rework - Sound Event")
+    public ResourceLocation morphineSoundEvent = new ResourceLocation("minecraft", "entity.witch.drink");
 
     @Config.Comment({
             "Tweak to obtaining and losing the Morphine Potion Effect:",

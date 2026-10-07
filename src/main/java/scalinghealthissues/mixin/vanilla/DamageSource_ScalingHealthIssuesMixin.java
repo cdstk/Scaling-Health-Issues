@@ -9,8 +9,8 @@ import net.minecraft.util.text.ITextComponent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import scalinghealthissues.Wrapper.ScalingHealthWrapper;
 import scalinghealthissues.util.IDamageSources_NonLethalMixin;
+import scalinghealthissues.wrapper.ScalingHealthWrapper;
 
 
 @Mixin(DamageSource.class)

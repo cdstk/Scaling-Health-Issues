@@ -8,7 +8,7 @@ import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.text.ITextComponent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import scalinghealthissues.Wrapper.InfernalMobsWrapper;
+import scalinghealthissues.wrapper.InfernalMobsWrapper;
 
 @Mixin(EntityDamageSource.class)
 public abstract class EntityDamageSource_InfernalDeathMessageMixin {
