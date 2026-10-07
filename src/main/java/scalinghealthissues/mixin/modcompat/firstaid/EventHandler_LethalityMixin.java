@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import scalinghealthissues.compat.handlers.FirstAidHandler;
-import scalinghealthissues.util.IDamageSources_NonLethalMixin;
+import scalinghealthissues.mixininterface.IDamageSources_NonLethalMixin;
 
 @Mixin(EventHandler.class)
 public abstract class EventHandler_LethalityMixin {

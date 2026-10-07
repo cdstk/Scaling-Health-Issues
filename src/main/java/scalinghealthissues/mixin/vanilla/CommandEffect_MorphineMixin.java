@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import scalinghealthissues.wrapper.ScalingHealthWrapper;
+import scalinghealthissues.compat.handlers.FirstAidHandler;
 
 @Mixin(CommandEffect.class)
 public abstract class CommandEffect_MorphineMixin {
@@ -17,6 +17,7 @@ public abstract class CommandEffect_MorphineMixin {
             at = @At("HEAD")
     )
     private void scalingHealthIssues_vanillaCommandEffect_executeMorphineInternal(MinecraftServer server, ICommandSender sender, String[] args, CallbackInfo ci){
-        ScalingHealthWrapper.setMorphineInternal();
+        FirstAidHandler.morphineAppliedInternally = true;
+        FirstAidHandler.morphineRemovedInternally = true;
     }
 }

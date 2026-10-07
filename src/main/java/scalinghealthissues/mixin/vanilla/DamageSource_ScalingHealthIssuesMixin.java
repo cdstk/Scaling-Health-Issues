@@ -9,7 +9,8 @@ import net.minecraft.util.text.ITextComponent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import scalinghealthissues.util.IDamageSources_NonLethalMixin;
+import scalinghealthissues.handlers.BetterDifficultyHandler;
+import scalinghealthissues.mixininterface.IDamageSources_NonLethalMixin;
 import scalinghealthissues.wrapper.ScalingHealthWrapper;
 
 
@@ -27,7 +28,7 @@ public abstract class DamageSource_ScalingHealthIssuesMixin implements IDamageSo
         ITextComponent entityName = original.call(entity);
 
         if(ScalingHealthWrapper.isBlight(entity)) {
-            entityName = ScalingHealthWrapper.prependBlightText(entityName, entity);
+            entityName = BetterDifficultyHandler.prependBlightText(entityName, entity);
         }
 
         return entityName;
@@ -38,7 +39,7 @@ public abstract class DamageSource_ScalingHealthIssuesMixin implements IDamageSo
             at = @At("RETURN")
     )
     private ITextComponent scalingHealthIssues_vanillaDamageSourceIndirect_getDeathMessageDifficulty(ITextComponent original, EntityLivingBase victim){
-        return ScalingHealthWrapper.wrapDifficultyHoverText(original, victim, victim.getAttackingEntity());
+        return BetterDifficultyHandler.wrapDifficultyHoverText(original, victim, victim.getAttackingEntity());
     }
 
     @Override

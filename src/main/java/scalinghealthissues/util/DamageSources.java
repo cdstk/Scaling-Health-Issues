@@ -1,6 +1,7 @@
 package scalinghealthissues.util;
 
 import net.minecraft.util.DamageSource;
+import scalinghealthissues.mixininterface.IDamageSources_NonLethalMixin;
 
 public class DamageSources {
 

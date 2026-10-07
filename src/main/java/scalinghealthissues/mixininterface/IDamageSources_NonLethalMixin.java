@@ -1,4 +1,4 @@
-package scalinghealthissues.util;
+package scalinghealthissues.mixininterface;
 
 import net.minecraft.util.DamageSource;
 

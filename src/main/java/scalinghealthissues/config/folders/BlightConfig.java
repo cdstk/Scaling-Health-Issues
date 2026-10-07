@@ -1,21 +1,18 @@
 package scalinghealthissues.config.folders;
 
 import net.minecraft.potion.Potion;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import org.apache.logging.log4j.Level;
-import scalinghealthissues.ScalingHealthIssues;
 import scalinghealthissues.config.ConfigHandler;
-import scalinghealthissues.util.Pair;
+import scalinghealthissues.config.data.PotionConfigEntry;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class BlightConfig {
 
-    private static final Map<Potion, Pair<Integer, Integer>> blightPotions = new HashMap<>();
+    public static final Map<Potion, PotionConfigEntry> BLIGHT_POTIONS = new HashMap<>();
 
     @Config.Name("Potion")
     public PotionConfig potion = new PotionConfig();
@@ -24,61 +21,22 @@ public class BlightConfig {
 
         @Config.Comment({
                 "The original config transferred to here would look like:",
-                "\tminecraft:speed,4,6000",
-                "\tminecraft:strength,1,6000",
-                "\tminecraft:fire_resistance,0,6000",
-                "\tminecraft:invisibility,0,0"
+                "    minecraft:speed,4,6000",
+                "    minecraft:strength,1,6000",
+                "    minecraft:fire_resistance,0,6000",
+                "    minecraft:invisibility,0,0"
         })
         @Config.Name("Blight Constant Potions")
-        public String[] blightPotions = {
-
-        };
-    }
-
-    public static boolean isBlightPotion(Potion potion) {
-        return blightPotions.containsKey(potion);
-    }
-
-    public static int getBlightPotionAmplifier(Potion potion) {
-        if(isBlightPotion(potion)) {
-            Pair<Integer, Integer> entry = blightPotions.get(potion);
-            return entry.left;
-        }
-
-        return 0;
-    }
-
-    public static int getBlightPotionDuration(Potion potion) {
-        int duration = net.silentchaos512.scalinghealth.config.Config.Mob.Blight.potionDuration;
-        if (duration < 0)
-            duration = Integer.MAX_VALUE;
-
-        if(isBlightPotion(potion)) {
-            Pair<Integer, Integer> entry = blightPotions.get(potion);
-            duration = entry.right;
-        }
-
-        return duration;
+        public ArrayList<PotionConfigEntry> blightPotionEffects = new ArrayList<>();
     }
 
     public void init() {
-        blightPotions.clear();
+        BLIGHT_POTIONS.clear();
 
-        Arrays.stream(ConfigHandler.mob.blight.potion.blightPotions).forEach(line -> {
-            String[] split = line.split(",");
-            int amp = 0;
-            int duration = 0;
-
-            try {
-                if(split.length >= 3) duration = Integer.parseInt(split[2].trim());
-                if(split.length >= 2) amp = Integer.parseInt(split[1].trim());
-            } catch (NumberFormatException e) {
-                ScalingHealthIssues.LOGGER.log(Level.WARN, "Could not parse Blight Potion, skipping: {}", line);
-                return;
-            }
-            Potion potion = ForgeRegistries.POTIONS.getValue(new ResourceLocation(split[0]));
+        ConfigHandler.mob.blight.potion.blightPotionEffects.forEach(potionEntry -> {
+            Potion potion = ForgeRegistries.POTIONS.getValue(potionEntry.id);
             if(potion != null)
-                blightPotions.put(potion, new Pair<>(amp, duration));
+                BLIGHT_POTIONS.putIfAbsent(potion, potionEntry);
         });
     }
 }
