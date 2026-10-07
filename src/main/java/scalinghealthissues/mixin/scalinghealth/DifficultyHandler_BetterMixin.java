@@ -52,7 +52,6 @@ public abstract class DifficultyHandler_BetterMixin {
         if(ConfigHandler.debug.logBlights && BetterBlightHandler.isFakeBlight(entityLiving)) {
             ScalingHealthIssues.LOGGER.log(Level.INFO, "Recalculated a fake blight: {}", entityLiving);
         }
-        entityLiving.getEntityData().setBoolean(BetterBlightHandler.NBT_BLIGHT_PROCESSED, true);
     }
 
     @ModifyExpressionValue(

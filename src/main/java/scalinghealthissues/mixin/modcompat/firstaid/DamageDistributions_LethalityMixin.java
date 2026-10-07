@@ -7,7 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
-import scalinghealthissues.util.IAbstractDamageablePart_NonLethalMixin;
+import scalinghealthissues.mixininterface.IAbstractDamageablePart_NonLethalMixin;
 
 import javax.annotation.Nonnull;
 

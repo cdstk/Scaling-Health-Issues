@@ -15,8 +15,8 @@ import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import scalinghealthissues.config.ConfigHandler;
+import scalinghealthissues.mixininterface.IDamageSources_NonLethalMixin;
 import scalinghealthissues.util.DamageSources;
-import scalinghealthissues.util.IDamageSources_NonLethalMixin;
 
 import java.util.Iterator;
 

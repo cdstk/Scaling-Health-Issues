@@ -3,7 +3,7 @@ package scalinghealthissues.mixin.modcompat.firstaid;
 import ichttt.mods.firstaid.api.damagesystem.AbstractDamageablePart;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
-import scalinghealthissues.util.IAbstractDamageablePart_NonLethalMixin;
+import scalinghealthissues.mixininterface.IAbstractDamageablePart_NonLethalMixin;
 
 @Mixin(AbstractDamageablePart.class)
 public abstract class AbstractDamageablePart_LethalityMixin implements IAbstractDamageablePart_NonLethalMixin {

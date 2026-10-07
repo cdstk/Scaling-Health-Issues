@@ -8,7 +8,7 @@ import net.minecraft.util.EntityDamageSource;
 import net.minecraft.util.text.ITextComponent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import scalinghealthissues.wrapper.ChampionsWrapper;
+import scalinghealthissues.compat.ChampionsUtil;
 
 @Mixin(EntityDamageSource.class)
 public abstract class EntityDamageSource_ChampionDeathMessageMixin {
@@ -20,8 +20,8 @@ public abstract class EntityDamageSource_ChampionDeathMessageMixin {
     private ITextComponent scalingHealthIssues_vanillaEntityDamageSource_getDeathMessageVictimChampion(EntityLivingBase entity, Operation<ITextComponent> original){
         ITextComponent entityName = original.call(entity);
 
-        if (ChampionsWrapper.isEntityChampion(entity)) {
-            entityName = ChampionsWrapper.prependChampionText(entityName, entity);
+        if (ChampionsUtil.isEntityChampion(entity)) {
+            entityName = ChampionsUtil.prependChampionText(entityName, entity);
         }
 
         return entityName;
@@ -34,8 +34,8 @@ public abstract class EntityDamageSource_ChampionDeathMessageMixin {
     private ITextComponent scalingHealthIssues_vanillaEntityDamageSource_getDeathMessageKillerChampion(Entity entity, Operation<ITextComponent> original){
         ITextComponent entityName = original.call(entity);
 
-        if (ChampionsWrapper.isEntityChampion(entity)) {
-            entityName = ChampionsWrapper.prependChampionText(entityName, entity);
+        if (ChampionsUtil.isEntityChampion(entity)) {
+            entityName = ChampionsUtil.prependChampionText(entityName, entity);
         }
 
         return entityName;

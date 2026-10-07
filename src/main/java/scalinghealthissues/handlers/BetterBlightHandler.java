@@ -3,14 +3,12 @@ package scalinghealthissues.handlers;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.MobEffects;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.silentchaos512.scalinghealth.ScalingHealth;
 import net.silentchaos512.scalinghealth.api.ScalingHealthAPI;
 import net.silentchaos512.scalinghealth.config.Config;
 import net.silentchaos512.scalinghealth.event.DifficultyHandler;
@@ -19,10 +17,9 @@ import net.silentchaos512.scalinghealth.network.message.MessageMarkBlight;
 import scalinghealthissues.compat.RLMixinsUtil;
 import scalinghealthissues.config.folders.BlightConfig;
 import scalinghealthissues.mixin.scalinghealth.BlightHandler_InvokerMixin;
+import scalinghealthissues.mixin.scalinghealth.DifficultyHandler_InvokerMixin;
 
 public abstract class BetterBlightHandler {
-
-    public static final String NBT_BLIGHT_PROCESSED = ScalingHealth.MOD_ID_OLD + "Issues.BlightProcessed";
 
     // ******************
     // * Blight marking *
@@ -30,8 +27,7 @@ public abstract class BetterBlightHandler {
 
     public static boolean isFakeBlight(EntityLivingBase entityLivingBase) {
         if(ScalingHealthAPI.isBlight(entityLivingBase)) {
-            NBTTagCompound nbt = entityLivingBase.getEntityData();
-            return !nbt.hasKey(NBT_BLIGHT_PROCESSED) || !nbt.getBoolean(NBT_BLIGHT_PROCESSED);
+            return !DifficultyHandler_InvokerMixin.scalingHealthIssues$invokeIsProcessed(entityLivingBase);
         }
         return false;
     }
@@ -43,7 +39,7 @@ public abstract class BetterBlightHandler {
         }
 
         // Respect this mod
-        if(BlightConfig.isBlightPotion(potion))
+        if(BlightConfig.BLIGHT_POTIONS.containsKey(potion))
             return true;
 
         // Respect Scaling Health
@@ -68,7 +64,7 @@ public abstract class BetterBlightHandler {
             return RLMixinsUtil.getBlightPotionAmplifier(potion);
         }
 
-        int amp = BlightConfig.getBlightPotionAmplifier(potion);
+        int amp = BlightConfig.BLIGHT_POTIONS.get(potion).amplifier;
         if(amp != 0)
             return amp;
 
@@ -83,7 +79,7 @@ public abstract class BetterBlightHandler {
     }
 
     public static int getBlightPotionDuration(Potion potion) {
-        return BlightConfig.getBlightPotionDuration(potion);
+        return BlightConfig.BLIGHT_POTIONS.get(potion).duration;
     }
 
     public static PotionEffect initBlightPotionEffect(Potion potion) {
@@ -139,24 +135,5 @@ public abstract class BetterBlightHandler {
 
         if(isBlightPotion(event.getPotionEffect().getPotion()))
             event.setResult(Event.Result.ALLOW);
-    }
-
-    // Instantly recover potion
-    private static boolean handlingExpire = false;
-    @SubscribeEvent
-    public static void onPotionExpiry(PotionEvent.PotionExpiryEvent event) {
-        if(handlingExpire) return;
-        if(event.getPotionEffect() == null) return;
-        EntityLivingBase entity = event.getEntityLiving();
-        if(entity.world.isRemote) return;
-        if(!ScalingHealthAPI.isBlight(entity)) return;
-        Potion potion = event.getPotionEffect().getPotion();
-
-        // Refresh effect
-        if(isBlightPotion(potion)) {
-            handlingExpire = true;
-            entity.addPotionEffect(initBlightPotionEffect(potion));
-            handlingExpire = false;
-        }
     }
 }
