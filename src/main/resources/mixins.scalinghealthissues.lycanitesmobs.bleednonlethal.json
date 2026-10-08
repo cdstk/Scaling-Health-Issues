@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "scalinghealthissues.mixin",
+  "refmap": "mixins.scalinghealthissues.refmap.json",
+  "compatibilityLevel": "JAVA_8",
+  "target": "@env(DEFAULT)",
+  "minVersion": "0.8",
+  "mixins": [
+    "modcompat.lycanitesmobs.PotionEffects_RuntimeRefMixin"
+  ],
+  "injectors": {
+    "maxShiftBy": 10
+  }
+}

@@ -63,10 +63,12 @@ def optionalRuntime = [
 def optionalImplementation = [
         "curse.maven:bloodmoon-${bloodmoon_version}",
         "curse.maven:champions-${champions_version}",
+        "curse.maven:defiled-lands-${defiledlands_version}",
         "curse.maven:first-aid-${firstaid_version}",
         "curse.maven:atomicstrykers-infernal-mobs-${infernalmobs_version}",
         "curse.maven:lycanitesmobs-${lycanitesmobs_version}",
-        "curse.maven:rlmixins-${rlmixins_version}"
+        "curse.maven:rlmixins-${rlmixins_version}",
+        "curse.maven:scape-and-run-parasites-${srparasites_version}"
 ]
 
 dependencies {

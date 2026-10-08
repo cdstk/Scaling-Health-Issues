@@ -55,6 +55,21 @@ public class CompatibilityConfig {
     public boolean championDeathMessage = true;
 
     @Config.Comment({
+            "Handles Defiled Lands Bleed damage as Non lethal damage.",
+            "Intended to be used when enabling damage scaling for the \"magic\" DamageSource as it is commonly used elsewhere.",
+    })
+    @Config.Name("Mixin: Defiled Lands Bleed is Non Lethal (Defiled Lands)")
+    @MixinConfig.MixinToggle(lateMixin = "mixins.scalinghealthissues.defiledlands.bleednonlethal.json", defaultValue = false)
+    @MixinConfig.CompatHandling(
+            modid = ModLoadedUtil.DEFILED_LANDS_MODID,
+            desired = true,
+            reason = "Mod needed for this Mixin to properly work",
+            warnIngame = false
+    )
+    @Config.RequiresMcRestart
+    public boolean defiledLandsBleedNonLethal = false;
+
+    @Config.Comment({
             "Death messages involving Infernal mobs will display their Classification.",
             "Hovering over the Classification will show all their modifiers."
     })
@@ -95,4 +110,34 @@ public class CompatibilityConfig {
     )
     @Config.RequiresMcRestart
     public boolean lycanitesPetRegen = true;
+
+    @Config.Comment({
+            "Handles Lycanites Bleed damage as Non lethal damage.",
+            "Intended to be used when enabling damage scaling for the \"magic\" DamageSource as it is commonly used elsewhere.",
+    })
+    @Config.Name("Mixin: Lycanites Bleed is Non Lethal (Lycanites Mobs)")
+    @MixinConfig.MixinToggle(lateMixin = "mixins.scalinghealthissues.lycanitesmobs.bleednonlethal.json", defaultValue = false)
+    @MixinConfig.CompatHandling(
+            modid = ModLoadedUtil.LYCANITES_MOBS_MODID,
+            desired = true,
+            reason = "Mod needed for this Mixin to properly work",
+            warnIngame = false
+    )
+    @Config.RequiresMcRestart
+    public boolean lycanitesBleedNonLethal = false;
+
+    @Config.Comment({
+            "Handles SRP Bleed damage as Non lethal damage.",
+            "Intended to be used when enabling damage scaling for the \"magic\" DamageSource as it is commonly used elsewhere.",
+    })
+    @Config.Name("Mixin: SRP Bleed is Non Lethal (Scape and Run: Parasites)")
+    @MixinConfig.MixinToggle(lateMixin = "mixins.scalinghealthissues.srp.bleednonlethal.json", defaultValue = false)
+    @MixinConfig.CompatHandling(
+            modid = ModLoadedUtil.SRP_MODID,
+            desired = true,
+            reason = "Mod needed for this Mixin to properly work",
+            warnIngame = false
+    )
+    @Config.RequiresMcRestart
+    public boolean srpBleedNonLethal = false;
 }
