@@ -8,10 +8,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentTranslation;
 import scalinghealthissues.ScalingHealthIssues;
 import scalinghealthissues.Tags;
-import scalinghealthissues.config.ConfigHandler;
 import scalinghealthissues.network.GuiHandler;
 
 import javax.annotation.Nonnull;
@@ -43,32 +41,20 @@ public class ScalingHealthIssuesCommand extends CommandBase {
         Entity targetEntity = args.length > 1 ? getEntity(server, sender, args[1]) : player;
 
         if (targetEntity.isAddedToWorld()) {
-            if(ConfigHandler.mixin.vanillaDeathMessageEquipment) {
-                player.openGui(
-                        ScalingHealthIssues.instance,
-                        GuiHandler.VIEW_ENTITY_INVENTORY,
-                        player.world,
-                        targetEntity.getEntityId(),
-                        0,
-                        0
-                );
-            }
-            else {
-                player.sendMessage(new TextComponentTranslation("scalinghealthissues.gui.entityinventory.disabled"));
-            }
+            player.openGui(
+                    ScalingHealthIssues.instance,
+                    GuiHandler.VIEW_ENTITY_INVENTORY,
+                    player.world,
+                    targetEntity.getEntityId(),
+                    0,
+                    0
+            );
         }
-    }
-
-    public int getRequiredPermissionLevel() {
-        return 0;
     }
 
     @Override
     public boolean checkPermission(MinecraftServer server, ICommandSender commandSender) {
-        if(commandSender instanceof EntityPlayerMP) {
-            return commandSender.canUseCommand(this.getRequiredPermissionLevel(), this.getName());
-        }
-        return false;
+        return true;
     }
 
     @Override

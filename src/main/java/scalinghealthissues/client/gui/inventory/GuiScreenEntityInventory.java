@@ -35,7 +35,7 @@ public class GuiScreenEntityInventory extends InventoryEntityEffectRenderer {
         if(attributeInstance != null) {
             String attributeName = I18n.format("attribute.name." + attributeInstance.getAttribute().getName());
             if(GuiScreen.isShiftKeyDown()) {
-                list.add(DECIMALFORMAT.format(attributeInstance.getBaseValue()) + "] " + attributeName);
+                list.add("[" + DECIMALFORMAT.format(attributeInstance.getBaseValue()) + " " + attributeName);
             }
             else {
                 list.add(DECIMALFORMAT.format(attributeInstance.getAttributeValue()) + " " + attributeName);
