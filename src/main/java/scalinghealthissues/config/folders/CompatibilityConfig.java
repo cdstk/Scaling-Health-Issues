@@ -71,10 +71,11 @@ public class CompatibilityConfig {
 
     @Config.Comment({
             "Death messages involving Infernal mobs will display their Classification.",
-            "Hovering over the Classification will show all their modifiers."
+            "Hovering over the Classification will show all their modifiers.",
+            "Additionally lets all players know when an Infernal is killed by a player via chat message with configurable minimum modifier count."
     })
     @Config.Name("Mixin: Infernal Classifications in Death Messages (Vanilla)")
-    @MixinConfig.MixinToggle(earlyMixin = "mixins.scalinghealthissues.vanilla.infernalmobs.json", defaultValue = true)
+    @MixinConfig.MixinToggle(earlyMixin = "mixins.scalinghealthissues.vanilla.infernalmobs.json", lateMixin = "mixins.scalinghealthissues.infernalmobs.json", defaultValue = true)
     @MixinConfig.CompatHandling(
             modid = ModLoadedUtil.INFERNAL_MOBS_MODID,
             desired = true,

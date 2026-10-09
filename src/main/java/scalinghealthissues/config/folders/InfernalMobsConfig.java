@@ -4,10 +4,6 @@ import net.minecraftforge.common.config.Config;
 
 public class InfernalMobsConfig {
 
-    @Config.Comment("Let all players know when an Infernal is killed by a player via chat message.")
-    @Config.Name("Infernal Killed by Player Message")
-    public boolean killedByPlayerMessage = true;
-
     @Config.Comment({
             "The minimum number of Modifiers the Infernal killed must have.",
             "\tInfernal - 11 or more",

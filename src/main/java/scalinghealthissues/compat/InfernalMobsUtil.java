@@ -9,10 +9,15 @@ import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.event.HoverEvent;
+import scalinghealthissues.config.ConfigHandler;
 
 import javax.annotation.Nullable;
 
 public abstract class InfernalMobsUtil {
+
+    public static boolean shouldAnnouceKill(Entity entity) {
+        return isModified(entity) && getModifierCount((EntityLivingBase) entity) >= ConfigHandler.compat.infernalMobs.killedByPlayerModifiers;
+    }
 
     public static boolean isModified(Entity entity) {
         return entity instanceof EntityLivingBase &&  InfernalMobsCore.getIsRareEntity((EntityLivingBase) entity);
