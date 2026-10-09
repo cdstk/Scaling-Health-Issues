@@ -63,7 +63,18 @@ public class ConfigHandler {
 		})
 		@Config.Name("Fix Inverted Config For Equipment Piece Chances")
 		@MixinConfig.MixinToggle(lateMixin = "mixins.scalinghealthissues.fixconfigblight.json", defaultValue = false)
+		@Config.RequiresMcRestart
 		public boolean fixConfigEquipmentChance = false;
+
+		@Config.Comment({
+				"The Server will add a click event and underline the entity's TextComponent used to display it's name.",
+				"The click event runs a command to view the inventory of the entity.",
+				"Intended to be used to view the equipment of what kill you."
+		})
+		@Config.Name("Death Message Clickable Equipment (Vanilla)")
+		@MixinConfig.MixinToggle(earlyMixin = "mixins.scalinghealthissues.vanilla.deathmsgequipment.json", defaultValue = true)
+		@Config.RequiresMcRestart
+		public boolean vanillaDeathMessageEquipment = true;
 	}
 
 	@Mod.EventBusSubscriber(modid = Tags.MODID)

@@ -16,11 +16,11 @@ public class PacketHandler {
     }
 
     public static void registerMessages() {
-        instance.registerMessage(PacketEntityDifficulty.ServerHandler.class, PacketEntityDifficulty.class, 1, Side.SERVER);
+//        instance.registerMessage(PacketEntityDifficulty.ServerHandler.class, PacketEntityDifficulty.class, 1, Side.SERVER);
     }
 
     @SideOnly(Side.CLIENT)
     public static void registerClientMessages() {
-        instance.registerMessage(PacketEntityDifficulty.ClientHandler.class, PacketEntityDifficulty.class, 1, Side.CLIENT);
+//        instance.registerMessage(PacketEntityDifficulty.ClientHandler.class, PacketEntityDifficulty.class, 1, Side.CLIENT);
     }
 }

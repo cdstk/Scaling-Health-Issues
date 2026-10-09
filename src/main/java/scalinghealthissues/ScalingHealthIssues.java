@@ -7,11 +7,12 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import scalinghealthissues.command.ScalingHealthIssuesCommand;
 import scalinghealthissues.compat.ModLoadedUtil;
 import scalinghealthissues.compat.handlers.FirstAidHandler;
-import scalinghealthissues.compat.handlers.InfernalMobsHandler;
 import scalinghealthissues.config.ConfigHandler;
 import scalinghealthissues.handlers.BetterBlightHandler;
 import scalinghealthissues.handlers.BetterDifficultyHandler;
@@ -52,14 +53,12 @@ public class ScalingHealthIssues {
         if(ModLoadedUtil.FIRST_AID.isLoaded()) {
             MinecraftForge.EVENT_BUS.register(FirstAidHandler.class);
         }
-
-        if(ModLoadedUtil.INFERNAL_MOBS.isLoaded()) {
-            MinecraftForge.EVENT_BUS.register(InfernalMobsHandler.class);
-        }
     }
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
+        ScalingHealthIssues.PROXY.init();
+
         if(ModLoadedUtil.FIRST_AID.isLoaded()) {
             FirstAidHandler.registerDefaults();
         }
@@ -72,5 +71,10 @@ public class ScalingHealthIssues {
         DamageSources.postInitDamageSourceFlags();
 
         completedLoading = true;
+    }
+
+    @Mod.EventHandler
+    public void serverInit(FMLServerStartingEvent event) {
+        event.registerServerCommand(new ScalingHealthIssuesCommand());
     }
 }
