@@ -27,5 +27,7 @@ public interface DamageScaling_InvokerMixin {
     float scalingHealthIssues$invokeGetEffectScale(EntityLivingBase entity);
 
     @Invoker(value = "makeSane", remap = false)
-    float scalingHealthIssues$invokeMakeSane(float scaledAmount);
+    static float scalingHealthIssues$invokeMakeSane(float scaledAmount) {
+        throw new AssertionError();
+    }
 }

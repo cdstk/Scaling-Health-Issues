@@ -18,8 +18,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.silentchaos512.scalinghealth.api.ScalingHealthAPI;
 import net.silentchaos512.scalinghealth.config.Config;
-import org.apache.logging.log4j.Level;
-import scalinghealthissues.ScalingHealthIssues;
 import scalinghealthissues.client.gui.inventory.GuiScreenEntityInventory;
 import scalinghealthissues.compat.ChampionsUtil;
 import scalinghealthissues.compat.InfernalMobsUtil;
@@ -159,7 +157,6 @@ public class GuiHandler implements IGuiHandler {
                 loadedEntity = GENERATED_VIEWED_CACHE.getIfPresent(nbt);
                 if(loadedEntity == null) {
                     loadedEntity = AnvilChunkLoader.readWorldEntity(nbt, world, false);
-                    ScalingHealthIssues.LOGGER.log(Level.INFO, "Created Cache Entity: {}", loadedEntity);
                     if(loadedEntity != null) {
                         GENERATED_VIEWED_CACHE.put(nbt, loadedEntity);
                     }

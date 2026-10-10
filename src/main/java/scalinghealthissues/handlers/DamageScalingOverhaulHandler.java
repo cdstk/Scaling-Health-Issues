@@ -43,7 +43,7 @@ public abstract class DamageScalingOverhaulHandler {
         float original = event.getAmount();
         float change = scale * affectedAmount * original;
         if (change != 0) {
-            float newAmount = config.scalingHealthIssues$invokeMakeSane(event.getAmount() + change);
+            float newAmount = DamageScaling_InvokerMixin.scalingHealthIssues$invokeMakeSane(event.getAmount() + change);
 
             if(IDamageSources_NonLethalMixin.isNonLethal(source))
                 newAmount = Math.min(newAmount, entity.getHealth() - 1F);
