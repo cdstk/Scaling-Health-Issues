@@ -1,7 +1,7 @@
 effects.scalinghealthissues.example=Example
 
 scalinghealthissues.gui.entityinventory.disabled=The server has disabled viewing Entity Equipment
-scalinghealthissues.gui.entityinventory.playererror=You can not view the inventory of a player
+scalinghealthissues.gui.entityinventory.playererror=The server has disabled viewing Player Equipment
 scalinghealthissues.gui.entityinventory.nullerror=The selected entity is not loaded
 
 scalinghealthissues.heartcontainer.lockedevent=You don't have the Heart to experience...

@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import scalinghealthissues.compat.InfernalMobsUtil;
 
 
-@Mixin(DamageSource.class)
+@Mixin(value = DamageSource.class, priority = 1003)
 public abstract class DamageSource_InfernalDeathMessageMixin {
 
     @WrapOperation(

@@ -13,7 +13,6 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.silentchaos512.scalinghealth.ScalingHealth;
 import net.silentchaos512.scalinghealth.api.ScalingHealthAPI;
 import net.silentchaos512.scalinghealth.config.Config;
 import net.silentchaos512.scalinghealth.event.DifficultyHandler;
@@ -53,7 +52,7 @@ public abstract class BetterDifficultyHandler {
             if (victim instanceof EntityLivingBase) {
                 double victimDifficulty = ScalingHealthAPI.getEntityDifficulty((EntityLivingBase) victim);
                 if(victimDifficulty > Config.Difficulty.minValue) {
-                    ITextComponent victimText = new TextComponentTranslation(ScalingHealth.i18n.miscText("difficultyMeterText"));
+                    ITextComponent victimText = new TextComponentTranslation("misc.scalinghealth.difficultyMeterText");
                     victimText.appendText(" " + String.format("%.2f", victimDifficulty) + " " + victim.getName());
                     difficultyText.appendSibling(victimText);
                     hasDifficulty = true;
@@ -62,7 +61,7 @@ public abstract class BetterDifficultyHandler {
             if (killer instanceof EntityLivingBase) {
                 double killerDifficulty = ScalingHealthAPI.getEntityDifficulty((EntityLivingBase) killer);
                 if(killerDifficulty > Config.Difficulty.minValue) {
-                    ITextComponent killerText = new TextComponentTranslation(ScalingHealth.i18n.miscText("difficultyMeterText"));
+                    ITextComponent killerText = new TextComponentTranslation("misc.scalinghealth.difficultyMeterText");
                     killerText.appendText(" " + String.format("%.2f", killerDifficulty) + " " + killer.getName());
                     difficultyText.appendText("\n").appendSibling(killerText);
                     hasDifficulty = true;
@@ -73,7 +72,7 @@ public abstract class BetterDifficultyHandler {
             if(entityInArea != null) {
                 double areaDifficulty = ScalingHealthAPI.getAreaDifficulty(entityInArea.world, entityInArea.getPosition());
                 if(areaDifficulty > Config.Difficulty.minValue) {
-                    ITextComponent areaText = new TextComponentTranslation(ScalingHealth.i18n.miscText("difficultyMeterText"));
+                    ITextComponent areaText = new TextComponentTranslation("misc.scalinghealth.difficultyMeterText");
                     areaText.appendText(" " + String.format("%.2f", areaDifficulty) + " ");
                     difficultyText.appendText("\n").appendSibling(areaText).appendSibling(new TextComponentTranslation("structure_block.position")); // "Relative Position"
                     hasDifficulty = true;

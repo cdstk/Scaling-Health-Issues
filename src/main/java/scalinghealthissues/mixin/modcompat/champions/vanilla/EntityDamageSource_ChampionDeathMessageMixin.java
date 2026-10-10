@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import scalinghealthissues.compat.ChampionsUtil;
 
-@Mixin(EntityDamageSource.class)
+@Mixin(value = EntityDamageSource.class, priority = 1002)
 public abstract class EntityDamageSource_ChampionDeathMessageMixin {
 
     @WrapOperation(

@@ -19,7 +19,7 @@ import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
 
-public class InventoryEntityPlayerSized implements IInventory {
+public class InventoryEntityWrapper implements IInventory {
 
     /**
      *
@@ -28,7 +28,10 @@ public class InventoryEntityPlayerSized implements IInventory {
      */
     public static IInventory getBaseInventory(Entity entity) {
         IInventory baseInventory = null;
-        if(entity instanceof EntityVillager) {
+        if(entity instanceof EntityPlayer) {
+            baseInventory = ((EntityPlayer) entity).inventory;
+        }
+        else if(entity instanceof EntityVillager) {
             baseInventory = ((EntityVillager) entity).getVillagerInventory();
         }
         else if(entity instanceof AbstractHorse_AccessorMixin) {
@@ -46,63 +49,69 @@ public class InventoryEntityPlayerSized implements IInventory {
      *               various optional inventories, and EntityLivingBase item arrays
      * @return An inventory that can read and modify the items stored in the entity
      */
-    public static IInventory getInventoryWrapper(Entity entity) {
-        IInventory playerSizedInventory = null;
+    public static InventoryEntityWrapper createInventoryWrapper(Entity entity) {
+        IInventory baseInventory = getBaseInventory(entity);
+        InventoryEntityWrapper inventoryWrapper = new InventoryEntityWrapper(entity, baseInventory);
 
-        if (entity instanceof EntityPlayer) {
-            playerSizedInventory = ((EntityPlayer) entity).inventory;
+        // 0 Mainhand
+        // 1 Offhand
+        // 2 Feet
+        // 3 Legs
+        // 4 Chest
+        // 5 Helmet
+        // [6, 42) 9x4 Inventory
+
+        // Fixed size of 6
+        if(entity instanceof EntityLivingBase) {
+            EntityLivingBase entityLivingBase = (EntityLivingBase) entity;
+            inventoryWrapper.setInventorySlotContentsNoUpdate(0, entityLivingBase.getHeldItemMainhand());
+            inventoryWrapper.setInventorySlotContentsNoUpdate(1, entityLivingBase.getHeldItemOffhand());
+            for (int armorSlot = 0; armorSlot < 4; ++armorSlot) {
+                ItemStack armorStack = entityLivingBase.getItemStackFromSlot(ContainerEntity.VALID_EQUIPMENT_SLOTS[armorSlot]);
+                inventoryWrapper.setInventorySlotContentsNoUpdate(2 + (3 - armorSlot), armorStack);
+            }
         }
 
-        if(playerSizedInventory == null) {
-            IInventory baseInventory = getBaseInventory(entity);
-
-            playerSizedInventory = new InventoryEntityPlayerSized(entity, baseInventory);
-
-            if(entity instanceof EntityLivingBase) {
-                EntityLivingBase entityLivingBase = (EntityLivingBase) entity;
-                playerSizedInventory.setInventorySlotContents(0, entityLivingBase.getHeldItemMainhand());
-                playerSizedInventory.setInventorySlotContents(1, entityLivingBase.getHeldItemOffhand());
-                for (int armorSlot = 0; armorSlot < 4; ++armorSlot) {
-                    ItemStack armorStack = entityLivingBase.getItemStackFromSlot(ContainerEntity.VALID_EQUIPMENT_SLOTS[armorSlot]);
-                    playerSizedInventory.setInventorySlotContents(2 + (3 - armorSlot), armorStack);
-                }
-            }
-
-            int baseSlot = 0;
-            if(baseInventory != null) {
-                for (int inventoryRow = 0; inventoryRow < 4; ++inventoryRow) {
-                    for (int inventoryCol = 0; inventoryCol < 9; ++inventoryCol) {
-                        if(baseSlot < baseInventory.getSizeInventory()) {
-                            int index = inventoryCol + (inventoryRow * 9);
-                            playerSizedInventory.setInventorySlotContents(6 + index, baseInventory.getStackInSlot(baseSlot));
-                            baseSlot++;
-                        }
+        // Size is flexible
+        if(baseInventory != null) {
+            int slotCount = 0;
+            for (int inventoryRow = 0; inventoryRow < 4; ++inventoryRow) {
+                for (int inventoryCol = 0; inventoryCol < 9; ++inventoryCol) {
+                    if (slotCount < baseInventory.getSizeInventory()) {
+                        int index = inventoryCol + (inventoryRow * 9);
+                        inventoryWrapper.setInventorySlotContentsNoUpdate(6 + index, baseInventory.getStackInSlot(index));
+                        slotCount++;
                     }
                 }
             }
         }
 
-        return playerSizedInventory;
+        return inventoryWrapper;
     }
 
     public final NonNullList<ItemStack> handInventory = NonNullList.withSize(2, ItemStack.EMPTY);
     public final NonNullList<ItemStack> armorInventory = NonNullList.withSize(4, ItemStack.EMPTY);
-    public final NonNullList<ItemStack> mainInventory = NonNullList.withSize(36, ItemStack.EMPTY);
+    public final NonNullList<ItemStack> mainInventory;
     private final List<NonNullList<ItemStack>> allInventories;
 
     public final Entity entity;
     public final IInventory baseInventory;
+
+    public final boolean nonPlayer;
     public int baseInventorySize;
 
-    public InventoryEntityPlayerSized(@Nonnull Entity entity, @Nullable IInventory baseInventory) {
-        this.allInventories = Arrays.asList(this.handInventory, this.armorInventory, this.mainInventory);
-        this.entity = entity;
-        this.baseInventory = baseInventory;
-
+    public InventoryEntityWrapper(@Nonnull Entity entity, @Nullable IInventory baseInventory) {
         this.baseInventorySize = baseInventory == null ? 0 : baseInventory.getSizeInventory();
         if(entity instanceof AbstractHorse_AccessorMixin) {
             this.baseInventorySize = ((AbstractHorse_AccessorMixin) entity).scalingHealthIssues$invokeGetInventorySize();
         }
+
+        this.mainInventory = NonNullList.withSize(this.baseInventorySize, ItemStack.EMPTY);
+
+        this.allInventories = Arrays.asList(this.handInventory, this.armorInventory, this.mainInventory);
+        this.entity = entity;
+        this.baseInventory = baseInventory;
+        this.nonPlayer = !(entity instanceof EntityPlayer);
     }
 
     @Override
@@ -143,10 +152,16 @@ public class InventoryEntityPlayerSized implements IInventory {
         }
     }
 
+    public void syncAllContents(EntityPlayer playerIn) {
+        for(int index = 0; index < this.getSizeInventory(); index++) {
+            this.setInventorySlotContents(index, this.getStackInSlot(index));
+        }
+    }
+
     @Override
     public void setInventorySlotContents(int index, ItemStack stack) {
         // Sync changes
-        if(!this.entity.getEntityWorld().isRemote) {
+        if(!this.entity.getEntityWorld().isRemote && this.nonPlayer) {
             if(index == 0) {
                 this.entity.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, stack);
             }
@@ -166,6 +181,10 @@ public class InventoryEntityPlayerSized implements IInventory {
             }
         }
 
+        this.setInventorySlotContentsNoUpdate(index, stack);
+    }
+
+    public void setInventorySlotContentsNoUpdate(int index, ItemStack stack) {
         NonNullList<ItemStack> validList = null;
 
         for (NonNullList<ItemStack> storedList : this.allInventories) {

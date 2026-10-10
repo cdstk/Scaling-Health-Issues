@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import scalinghealthissues.compat.InfernalMobsUtil;
 
-@Mixin(EntityDamageSource.class)
+@Mixin(value = EntityDamageSource.class, priority = 1003)
 public abstract class EntityDamageSource_InfernalDeathMessageMixin {
 
     @WrapOperation(
@@ -34,7 +34,7 @@ public abstract class EntityDamageSource_InfernalDeathMessageMixin {
     private ITextComponent scalingHealthIssues_vanillaEntityDamageSource_getDeathMessageKillerInfernal(Entity entity, Operation<ITextComponent> original){
         ITextComponent entityName = original.call(entity);
 
-        if (InfernalMobsUtil.isModified(entity)) {
+        if (entity instanceof EntityLivingBase && InfernalMobsUtil.isModified((EntityLivingBase) entity)) {
             entityName = InfernalMobsUtil.prependInfernalText(entityName, entity);
         }
 

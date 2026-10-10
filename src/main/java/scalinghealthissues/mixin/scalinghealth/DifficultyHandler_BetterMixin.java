@@ -55,9 +55,9 @@ public abstract class DifficultyHandler_BetterMixin {
         entityLiving.getEntityData().setBoolean(BetterBlightHandler.NBT_BLIGHT_PROCESSED, true);
     }
 
-    @ModifyExpressionValue(
+    @ModifyReturnValue(
             method = "entityBlacklistedFromBecomingBlight",
-            at = @At(value = "INVOKE", target = "Lnet/silentchaos512/scalinghealth/event/BlightHandler;isBlight(Lnet/minecraft/entity/EntityLivingBase;)Z"),
+            at = @At("RETURN"),
             remap = false
     )
     private static boolean scalingHealthIssues_shDifficultyHandler_entityBlacklistedFromBecomingBlightExceptFake(boolean canBeNaturalBlight, EntityLivingBase entityLiving){

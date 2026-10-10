@@ -6,7 +6,10 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
-    "vanilla.Entity_EquipmentClickEventMixin"
+    "vanilla.equipmentview.CombatTracker_ClickEquipmentMixin",
+    "vanilla.equipmentview.DamageSource_ClickEquipmentMixin",
+    "vanilla.equipmentview.EntityDamageSource_ClickEquipmentMixin",
+    "vanilla.equipmentview.EntityDamageSourceIndirect_ClickEquipmentMixin"
   ],
   "injectors": {
     "maxShiftBy": 10

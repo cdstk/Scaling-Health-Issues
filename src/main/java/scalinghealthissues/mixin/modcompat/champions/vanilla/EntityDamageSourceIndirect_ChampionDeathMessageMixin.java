@@ -14,7 +14,7 @@ import scalinghealthissues.compat.ChampionsUtil;
 
 import javax.annotation.Nullable;
 
-@Mixin(EntityDamageSourceIndirect.class)
+@Mixin(value = EntityDamageSourceIndirect.class, priority = 1002)
 public abstract class EntityDamageSourceIndirect_ChampionDeathMessageMixin extends EntityDamageSource {
 
     @Shadow @Nullable public abstract Entity getTrueSource();

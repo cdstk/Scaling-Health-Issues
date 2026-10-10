@@ -15,12 +15,12 @@ import javax.annotation.Nullable;
 
 public abstract class InfernalMobsUtil {
 
-    public static boolean shouldAnnouceKill(Entity entity) {
-        return isModified(entity) && getModifierCount((EntityLivingBase) entity) >= ConfigHandler.compat.infernalMobs.killedByPlayerModifiers;
+    public static boolean shouldAnnounceKill(EntityLivingBase entityLivingBase) {
+        return isModified(entityLivingBase) && getModifierCount(entityLivingBase) >= ConfigHandler.compat.infernalMobs.killedByPlayerModifiers;
     }
 
-    public static boolean isModified(Entity entity) {
-        return entity instanceof EntityLivingBase &&  InfernalMobsCore.getIsRareEntity((EntityLivingBase) entity);
+    public static boolean isModified(EntityLivingBase entityLivingBase) {
+        return InfernalMobsCore.getIsRareEntity(entityLivingBase);
     }
 
     public static boolean isInfernal(EntityLivingBase entity) {

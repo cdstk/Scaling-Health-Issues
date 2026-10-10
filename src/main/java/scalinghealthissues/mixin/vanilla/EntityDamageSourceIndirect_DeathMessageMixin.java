@@ -16,7 +16,7 @@ import scalinghealthissues.wrapper.ScalingHealthWrapper;
 
 import javax.annotation.Nullable;
 
-@Mixin(EntityDamageSourceIndirect.class)
+@Mixin(value = EntityDamageSourceIndirect.class, priority = 1004)
 public abstract class EntityDamageSourceIndirect_DeathMessageMixin extends EntityDamageSource {
 
     @Shadow @Nullable public abstract Entity getTrueSource();

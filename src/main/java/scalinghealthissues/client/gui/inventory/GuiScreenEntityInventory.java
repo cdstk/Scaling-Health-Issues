@@ -37,6 +37,9 @@ public class GuiScreenEntityInventory extends InventoryEntityEffectRenderer {
             if(GuiScreen.isShiftKeyDown()) {
                 list.add("[" + DECIMALFORMAT.format(attributeInstance.getBaseValue()) + " " + attributeName);
             }
+            else if(!entityLivingBase.isAddedToWorld()) {
+                list.add(I18n.format("entity.generic.name") + " " + attributeName);
+            }
             else {
                 list.add(DECIMALFORMAT.format(attributeInstance.getAttributeValue()) + " " + attributeName);
             }

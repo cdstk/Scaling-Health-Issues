@@ -13,7 +13,6 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(Entity.class)
 public abstract class Entity_EquipmentClickEventMixin {
 
-    @Shadow public abstract boolean isEntityAlive();
     @Shadow public abstract String getCachedUniqueIdString();
 
     @ModifyReturnValue(
@@ -21,14 +20,12 @@ public abstract class Entity_EquipmentClickEventMixin {
             at = @At("RETURN")
     )
     private ITextComponent scalingHealthIssues_vanillaEntity_getDisplayNameClickEventEquipment(ITextComponent original){
-        if(this.isEntityAlive()) {
-            Style style = original.getStyle();
-            if(style.getClickEvent() == null) {
-                String command = "/scalinghealthissues viewinventory " + this.getCachedUniqueIdString();
+        Style style = original.getStyle();
+        if(style.getClickEvent() == null) {
+            String command = "/scalinghealthissues viewinventory " + this.getCachedUniqueIdString();
 
-                style.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, command));
-                style.setColor(TextFormatting.UNDERLINE);
-            }
+            style.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, command));
+            style.setColor(TextFormatting.UNDERLINE);
         }
         return original;
     }

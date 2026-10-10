@@ -17,6 +17,7 @@ public abstract class ModLoadedUtil {
     public static final String RLMIXINS_MODID = "rlmixins";
     public static final String SRP_MODID = "srparasites";
 
+    public static LoadedContainer CHAMPIONS = new LoadedContainer(CHAMPIONS_MODID);
     public static LoadedContainer FIRST_AID = new LoadedContainer(FIRST_AID_MODID);
     public static LoadedContainer INFERNAL_MOBS = new LoadedContainer(INFERNAL_MOBS_MODID);
     public static LoadedContainer RLMIXINS = new LoadedContainer(RLMIXINS_MODID);

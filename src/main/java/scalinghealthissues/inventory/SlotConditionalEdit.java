@@ -44,11 +44,7 @@ public class SlotConditionalEdit extends Slot {
 
     @Override
     public boolean canTakeStack(EntityPlayer playerIn) {
-        boolean canTake = this.canEdit && super.canTakeStack(playerIn);
-        if(canTake) {
-            this.playEquipSound(playerIn, this.getStack());
-        }
-        return canTake;
+        return this.canEdit && super.canTakeStack(playerIn);
     }
 
     @SideOnly(Side.CLIENT)

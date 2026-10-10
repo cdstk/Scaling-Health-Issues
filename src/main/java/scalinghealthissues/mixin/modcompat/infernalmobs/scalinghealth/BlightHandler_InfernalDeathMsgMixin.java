@@ -16,7 +16,7 @@ public abstract class BlightHandler_InfernalDeathMsgMixin {
             remap = false
     )
     private boolean scalingHealthIssues_shBlightHandler_onBlightKilledInfernalMobsKilled(boolean isBlight, LivingDeathEvent event){
-        return isBlight || InfernalMobsUtil.shouldAnnouceKill(event.getEntityLiving());
+        return isBlight || InfernalMobsUtil.shouldAnnounceKill(event.getEntityLiving());
     }
 
     @ModifyExpressionValue(
@@ -25,6 +25,6 @@ public abstract class BlightHandler_InfernalDeathMsgMixin {
             remap = false
     )
     private boolean scalingHealthIssues_shBlightHandler_onBlightKilledInfernalMobsMessage(boolean notifyOnDeath, LivingDeathEvent event){
-        return notifyOnDeath || InfernalMobsUtil.shouldAnnouceKill(event.getEntityLiving());
+        return notifyOnDeath || InfernalMobsUtil.shouldAnnounceKill(event.getEntityLiving());
     }
 }

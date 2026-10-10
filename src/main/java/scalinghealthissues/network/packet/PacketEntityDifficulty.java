@@ -1,4 +1,4 @@
-package scalinghealthissues.network;
+package scalinghealthissues.network.packet;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
@@ -16,6 +16,7 @@ import net.silentchaos512.scalinghealth.event.DifficultyHandler;
 import org.apache.logging.log4j.Level;
 import scalinghealthissues.ScalingHealthIssues;
 import scalinghealthissues.config.ConfigHandler;
+import scalinghealthissues.network.PacketHandler;
 
 import java.util.UUID;
 

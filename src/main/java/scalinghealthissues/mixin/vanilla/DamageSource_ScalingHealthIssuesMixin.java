@@ -14,7 +14,7 @@ import scalinghealthissues.mixininterface.IDamageSources_NonLethalMixin;
 import scalinghealthissues.wrapper.ScalingHealthWrapper;
 
 
-@Mixin(DamageSource.class)
+@Mixin(value = DamageSource.class, priority = 1004)
 public abstract class DamageSource_ScalingHealthIssuesMixin implements IDamageSources_NonLethalMixin {
 
     @Unique
