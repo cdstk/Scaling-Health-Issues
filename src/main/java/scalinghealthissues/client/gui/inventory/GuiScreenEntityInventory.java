@@ -10,6 +10,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.inventory.Slot;
+import scalinghealthissues.ScalingHealthIssues;
 import scalinghealthissues.client.renderer.InventoryEntityEffectRenderer;
 import scalinghealthissues.inventory.ContainerEntity;
 import scalinghealthissues.inventory.SlotConditionalEdit;
@@ -37,7 +38,7 @@ public class GuiScreenEntityInventory extends InventoryEntityEffectRenderer {
             if(GuiScreen.isShiftKeyDown()) {
                 list.add("[" + DECIMALFORMAT.format(attributeInstance.getBaseValue()) + " " + attributeName);
             }
-            else if(!entityLivingBase.isAddedToWorld()) {
+            else if(!GuiScreen.isCtrlKeyDown() && !ScalingHealthIssues.PROXY.isSinglePlayer() && !entityLivingBase.isAddedToWorld()) {
                 list.add(I18n.format("entity.generic.name") + " " + attributeName);
             }
             else {
