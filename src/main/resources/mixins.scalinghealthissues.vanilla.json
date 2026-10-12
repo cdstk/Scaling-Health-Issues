@@ -10,6 +10,7 @@
     "vanilla.DamageSource_ScalingHealthIssuesMixin",
     "vanilla.EntityDamageSource_BlightDeathMessageMixin",
     "vanilla.EntityDamageSourceIndirect_DeathMessageMixin",
+    "vanilla.EntityLivingBase_Accessor",
     "vanilla.Potion_PoisonDamageScalingMixin"
   ],
   "injectors": {

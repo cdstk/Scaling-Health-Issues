@@ -1,8 +1,14 @@
 package scalinghealthissues.handlers;
 
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.MobEffects;
+import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemArmor;
+import net.minecraft.item.ItemBow;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -19,6 +25,8 @@ import net.silentchaos512.scalinghealth.network.message.MessageMarkBlight;
 import scalinghealthissues.compat.RLMixinsUtil;
 import scalinghealthissues.config.folders.BlightConfig;
 import scalinghealthissues.mixin.scalinghealth.BlightHandler_InvokerMixin;
+
+import javax.annotation.Nullable;
 
 public abstract class BetterBlightHandler {
 
@@ -95,6 +103,67 @@ public abstract class BetterBlightHandler {
                 true, // Ambient
                 false // Particles
         );
+    }
+
+    // Tries to filter [Weapons, Bows, Shields] -> MAINHAND, Stackable -> NULL
+    @Nullable
+    public static EntityEquipmentSlot getReasonableSlotForItemStack(ItemStack itemStack) {
+        EntityEquipmentSlot equipmentSlot = EntityLiving.getSlotForItemStack(itemStack);
+        switch (itemStack.getItemUseAction()) {
+            case BLOCK:
+            case BOW:
+                return equipmentSlot;
+        }
+        if(equipmentSlot == EntityEquipmentSlot.MAINHAND) {
+            if(itemStack.getAttributeModifiers(EntityEquipmentSlot.MAINHAND).isEmpty()) {
+                return null;
+            }
+        }
+        return equipmentSlot;
+    }
+
+    // Based on EntityLiving.updateEquipmentIfNeeded()
+    public static boolean isBetterThanCurrentEquipment(EntityLivingBase entityLivingBase, ItemStack newItemStack, @Nullable EntityEquipmentSlot entityEquipmentSlot) {
+        boolean isBetter = true;
+        if(entityEquipmentSlot == null)
+            entityEquipmentSlot = EntityLiving.getSlotForItemStack(newItemStack);
+        ItemStack currentItemStack = entityLivingBase.getItemStackFromSlot(entityEquipmentSlot);
+
+        if (!currentItemStack.isEmpty()) {
+            if (entityEquipmentSlot.getSlotType() == EntityEquipmentSlot.Type.HAND) {
+                if (newItemStack.getItem() instanceof ItemSword && !(currentItemStack.getItem() instanceof ItemSword)) {
+                    isBetter = true;
+                } else if (newItemStack.getItem() instanceof ItemSword && currentItemStack.getItem() instanceof ItemSword) {
+                    ItemSword newWeapon = (ItemSword) newItemStack.getItem();
+                    ItemSword currenWeapon = (ItemSword) currentItemStack.getItem();
+
+                    if (newWeapon.getAttackDamage() == currenWeapon.getAttackDamage()) {
+                        isBetter = newItemStack.getMetadata() > currentItemStack.getMetadata() || newItemStack.hasTagCompound() && !currentItemStack.hasTagCompound();
+                    } else {
+                        isBetter = newWeapon.getAttackDamage() > currenWeapon.getAttackDamage();
+                    }
+                } else if (newItemStack.getItem() instanceof ItemBow && currentItemStack.getItem() instanceof ItemBow) {
+                    isBetter = newItemStack.hasTagCompound() && !currentItemStack.hasTagCompound();
+                } else {
+                    isBetter = false;
+                }
+            } else if (newItemStack.getItem() instanceof ItemArmor && !(currentItemStack.getItem() instanceof ItemArmor)) {
+                isBetter = true;
+            } else if (newItemStack.getItem() instanceof ItemArmor && currentItemStack.getItem() instanceof ItemArmor && !EnchantmentHelper.hasBindingCurse(currentItemStack)) {
+                ItemArmor newArmor = (ItemArmor) newItemStack.getItem();
+                ItemArmor currentArmor = (ItemArmor) currentItemStack.getItem();
+
+                if (newArmor.damageReduceAmount == currentArmor.damageReduceAmount) {
+                    isBetter = newItemStack.getMetadata() > currentItemStack.getMetadata() || newItemStack.hasTagCompound() && !currentItemStack.hasTagCompound();
+                } else {
+                    isBetter = newArmor.damageReduceAmount > currentArmor.damageReduceAmount;
+                }
+            } else {
+                isBetter = false;
+            }
+        }
+
+        return isBetter;
     }
 
     // Update blight upon spawn instead of waiting for batch update (the ticking updates are still kept)

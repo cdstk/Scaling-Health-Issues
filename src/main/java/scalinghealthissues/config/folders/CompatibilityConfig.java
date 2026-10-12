@@ -86,6 +86,38 @@ public class CompatibilityConfig {
     public boolean infernalDeathMessage = true;
 
     @Config.Comment({
+            "Infernal Modified Mobs will spawn with equipment (armor, weapon, offhand) from their configured drops.",
+            "This will be similar to how Scaling Health Blighted Mobs are equipped with armor and weapons on spawn.",
+            "New equipment will not replace existing and drops are treated like Vanilla naturally spawned armor."
+    })
+    @Config.Name("Mixin: Infernal Mobs Use Loot As Equipment (Infernal Mobs)")
+    @MixinConfig.MixinToggle(lateMixin = "mixins.scalinghealthissues.infernalmobs.equipment.json", defaultValue = true)
+    @MixinConfig.CompatHandling(
+            modid = ModLoadedUtil.INFERNAL_MOBS_MODID,
+            desired = true,
+            reason = "Mod needed for this Mixin to properly work",
+            warnIngame = false
+    )
+    @Config.RequiresMcRestart
+    public boolean infernalWearLoot = true;
+
+    @Config.Comment({
+            "Allows the Enchantment Loot Pools for Enchanted Books and Equipment to be modified.",
+            "This can be used to fix a inconsistency where book only have Vanilla Enchantments while equipment can have modded.",
+            "This can also be used to interact with RLCraft Luckified mod by using a Loot Function pool which considers luck."
+    })
+    @Config.Name("Mixin: Infernal Mobs Configurable Enchantment Pool (Infernal Mobs)")
+    @MixinConfig.MixinToggle(lateMixin = "mixins.scalinghealthissues.infernalmobs.enchantment.json", defaultValue = true)
+    @MixinConfig.CompatHandling(
+            modid = ModLoadedUtil.INFERNAL_MOBS_MODID,
+            desired = true,
+            reason = "Mod needed for this Mixin to properly work",
+            warnIngame = false
+    )
+    @Config.RequiresMcRestart
+    public boolean infernalEnchantmentPool = true;
+
+    @Config.Comment({
             "Players will not experience Lycanites Mob Events until they have used a specified number of Heart Containers.",
             "The server will set Mob Events but only eligible players will experience their spawns."
     })

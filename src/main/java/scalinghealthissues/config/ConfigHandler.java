@@ -13,8 +13,11 @@ import scalinghealthissues.Tags;
 import scalinghealthissues.config.folders.BlightConfig;
 import scalinghealthissues.config.folders.CompatibilityConfig;
 import scalinghealthissues.config.folders.DamageScalingConfig;
+import scalinghealthissues.util.Pair;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashMap;
 
 @BetterConfig(
 		modid = Tags.MODID,
@@ -144,5 +147,11 @@ public class ConfigHandler {
 	public static void initConfig() {
 		ConfigHandler.mob.blight.init();
 		ConfigHandler.dmgScale.init();
+	}
+
+	public static <K, V> LinkedHashMap<K, V> linkedMapOf(Collection<Pair<K, V>> entries) {
+		LinkedHashMap<K, V> map = new LinkedHashMap<>();
+		for(Pair<K, V> pair : entries) map.put(pair.left, pair.right);
+		return map;
 	}
 }
