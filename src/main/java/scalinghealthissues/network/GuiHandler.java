@@ -172,6 +172,7 @@ public class GuiHandler implements IGuiHandler {
 
         NBTTagCompound nbt = entity.writeToNBT(new NBTTagCompound());
         addEntityTypeTag(nbt, entity);
+        ConfigHandler.server.entityNBTNoSync.forEach(nbt::removeTag);
 
         PacketEntityViewableData entityViewableData = new PacketEntityViewableData(entity, nbt);
         PacketHandler.instance.sendToDimension(entityViewableData, entity.dimension);

@@ -2,6 +2,11 @@ package scalinghealthissues.config.data;
 
 public class ConfigEnum {
 
+    public enum ListType {
+        BLACKLIST,
+        WHITELIST
+    }
+
     public enum SingleEnchantmentList {
         ENCHANT_RANDOMLY,
         FORGE_REGISTRY,

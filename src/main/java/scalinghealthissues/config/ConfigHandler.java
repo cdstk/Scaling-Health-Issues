@@ -16,8 +16,11 @@ import scalinghealthissues.config.folders.DamageScalingConfig;
 import scalinghealthissues.util.Pair;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @BetterConfig(
 		modid = Tags.MODID,
@@ -106,6 +109,18 @@ public class ConfigHandler {
 		@Order(3)
 		@Config.Name("Entity Equipment - Players")
 		public boolean entityViewPlayers = true;
+
+		@Config.Comment({
+				"This list defines NBT tags that the server will not be synced to clients",
+				"Recommended to have ForgeData and ForgeCaps removed since modded data can be large and would not be rendered on client anyways."
+		})
+		@Order(4)
+		@Config.Name("Entity Equipment - NBT Tags Not Synced")
+		public Set<String> entityNBTNoSync = linkedSetOf(Arrays.asList(
+				"Tags",
+				"ForgeData",
+				"ForgeCaps"
+		));
 	}
 
 	@MixinConfig(name = Tags.MODID)
@@ -147,6 +162,10 @@ public class ConfigHandler {
 	public static void initConfig() {
 		ConfigHandler.mob.blight.init();
 		ConfigHandler.dmgScale.init();
+	}
+
+	public static <V> LinkedHashSet<V> linkedSetOf(Collection<V> entries) {
+        return new LinkedHashSet<>(entries);
 	}
 
 	public static <K, V> LinkedHashMap<K, V> linkedMapOf(Collection<Pair<K, V>> entries) {
