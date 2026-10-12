@@ -6,11 +6,14 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.storage.AnvilChunkLoader;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -23,6 +26,7 @@ import scalinghealthissues.compat.ChampionsUtil;
 import scalinghealthissues.compat.InfernalMobsUtil;
 import scalinghealthissues.compat.ModLoadedUtil;
 import scalinghealthissues.config.ConfigHandler;
+import scalinghealthissues.handlers.BetterDifficultyHandler;
 import scalinghealthissues.inventory.ContainerEntity;
 import scalinghealthissues.network.packet.PacketEntityViewableData;
 
@@ -166,7 +170,32 @@ public class GuiHandler implements IGuiHandler {
         return loadedEntity;
     }
 
-    private static void cachePlayerKillOrKiller(Entity entity) {
+    // Cache on server for all but only send an update packet to one client
+    public static void cacheAndNotifySpecificPlayer(EntityLivingBase entityLivingBase, EntityPlayer player, ITextComponent currentMessage) {
+        if(entityLivingBase instanceof EntityPlayer)
+            return;
+        if(!(player instanceof EntityPlayerMP))
+            return;
+
+        ITextComponent clickableName = addClickToView(entityLivingBase.getDisplayName(), entityLivingBase);
+        clickableName = prependModdedStatuses(clickableName, entityLivingBase);
+        if(currentMessage != null) {
+            clickableName.appendText("§r ").appendSibling(currentMessage);
+        }
+        player.sendMessage(clickableName);
+
+        NBTTagCompound nbt = entityLivingBase.writeToNBT(new NBTTagCompound());
+        addEntityTypeTag(nbt, entityLivingBase);
+        ConfigHandler.server.entityNBTNoSync.forEach(nbt::removeTag);
+
+        PacketEntityViewableData entityViewableData = new PacketEntityViewableData(entityLivingBase, nbt);
+        PacketHandler.instance.sendTo(entityViewableData, (EntityPlayerMP) player);
+
+        putViewableData(entityLivingBase.getUniqueID(), entityLivingBase.getEntityId(), nbt);
+    }
+
+    // Cache on server and send update packet to all
+    public static void cachePlayerKillOrKiller(Entity entity) {
         if(entity instanceof EntityPlayer)
             return;
 
@@ -209,5 +238,33 @@ public class GuiHandler implements IGuiHandler {
         if (resourcelocation != null) {
             nbtTagCompound.setString("id", resourcelocation.toString());
         }
+    }
+
+    // Should output the same result as the chained mixins
+    public static ITextComponent prependModdedStatuses(ITextComponent displayName, EntityLivingBase entityLivingBase) {
+        if(ModLoadedUtil.CHAMPIONS.isLoaded() && ChampionsUtil.isEntityChampion(entityLivingBase)) {
+            displayName = ChampionsUtil.prependChampionText(displayName, entityLivingBase);
+        }
+
+        if(ModLoadedUtil.INFERNAL_MOBS.isLoaded() && InfernalMobsUtil.isModified(entityLivingBase)) {
+            displayName = InfernalMobsUtil.prependInfernalText(displayName, entityLivingBase);
+        }
+
+        if(ScalingHealthAPI.isBlight(entityLivingBase)) {
+            displayName = BetterDifficultyHandler.prependBlightText(displayName, entityLivingBase);
+        }
+
+        return displayName;
+    }
+
+    public static ITextComponent addClickToView(ITextComponent displayName, Entity entity) {
+        Style style = displayName.getStyle();
+        if(style.getClickEvent() == null) {
+            String command = "/scalinghealthissues viewinventory " + entity.getCachedUniqueIdString();
+
+            style.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, command));
+            style.setColor(TextFormatting.UNDERLINE);
+        }
+        return displayName;
     }
 }

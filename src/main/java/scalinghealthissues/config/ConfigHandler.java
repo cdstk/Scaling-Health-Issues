@@ -144,6 +144,16 @@ public class ConfigHandler {
 		@MixinConfig.MixinToggle(earlyMixin = "mixins.scalinghealthissues.vanilla.deathmsgequipment.json", defaultValue = true)
 		@Config.RequiresMcRestart
 		public boolean vanillaDeathMessageEquipment = true;
+
+		@Config.Comment({
+				"Entities that deal Significant Damage dealt to a Player will be cached and the client notified.",
+				"   Notifies about Reskillable Undershirt usage",
+				"   Notifies about Armor breaking"
+		})
+		@Config.Name("Cache Significant Damage (Vanilla)")
+		@MixinConfig.MixinToggle(earlyMixin = "mixins.scalinghealthissues.vanilla.significantdamage.json", defaultValue = true)
+		@Config.RequiresMcRestart
+		public boolean vanillaSignificantDamage = true;
 	}
 
 	@Mod.EventBusSubscriber(modid = Tags.MODID)

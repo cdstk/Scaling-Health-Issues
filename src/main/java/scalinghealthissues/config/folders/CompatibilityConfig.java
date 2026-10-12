@@ -70,6 +70,23 @@ public class CompatibilityConfig {
     public boolean defiledLandsBleedNonLethal = false;
 
     @Config.Comment({
+            "Entities that deal Significant Damage dealt to a Player will be cached and the client notified.",
+            "   Notifies about Reskillable Undershirt usage",
+            "   Notifies about Morphine max health ability usage",
+            "   Notifies about Armor breaking"
+    })
+    @Config.Name("Cache Significant Damage (First Aid)")
+    @MixinConfig.MixinToggle(lateMixin = "mixins.scalinghealthissues.firstaid.significantdamage.json", defaultValue = true)
+    @MixinConfig.CompatHandling(
+            modid = ModLoadedUtil.FIRST_AID_MODID,
+            desired = true,
+            reason = "Mod needed for this Mixin to properly work",
+            warnIngame = false
+    )
+    @Config.RequiresMcRestart
+    public boolean firstAidSignificantDamage = true;
+
+    @Config.Comment({
             "Death messages involving Infernal mobs will display their Classification.",
             "Hovering over the Classification will show all their modifiers.",
             "Additionally lets all players know when an Infernal is killed by a player via chat message with configurable minimum modifier count."

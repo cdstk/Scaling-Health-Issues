@@ -8,6 +8,7 @@ import ichttt.mods.firstaid.common.apiimpl.FirstAidRegistryImpl;
 import ichttt.mods.firstaid.common.damagesystem.distribution.RandomDamageDistribution;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -18,9 +19,16 @@ import scalinghealthissues.config.ConfigHandler;
 import scalinghealthissues.mixininterface.IDamageSources_NonLethalMixin;
 import scalinghealthissues.util.DamageSources;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 public class FirstAidHandler {
+
+    // Unlike EntityPlayer mixin, FirstAid handles in a static helper
+    public static boolean sturdyActivated = false; // Morphine
+    public static boolean undershirtActivated = false;
+    public static Map<EntityEquipmentSlot, String> brokenArmor = new HashMap<>();
 
     // When First Aid or command modifies
     public static boolean morphineAppliedInternally = false;

@@ -4,9 +4,13 @@ scalinghealthissues.gui.entityinventory.disabled=The server has disabled viewing
 scalinghealthissues.gui.entityinventory.playererror=The server has disabled viewing Player Equipment
 scalinghealthissues.gui.entityinventory.nullerror=The selected entity is not loaded
 
+scalinghealthissues.significantdamage.armorlost=Broke: %s
+
 scalinghealthissues.heartcontainer.lockedevent=You don't have the Heart to experience...
 scalinghealthissues.heartcontainer.unlockedevent=Your Heart can now experience...
 
 scalinghealthissues.firstaid.sturdy.description=Can endure a fatal blow when health is full
 scalinghealthissues.firstaid.mitigation.description=Most harm affects a single body part
 scalinghealthissues.firstaid.sturdy.activated=That could have felt worse...
+
+scalinghealthissues.reskillable.undershirt.activated=Activated Undershirt

@@ -2,6 +2,7 @@ package scalinghealthissues.config.folders;
 
 import meldexun.betterconfig.api.Sync;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.config.Config;
 
 @Sync
@@ -31,7 +32,7 @@ public class FirstAidConfig {
 
     @Config.Comment("Text Formatting Value-By-Name for the chat message when preventing a one-shot")
     @Config.Name("Morphine Rework - Message Formatting")
-    public String morphineMessageFormat = "YELLOW";
+    public TextFormatting morphineMessageFormat = TextFormatting.YELLOW;
 
     @Config.Comment("Sound Event Resource Location for the sound effect that will play when preventing a one-shot")
     @Config.Name("Morphine Rework - Sound Event")
@@ -62,4 +63,12 @@ public class FirstAidConfig {
     @Config.Name("Morphine Rework - Bound Increment")
     @Config.RangeInt(min = 0)
     public int morphineDurationStep = 15;
+
+    @Config.Comment("Text Formatting Value-By-Name for the chat message when preventing a one-shot")
+    @Config.Name("Reskillable Undershirt - Message Formatting")
+    public TextFormatting reskillableUndershirtMessageFormat = TextFormatting.AQUA;
+
+    @Config.Comment("Text Formatting Value-By-Name for the chat message when at least one armor piece breaks")
+    @Config.Name("Armor Break - Message Formatting")
+    public TextFormatting armorBreakMessageFormat = TextFormatting.RED;
 }

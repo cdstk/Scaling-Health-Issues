@@ -15,7 +15,6 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -94,18 +93,18 @@ public abstract class DamageDistribution_LethalityMixin {
                 if(IAbstractDamageablePart_NonLethalMixin.isNonLethal(part)) {
                     if(part.currentHealth == this.minHealth(player, part)) {
                         sendMessage = true;
+                        FirstAidHandler.sturdyActivated = true;
                     }
                 }
             }
         }
 
         if(sendMessage) {
-            ITextComponent activateText = new TextComponentTranslation("scalinghealthissues.firstaid.sturdy.activated");
-            TextFormatting format = TextFormatting.getValueByName(ConfigHandler.compat.firstAid.morphineMessageFormat);
-            if(format != null) {
-                activateText.getStyle().setColor(format);
+            if(!ConfigHandler.compat.firstAidSignificantDamage) {
+                ITextComponent activateText = new TextComponentTranslation("scalinghealthissues.firstaid.sturdy.activated");
+                activateText.getStyle().setColor(ConfigHandler.compat.firstAid.morphineMessageFormat);
+                player.sendMessage(activateText);
             }
-            player.sendMessage(activateText);
 
             SoundEvent soundEvent = ForgeRegistries.SOUND_EVENTS.getValue(ConfigHandler.compat.firstAid.morphineSoundEvent);
             if(soundEvent != null) {
