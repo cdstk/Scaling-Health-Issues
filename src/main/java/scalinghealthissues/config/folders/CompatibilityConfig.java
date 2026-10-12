@@ -75,7 +75,7 @@ public class CompatibilityConfig {
             "   Notifies about Morphine max health ability usage",
             "   Notifies about Armor breaking"
     })
-    @Config.Name("Cache Significant Damage (First Aid)")
+    @Config.Name("Mixin: Cache Significant Damage (First Aid)")
     @MixinConfig.MixinToggle(lateMixin = "mixins.scalinghealthissues.firstaid.significantdamage.json", defaultValue = true)
     @MixinConfig.CompatHandling(
             modid = ModLoadedUtil.FIRST_AID_MODID,
