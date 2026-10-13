@@ -32,8 +32,8 @@ public class InfernalMobsConfig {
     public boolean replaceExistingEquipment = true;
 
     @Config.Comment({
-            "Defines the value range for Equipment Enchantability value used on spawn.",
-            "    These values are not used elsewhere (for example RLCraft Luckified)",
+            "Defines the value range for Equipment Enchantability value.",
+            "    These values are used for worn Equipment and loot dropped.",
             "An undefined entry uses Infernal Mob's default of using the Item's Material base value",
             "    which is often lower than Vanilla naturally spawned enchanted equipped mobs of [5, 22]"
     })
@@ -55,6 +55,7 @@ public class InfernalMobsConfig {
             "Infernal Mobs originally used VANILLA_REGISTRY"
     })
     @Config.Name("Enchanted Book Loot Enchantment Pool")
+    @Config.RequiresMcRestart
     @Order(3)
     public ConfigEnum.SingleEnchantmentList bookEnchantmentList = ConfigEnum.SingleEnchantmentList.ENCHANT_RANDOMLY;
 
@@ -67,7 +68,6 @@ public class InfernalMobsConfig {
             "Infernal Mobs originally used FORGE_REGISTRY "
     })
     @Config.Name("Enchanted Equipment Loot Enchantment Pool")
-    @Config.RequiresMcRestart
     @Order(4)
     public ConfigEnum.MultiEnchantmentList equipmentEnchantmentList = ConfigEnum.MultiEnchantmentList.ENCHANT_WITH_LEVELS;
 }

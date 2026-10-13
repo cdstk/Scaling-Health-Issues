@@ -4,12 +4,14 @@ import atomicstryker.infernalmobs.common.InfernalMobsCore;
 import atomicstryker.infernalmobs.common.MobModifier;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.enchantment.EnchantmentData;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemEnchantedBook;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.storage.loot.RandomValueRange;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -19,6 +21,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import scalinghealthissues.config.ConfigHandler;
 import scalinghealthissues.config.data.ConfigEnum;
 import scalinghealthissues.config.data.ValueRangeEntry;
+import scalinghealthissues.enchantment.EnchantmentPools;
 import scalinghealthissues.handlers.BetterBlightHandler;
 
 import java.util.ArrayList;
@@ -111,11 +114,46 @@ public abstract class InfernalMobsCore_EquipmentMixin {
                 itemStack = ItemEnchantedBook.getEnchantedItemStack(this.getRandomEnchantment(mob.getRNG()));
             }
             else {
-                ValueRangeEntry configEnchantability = ConfigHandler.compat.infernalMobs.infernalEnchantability.get(ConfigEnum.InfernalTier.values()[prefix]);
-                if(configEnchantability == null) {
-                    configEnchantability = new ValueRangeEntry(item.getItemEnchantability());
+                Random rand = mob.world.rand;
+                RandomValueRange range;
+                ValueRangeEntry rangeConfig = ConfigHandler.compat.infernalMobs.infernalEnchantability.get(ConfigEnum.InfernalTier.values()[prefix]);
+                if(rangeConfig == null) {
+                    range = new RandomValueRange(item.getItemEnchantability());
                 }
-                this.enchantRandomly(mob.world.rand, itemStack, configEnchantability.getRandomValue(mob.world.rand), Math.min(5, enchantmentLimitModifier));
+                else {
+                    range = new RandomValueRange(rangeConfig.min, rangeConfig.max);
+                }
+
+                if(ConfigHandler.compat.infernalEnchantmentPool) {
+                    switch (ConfigHandler.compat.infernalMobs.equipmentEnchantmentList) {
+                        case ENCHANT_WITH_LEVELS:
+                            EnchantmentPools.applyWithLevelsLootFunc(
+                                    itemStack,
+                                    rand,
+                                    EnchantmentPools.generateLootContext(
+                                            mob,
+                                            mob.getLastDamageSource()
+                                    ),
+                                    range,
+                                    true
+                            );
+                            break;
+                        case ENCHANTMENT_HELPER:
+                            EnchantmentHelper.addRandomEnchantment(
+                                    rand,
+                                    itemStack,
+                                    range.generateInt(mob.world.rand),
+                                    true
+                            );
+                            break;
+                        case FORGE_REGISTRY:
+                        default:
+                            this.enchantRandomly(rand, itemStack, range.generateInt(rand), Math.min(5, enchantmentLimitModifier));
+                    }
+                }
+                else {
+                    this.enchantRandomly(rand, itemStack, range.generateInt(rand), Math.min(5, enchantmentLimitModifier));
+                }
             }
         }
         return itemStack;

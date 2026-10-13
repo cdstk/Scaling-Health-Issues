@@ -3,11 +3,13 @@ package scalinghealthissues.mixin.modcompat.infernalmobs;
 import atomicstryker.infernalmobs.common.InfernalMobsCore;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentData;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.storage.loot.RandomValueRange;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
@@ -18,6 +20,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import scalinghealthissues.config.ConfigHandler;
 import scalinghealthissues.config.data.ConfigEnum;
+import scalinghealthissues.config.data.ValueRangeEntry;
 import scalinghealthissues.enchantment.EnchantmentPools;
 import scalinghealthissues.entity.DummyMerchant;
 
@@ -58,7 +61,22 @@ public abstract class InfernalMobsCore_EnchantmentMixin {
             at = @At(value = "INVOKE", target = "Latomicstryker/infernalmobs/common/InfernalMobsCore;enchantRandomly(Ljava/util/Random;Lnet/minecraft/item/ItemStack;II)V"),
             remap = false
     )
-    private void scalingHealthIssues_imInfernalMobsCore_dropRandomEnchantedItemsGearEnchantments(InfernalMobsCore instance, Random rand, ItemStack itemStack, int level, int modStr, Operation<Void> original, EntityLivingBase mob){
+    private void scalingHealthIssues_imInfernalMobsCore_dropRandomEnchantedItemsGearEnchantments(InfernalMobsCore instance, Random rand, ItemStack itemStack, int level, int modStr, Operation<Void> original, EntityLivingBase mob, @Local(name = "prefix") int prefix, @Local Item item){
+        RandomValueRange range;
+        ValueRangeEntry rangeConfig = ConfigHandler.compat.infernalMobs.infernalEnchantability.get(ConfigEnum.InfernalTier.values()[prefix]);
+
+        if(rangeConfig == null) {
+            range = new RandomValueRange(level);
+        }
+        else {
+            // Stupid configless solution for Luckified having a range config but min/max must be different to apply luck
+            boolean levelIsModified = level != item.getItemEnchantability();
+            range = new RandomValueRange(
+                    levelIsModified ? Math.max(rangeConfig.min, level) : rangeConfig.min,
+                    levelIsModified ? Math.max(rangeConfig.max, level) : rangeConfig.max
+            );
+        }
+
         switch (ConfigHandler.compat.infernalMobs.equipmentEnchantmentList) {
             case ENCHANT_WITH_LEVELS:
                 EnchantmentPools.applyWithLevelsLootFunc(
@@ -68,7 +86,7 @@ public abstract class InfernalMobsCore_EnchantmentMixin {
                             mob,
                             mob.getLastDamageSource()
                     ),
-                    new RandomValueRange(level),
+                    range,
                     true
             );
             break;
@@ -76,13 +94,13 @@ public abstract class InfernalMobsCore_EnchantmentMixin {
                 EnchantmentHelper.addRandomEnchantment(
                     rand,
                     itemStack,
-                    level,
+                    range.generateInt(mob.world.rand),
                     true
             );
             break;
             case FORGE_REGISTRY:
             default:
-                original.call(instance, rand, itemStack, level, modStr);
+                original.call(instance, rand, itemStack, range.generateInt(mob.world.rand), modStr);
         }
     }
 
