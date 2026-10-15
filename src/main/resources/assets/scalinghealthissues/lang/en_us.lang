@@ -4,7 +4,7 @@ scalinghealthissues.gui.entityinventory.disabled=The server has disabled viewing
 scalinghealthissues.gui.entityinventory.playererror=The server has disabled viewing Player Equipment
 scalinghealthissues.gui.entityinventory.nullerror=The selected entity is not loaded
 
-scalinghealthissues.significantdamage.armorlost=Broke: %s
+scalinghealthissues.significantdamage.armorlost=Broke:
 
 scalinghealthissues.heartcontainer.lockedevent=You don't have the Heart to experience...
 scalinghealthissues.heartcontainer.unlockedevent=Your Heart can now experience...

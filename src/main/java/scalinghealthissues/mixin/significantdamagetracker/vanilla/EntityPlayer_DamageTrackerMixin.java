@@ -34,7 +34,7 @@ public abstract class EntityPlayer_DamageTrackerMixin extends EntityLivingBase {
     private boolean scalingHealthIssues$undershirtActive = false;
 
     @Unique
-    private final Map<EntityEquipmentSlot, String> scalingHealthIssues$brokenArmor = new HashMap<>();
+    private final Map<EntityEquipmentSlot, ITextComponent> scalingHealthIssues$brokenArmor = new HashMap<>();
 
     public EntityPlayer_DamageTrackerMixin(World worldIn) {
         super(worldIn);
@@ -56,7 +56,7 @@ public abstract class EntityPlayer_DamageTrackerMixin extends EntityLivingBase {
         this.scalingHealthIssues$brokenArmor.clear();
         this.getArmorInventoryList().forEach(armor -> {
             if(!armor.isEmpty()) {
-                this.scalingHealthIssues$brokenArmor.put(EntityLiving.getSlotForItemStack(armor), armor.getDisplayName());
+                this.scalingHealthIssues$brokenArmor.put(EntityLiving.getSlotForItemStack(armor), armor.getTextComponent());
             }
         });
 
@@ -87,8 +87,13 @@ public abstract class EntityPlayer_DamageTrackerMixin extends EntityLivingBase {
         }
 
         if(!this.scalingHealthIssues$brokenArmor.isEmpty()) {
-            current = new TextComponentTranslation("scalinghealthissues.significantdamage.armorlost", this.scalingHealthIssues$brokenArmor.values().toString());
+            current = new TextComponentTranslation("scalinghealthissues.significantdamage.armorlost");
             current.getStyle().setColor(ConfigHandler.compat.firstAid.armorBreakMessageFormat);
+
+            for(ITextComponent hoverText : this.scalingHealthIssues$brokenArmor.values()) {
+                hoverText.getStyle().setColor(ConfigHandler.compat.firstAid.armorBreakMessageFormat);
+                current.appendText(" ").appendSibling(hoverText);
+            }
 
             if(head == null) {
                 head = current;
@@ -98,19 +103,25 @@ public abstract class EntityPlayer_DamageTrackerMixin extends EntityLivingBase {
             }
         }
 
-
         if(head != null) {
-            Entity entity = damageSrc.getImmediateSource();
-            if(entity instanceof EntityLivingBase) {
-                GuiHandler.cacheAndNotifySpecificPlayer((EntityLivingBase) entity, (EntityPlayer) (Object) this, head);
+            Entity entity = null;
+            if(damageSrc.getImmediateSource() instanceof EntityLivingBase) {
+                entity = damageSrc.getImmediateSource();
+                GuiHandler.cacheAndSendToSpecificPlayer((EntityLivingBase) entity, (EntityPlayer) (Object) this);
+            }
+            if(damageSrc.getTrueSource() instanceof EntityLivingBase && damageSrc.getTrueSource() != damageSrc.getImmediateSource()) {
+                entity = damageSrc.getTrueSource();
+                GuiHandler.cacheAndSendToSpecificPlayer((EntityLivingBase) entity, (EntityPlayer) (Object) this);
             }
 
-            if(entity != damageSrc.getTrueSource()) {
-                entity = damageSrc.getTrueSource();
-                if(entity instanceof EntityLivingBase) {
-                    GuiHandler.cacheAndNotifySpecificPlayer((EntityLivingBase) entity, (EntityPlayer) (Object) this, head);
-                }
+            if(entity instanceof EntityLivingBase) {
+                ITextComponent clickableName = GuiHandler.addClickToView(entity.getDisplayName(), entity);
+                clickableName = GuiHandler.prependModdedStatuses(clickableName, (EntityLivingBase) entity);
+
+                clickableName.appendText("§r ").appendSibling(head);
+                head = clickableName;
             }
+            this.sendMessage(head);
         }
     }
 }

@@ -8,6 +8,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.Style;
@@ -119,18 +120,17 @@ public class GuiHandler implements IGuiHandler {
     @SubscribeEvent
     public static void onLivingDeath(LivingDeathEvent event) {
         if(!event.getEntityLiving().world.isRemote) {
+            DamageSource source = event.getSource();
             // Always cache Player Victim
             if (event.getEntityLiving() instanceof EntityPlayer) {
-                Entity killer = event.getSource().getImmediateSource();
-                if(killer instanceof EntityLivingBase) {
+                Entity killer;
+                if(source.getImmediateSource() instanceof EntityLivingBase) {
+                    killer = source.getImmediateSource();
                     cachePlayerKillOrKiller(killer);
                 }
-
-                if(killer != event.getSource().getTrueSource()) {
-                    killer = event.getSource().getTrueSource();
-                    if(killer instanceof EntityLivingBase) {
-                        cachePlayerKillOrKiller(killer);
-                    }
+                if(source.getTrueSource() instanceof EntityLivingBase && source.getTrueSource() != source.getImmediateSource()) {
+                    killer = source.getTrueSource();
+                    cachePlayerKillOrKiller(killer);
                 }
             }
             // Cache if victim would be notified in chat
@@ -138,16 +138,14 @@ public class GuiHandler implements IGuiHandler {
                 cachePlayerKillOrKiller(event.getEntityLiving());
 
                 // Cache their killer as they are in the msg
-                Entity killer = event.getSource().getImmediateSource();
-                if(killer instanceof EntityLivingBase) {
+                Entity killer;
+                if(source.getImmediateSource() instanceof EntityLivingBase) {
+                    killer = source.getImmediateSource();
                     cachePlayerKillOrKiller(killer);
                 }
-
-                if(killer != event.getSource().getTrueSource()) {
-                    killer = event.getSource().getTrueSource();
-                    if(killer instanceof EntityLivingBase) {
-                        cachePlayerKillOrKiller(killer);
-                    }
+                if(source.getTrueSource() instanceof EntityLivingBase && source.getTrueSource() != source.getImmediateSource()) {
+                    killer = source.getTrueSource();
+                    cachePlayerKillOrKiller(killer);
                 }
             }
         }
@@ -171,22 +169,13 @@ public class GuiHandler implements IGuiHandler {
     }
 
     // Cache on server for all but only send an update packet to one client
-    public static void cacheAndNotifySpecificPlayer(EntityLivingBase entityLivingBase, EntityPlayer player, ITextComponent currentMessage) {
+    public static void cacheAndSendToSpecificPlayer(EntityLivingBase entityLivingBase, EntityPlayer player) {
         if(entityLivingBase instanceof EntityPlayer)
             return;
         if(!(player instanceof EntityPlayerMP))
             return;
 
-        ITextComponent clickableName = addClickToView(entityLivingBase.getDisplayName(), entityLivingBase);
-        clickableName = prependModdedStatuses(clickableName, entityLivingBase);
-        if(currentMessage != null) {
-            clickableName.appendText("§r ").appendSibling(currentMessage);
-        }
-        player.sendMessage(clickableName);
-
-        NBTTagCompound nbt = entityLivingBase.writeToNBT(new NBTTagCompound());
-        addEntityTypeTag(nbt, entityLivingBase);
-        ConfigHandler.server.entityNBTNoSync.forEach(nbt::removeTag);
+        NBTTagCompound nbt = cacheEntity(entityLivingBase);
 
         PacketEntityViewableData entityViewableData = new PacketEntityViewableData(entityLivingBase, nbt);
         PacketHandler.instance.sendTo(entityViewableData, (EntityPlayerMP) player);
@@ -199,14 +188,19 @@ public class GuiHandler implements IGuiHandler {
         if(entity instanceof EntityPlayer)
             return;
 
-        NBTTagCompound nbt = entity.writeToNBT(new NBTTagCompound());
-        addEntityTypeTag(nbt, entity);
-        ConfigHandler.server.entityNBTNoSync.forEach(nbt::removeTag);
+        NBTTagCompound nbt = cacheEntity(entity);
 
         PacketEntityViewableData entityViewableData = new PacketEntityViewableData(entity, nbt);
         PacketHandler.instance.sendToDimension(entityViewableData, entity.dimension);
 
         putViewableData(entity.getUniqueID(), entity.getEntityId(), nbt);
+    }
+
+    private static NBTTagCompound cacheEntity(Entity entity) {
+        NBTTagCompound nbt = entity.writeToNBT(new NBTTagCompound());
+        addEntityTypeTag(nbt, entity);
+        ConfigHandler.server.entityNBTNoSync.forEach(nbt::removeTag);
+        return nbt;
     }
 
     private static boolean shouldCacheKilled(EntityLivingBase entityLivingBase) {

@@ -62,45 +62,50 @@ public abstract class InfernalMobsCore_EnchantmentMixin {
             remap = false
     )
     private void scalingHealthIssues_imInfernalMobsCore_dropRandomEnchantedItemsGearEnchantments(InfernalMobsCore instance, Random rand, ItemStack itemStack, int level, int modStr, Operation<Void> original, EntityLivingBase mob, @Local(name = "prefix") int prefix, @Local Item item){
-        RandomValueRange range;
-        ValueRangeEntry rangeConfig = ConfigHandler.compat.infernalMobs.infernalEnchantability.get(ConfigEnum.InfernalTier.values()[prefix]);
+        if(itemStack.isItemEnchantable()) {
+            RandomValueRange range;
+            ValueRangeEntry rangeConfig = ConfigHandler.compat.infernalMobs.infernalEnchantability.get(ConfigEnum.InfernalTier.values()[prefix]);
 
-        if(rangeConfig == null) {
-            range = new RandomValueRange(level);
+            if(rangeConfig == null) {
+                range = new RandomValueRange(level);
+            }
+            else {
+                // Stupid configless solution for Luckified having a range config but min/max must be different to apply luck
+                boolean levelIsModified = level != item.getItemEnchantability();
+                range = new RandomValueRange(
+                        levelIsModified ? Math.max(rangeConfig.min, level) : rangeConfig.min,
+                        levelIsModified ? Math.max(rangeConfig.max, level) : rangeConfig.max
+                );
+            }
+
+            switch (ConfigHandler.compat.infernalMobs.equipmentEnchantmentList) {
+                case ENCHANT_WITH_LEVELS:
+                    EnchantmentPools.applyWithLevelsLootFunc(
+                            itemStack,
+                            rand,
+                            EnchantmentPools.generateLootContext(
+                                    mob,
+                                    mob.getLastDamageSource()
+                            ),
+                            range,
+                            true
+                    );
+                    break;
+                case ENCHANTMENT_HELPER:
+                    EnchantmentHelper.addRandomEnchantment(
+                            rand,
+                            itemStack,
+                            range.generateInt(mob.world.rand),
+                            true
+                    );
+                    break;
+                case FORGE_REGISTRY:
+                default:
+                    original.call(instance, rand, itemStack, range.generateInt(mob.world.rand), modStr);
+            }
         }
         else {
-            // Stupid configless solution for Luckified having a range config but min/max must be different to apply luck
-            boolean levelIsModified = level != item.getItemEnchantability();
-            range = new RandomValueRange(
-                    levelIsModified ? Math.max(rangeConfig.min, level) : rangeConfig.min,
-                    levelIsModified ? Math.max(rangeConfig.max, level) : rangeConfig.max
-            );
-        }
-
-        switch (ConfigHandler.compat.infernalMobs.equipmentEnchantmentList) {
-            case ENCHANT_WITH_LEVELS:
-                EnchantmentPools.applyWithLevelsLootFunc(
-                    itemStack,
-                    rand,
-                    EnchantmentPools.generateLootContext(
-                            mob,
-                            mob.getLastDamageSource()
-                    ),
-                    range,
-                    true
-            );
-            break;
-            case ENCHANTMENT_HELPER:
-                EnchantmentHelper.addRandomEnchantment(
-                    rand,
-                    itemStack,
-                    range.generateInt(mob.world.rand),
-                    true
-            );
-            break;
-            case FORGE_REGISTRY:
-            default:
-                original.call(instance, rand, itemStack, range.generateInt(mob.world.rand), modStr);
+            // Not enchantable, else Luckified can write a tag
         }
     }
 
