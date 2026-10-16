@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "scalinghealthissues.mixin",
+  "refmap": "mixins.scalinghealthissues.refmap.json",
+  "compatibilityLevel": "JAVA_8",
+  "target": "@env(DEFAULT)",
+  "minVersion": "0.8",
+  "mixins": [
+    "scalinghealth.blightequipment.DifficultyHandler_EquipmentMixin",
+    "scalinghealth.blightequipment.EquipmentTierMap_EquipmentMixin"
+  ],
+  "injectors": {
+    "maxShiftBy": 10
+  }
+}

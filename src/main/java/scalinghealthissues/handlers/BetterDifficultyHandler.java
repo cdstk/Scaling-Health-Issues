@@ -3,7 +3,6 @@ package scalinghealthissues.handlers;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -91,14 +90,6 @@ public abstract class BetterDifficultyHandler {
     public static void onLivingSpecialSpawn(LivingSpawnEvent.SpecialSpawn event) {
         if(DifficultyHandler.INSTANCE instanceof DifficultyHandler_InvokerMixin) {
             ((DifficultyHandler_InvokerMixin) DifficultyHandler.INSTANCE).scalingHealthIssues$invokeProcess(event.getEntityLiving());
-
-            NBTTagCompound nbt = event.getEntityLiving().getEntityData();
-            if(nbt.hasKey(VANILLA_INITIAL_SPAWN)) {
-                if(!nbt.getBoolean(VANILLA_INITIAL_SPAWN))
-                    event.setCanceled(true); // Don't run vanilla onInitialSpawn
-
-                nbt.removeTag(VANILLA_INITIAL_SPAWN);
-            }
         }
     }
 

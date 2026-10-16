@@ -61,11 +61,20 @@ public class EnchantmentPools {
         if(victim instanceof EntityLivingBase_Accessor) {
             EntityPlayer attackingPlayer = ((EntityLivingBase_Accessor) victim).scalingHealthIssues$getAttackingPlayer();
             boolean recentlyHit = ((EntityLivingBase_Accessor) victim).scalingHealthIssues$getRecentlyHit() > 0;
-            if (recentlyHit && attackingPlayer != null)
-            {
+            if (recentlyHit && attackingPlayer != null) {
                 contextBuilder = contextBuilder.withPlayer(attackingPlayer).withLuck(attackingPlayer.getLuck());
             }
         }
+        return contextBuilder.build();
+    }
+
+    public static LootContext generateLootContextWithPlayer(EntityLivingBase victim, EntityPlayer player) {
+        LootContext.Builder contextBuilder = new LootContext.Builder((WorldServer)victim.world).withLootedEntity(victim);
+
+        if(player != null) {
+            contextBuilder = contextBuilder.withPlayer(player).withLuck(player.getLuck());
+        }
+
         return contextBuilder.build();
     }
 }

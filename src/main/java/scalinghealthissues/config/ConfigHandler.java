@@ -154,6 +154,16 @@ public class ConfigHandler {
 		@MixinConfig.MixinToggle(earlyMixin = "mixins.scalinghealthissues.vanilla.significantdamage.json", defaultValue = true)
 		@Config.RequiresMcRestart
 		public boolean vanillaSignificantDamage = true;
+
+		@Config.Comment({
+				"Enables Blight Equipment on spawn to be Configurable",
+				"Any equipment added through ScalingHealthAPI will be respected and used",
+				"Available in Mob/Blights/Enchantments and Mob/Blights/Equipment"
+		})
+		@Config.Name("Blight Equipment Config")
+		@MixinConfig.MixinToggle(lateMixin = "mixins.scalinghealthissues.scalinghealth.blightequipment.json", defaultValue = true)
+		@Config.RequiresMcRestart
+		public boolean blightEquipmentConfig = true;
 	}
 
 	@Mod.EventBusSubscriber(modid = Tags.MODID)

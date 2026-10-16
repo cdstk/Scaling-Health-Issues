@@ -130,9 +130,9 @@ public abstract class InfernalMobsCore_EquipmentMixin {
                             EnchantmentPools.applyWithLevelsLootFunc(
                                     itemStack,
                                     rand,
-                                    EnchantmentPools.generateLootContext(
+                                    EnchantmentPools.generateLootContextWithPlayer(
                                             mob,
-                                            mob.getLastDamageSource()
+                                            mob.getEntityWorld().getClosestPlayerToEntity(mob, 128)
                                     ),
                                     range,
                                     true
