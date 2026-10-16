@@ -28,7 +28,7 @@ import scalinghealthissues.handlers.BetterBlightHandler;
 import java.util.List;
 import java.util.Random;
 
-@Mixin(DifficultyHandler.class)
+@Mixin(value = DifficultyHandler.class, priority = 1001) // Run after config inversion fix
 public abstract class DifficultyHandler_EquipmentMixin {
 
     @ModifyConstant(
