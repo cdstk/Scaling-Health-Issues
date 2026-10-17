@@ -1,9 +1,12 @@
 package scalinghealthissues.mixin.scalinghealth;
 
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.silentchaos512.scalinghealth.event.DifficultyHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
+
+import java.util.Random;
 
 @Mixin(DifficultyHandler.class)
 public interface DifficultyHandler_InvokerMixin {
@@ -15,4 +18,7 @@ public interface DifficultyHandler_InvokerMixin {
     static boolean scalingHealthIssues$invokeIsProcessed(EntityLivingBase entity) {
         throw new AssertionError();
     }
+
+    @Invoker(value = "makeEntityBlight", remap = false)
+    void scalingHealthIssues$invokeMakeEntityBlight(EntityLiving entityLiving, Random rand);
 }

@@ -3,6 +3,7 @@ package scalinghealthissues.handlers;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -12,6 +13,7 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.silentchaos512.scalinghealth.ScalingHealth;
 import net.silentchaos512.scalinghealth.api.ScalingHealthAPI;
 import net.silentchaos512.scalinghealth.config.Config;
 import net.silentchaos512.scalinghealth.event.DifficultyHandler;
@@ -22,7 +24,9 @@ import javax.annotation.Nullable;
 
 public abstract class BetterDifficultyHandler {
 
-    public static final String VANILLA_INITIAL_SPAWN = Tags.MODID + ":VanillaInitialSpawn";
+    // Used bc Vanilla Equipment generating onInitialSpawn
+    // So passed from SpecialSpawn -> EntityJoinWorldEvent in order to finalize
+    public static final String FINALIZE_BLIGHT_SPAWN = Tags.MODID + ":FinalizeBlightSpawn";
 
     /** Returns a new TextComponent, DOES NOT modify existing **/
     public static ITextComponent wrapDifficultyHoverText(ITextComponent originalMessage, Entity victim, Entity killer) {
@@ -94,16 +98,26 @@ public abstract class BetterDifficultyHandler {
     }
 
     // Anything not caught be the above
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.HIGH) // Expected Order: Vanilla/MET -> this -> My Infernal Mobs Mixin
     public static void onEntityJoinWorld(EntityJoinWorldEvent event) {
         if(!(event.getEntity() instanceof EntityLiving)) return;
         if(event.getWorld().isRemote) return;
         EntityLiving entity = (EntityLiving) event.getEntity();
+        NBTTagCompound nbtTagCompound = entity.getEntityData();
 
         if(!DifficultyHandler_InvokerMixin.scalingHealthIssues$invokeIsProcessed(entity)) {
             if(DifficultyHandler.INSTANCE instanceof DifficultyHandler_InvokerMixin) {
                 ((DifficultyHandler_InvokerMixin) DifficultyHandler.INSTANCE).scalingHealthIssues$invokeProcess(entity);
             }
+        }
+
+        if(nbtTagCompound.hasKey(FINALIZE_BLIGHT_SPAWN)) {
+            if(nbtTagCompound.getBoolean(FINALIZE_BLIGHT_SPAWN)) {
+                if(DifficultyHandler.INSTANCE instanceof DifficultyHandler_InvokerMixin) {
+                    ((DifficultyHandler_InvokerMixin) DifficultyHandler.INSTANCE).scalingHealthIssues$invokeMakeEntityBlight(entity, ScalingHealth.random);
+                }
+            }
+            nbtTagCompound.removeTag(FINALIZE_BLIGHT_SPAWN);
         }
     }
 }

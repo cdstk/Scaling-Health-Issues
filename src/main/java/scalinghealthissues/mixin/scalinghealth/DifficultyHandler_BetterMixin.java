@@ -2,17 +2,22 @@ package scalinghealthissues.mixin.scalinghealth;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.silentchaos512.scalinghealth.event.DifficultyHandler;
 import org.apache.logging.log4j.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import scalinghealthissues.ScalingHealthIssues;
 import scalinghealthissues.config.ConfigHandler;
 import scalinghealthissues.handlers.BetterBlightHandler;
+import scalinghealthissues.handlers.BetterDifficultyHandler;
 
 import java.util.Random;
 
@@ -29,6 +34,15 @@ public abstract class DifficultyHandler_BetterMixin {
             return false;
 
         return isNaturalBlight;
+    }
+
+    @WrapOperation(
+            method = "process",
+            at = @At(value = "INVOKE", target = "Lnet/silentchaos512/scalinghealth/event/DifficultyHandler;makeEntityBlight(Lnet/minecraft/entity/EntityLiving;Ljava/util/Random;)V"),
+            remap = false
+    )
+    private void scalingHealthIssues_shDifficultyHandler_processMarkFinalizeBlight(DifficultyHandler instance, EntityLiving entityLiving, Random rand, Operation<Void> original){
+        entityLiving.getEntityData().setBoolean(BetterDifficultyHandler.FINALIZE_BLIGHT_SPAWN, true);
     }
 
     @ModifyReturnValue(
@@ -53,6 +67,15 @@ public abstract class DifficultyHandler_BetterMixin {
             ScalingHealthIssues.LOGGER.log(Level.INFO, "Recalculated a fake blight: {}", entityLiving);
         }
         entityLiving.getEntityData().setBoolean(BetterBlightHandler.NBT_BLIGHT_PROCESSED, true);
+    }
+
+    @ModifyConstant(
+            method = "canIncreaseEntityHealth",
+            constant = @Constant(intValue = 1),
+            remap = false
+    )
+    private static int scalingHealthIssues_shDifficultyHandler_canIncreaseEntityHealthOnSpawn(int constant){
+        return -1; // Move to onSpawn Events
     }
 
     @ModifyReturnValue(
