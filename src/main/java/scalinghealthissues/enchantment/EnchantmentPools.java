@@ -22,6 +22,8 @@ import java.util.Random;
 
 public class EnchantmentPools {
 
+    // TODO Add Socketed Sockets once official 1.0.0 is released, base+addons are all indev and not on CF
+
     private static final LootCondition[] EMPTY_CONDITION = new LootCondition[] {};
 
     /**

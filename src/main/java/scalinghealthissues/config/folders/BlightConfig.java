@@ -7,8 +7,11 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import org.apache.logging.log4j.Level;
+import scalinghealthissues.ScalingHealthIssues;
 import scalinghealthissues.config.ConfigHandler;
 import scalinghealthissues.config.data.ConfigEnum;
 import scalinghealthissues.config.data.EnchantWithLevelsEntry;
@@ -60,8 +63,10 @@ public class BlightConfig {
         })
         @Config.Name("Random Enchantments Per Difficulty")
         public Map<Double, EnchantWithLevelsEntry> possibleRandomEnchantments = ConfigHandler.linkedMapOf(Arrays.asList(
-                new Pair<>(0D, new EnchantWithLevelsEntry(20, 30, false)),
-                new Pair<>(30D, new EnchantWithLevelsEntry(30, 40, true))
+                new Pair<>(0D, new EnchantWithLevelsEntry(29, 30, false)),
+                // 20 is Max Difficulty in RLC
+                new Pair<>(30D, new EnchantWithLevelsEntry(30, 60, true)),
+                new Pair<>(60D, new EnchantWithLevelsEntry(60, 90, true))
         ));
 
         @Config.Comment({
@@ -85,7 +90,7 @@ public class BlightConfig {
         })
         @Config.Name("Maximum Expected Tier")
         @Config.RequiresMcRestart
-        public int maxExpectedTier = 4;
+        public int maxExpectedTier = 5;
 
         @Config.Comment({
                 "Allows a config item to replace an existing item set on natural spawn.",
@@ -106,9 +111,11 @@ public class BlightConfig {
         @Config.Name("Highest Common Tier Per Difficulty")
         public Map<Double, Integer> highestCommonTiers = ConfigHandler.linkedMapOf(Arrays.asList(
                 new Pair<>(0D, 1),
+                // 20 is Max Difficulty in RLC
                 new Pair<>(100D, 2),
                 new Pair<>(200D, 3),
-                new Pair<>(300D, 4)
+                new Pair<>(300D, 4),
+                new Pair<>(400D, 5)
         ));
 
         @Config.Comment({
@@ -121,9 +128,11 @@ public class BlightConfig {
         @Config.Name("Tier Up Chance Per Difficulty")
         public Map<Double, Float> tierUpChances = ConfigHandler.linkedMapOf(Arrays.asList(
                 new Pair<>(0D, 0.095F),
-                new Pair<>(100D, 0.25F),
-                new Pair<>(200D, 0.5F),
-                new Pair<>(300D, 0.75F)
+                // 20 is Max Difficulty in RLC
+                new Pair<>(100D, 0.2F),
+                new Pair<>(200D, 0.3F),
+                new Pair<>(300D, 0.4F),
+                new Pair<>(400D, 0.5F)
         ));
 
         @Config.Comment({
@@ -137,6 +146,7 @@ public class BlightConfig {
         @Config.Name("Armor Piece Chance Per Difficulty")
         public Map<Double, Float> armorChances = ConfigHandler.linkedMapOf(Arrays.asList(
                 new Pair<>(0D, 0.5F),
+                // 20 is Max Difficulty in RLC
                 new Pair<>(30D, 0.75F),
                 new Pair<>(60D, 1.0F)
         ));
@@ -151,10 +161,11 @@ public class BlightConfig {
         })
         @Config.Name("Hand Piece Chance Per Difficulty")
         public Map<Double, Float> handChances = ConfigHandler.linkedMapOf(Arrays.asList(
+                // Generally 0% chance in default since SH didn't populate hands itself
                 new Pair<>(0D, 0.25F),
-                new Pair<>(30D, 0.5F),
-                new Pair<>(60D, 0.75F),
-                new Pair<>(90D, 1.0F)
+                // 20 is Max Difficulty in RLC
+                new Pair<>(30D, 0.75F),
+                new Pair<>(60D, 1.0F)
         ));
 
         @Config.Comment({
@@ -164,11 +175,36 @@ public class BlightConfig {
         })
         @Config.Name("Possible Helmet")
         public Map<Integer, ArrayList<ItemStackEntry>> possibleHelmet = ConfigHandler.linkedMapOf(Arrays.asList(
-                new Pair<>(0, new ArrayList<>(Collections.singletonList(new ItemStackEntry("leather_helmet")))),
-                new Pair<>(1, new ArrayList<>(Collections.singletonList(new ItemStackEntry("golden_helmet")))),
-                new Pair<>(2, new ArrayList<>(Collections.singletonList(new ItemStackEntry("chainmail_helmet")))),
-                new Pair<>(3, new ArrayList<>(Collections.singletonList(new ItemStackEntry("iron_helmet")))),
-                new Pair<>(4, new ArrayList<>(Collections.singletonList(new ItemStackEntry("diamond_helmet"))))
+                new Pair<>(0, new ArrayList<>(Arrays.asList(
+                        new ItemStackEntry("leather_helmet"),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "sheep_helmet"))
+                ))),
+                new Pair<>(1, new ArrayList<>(Arrays.asList(
+                        new ItemStackEntry("golden_helmet"),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "armor_silver_metal_helmet")),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "armor_copper_metal_helmet"))
+                ))),
+                new Pair<>(2, new ArrayList<>(Arrays.asList(
+                        new ItemStackEntry("chainmail_helmet"),
+                        new ItemStackEntry(new ResourceLocation("defiledlands", "scale_helmet")),
+                        new ItemStackEntry(new ResourceLocation("mod_lavacow", "swinemask"))
+                ))),
+                new Pair<>(3, new ArrayList<>(Arrays.asList(
+                        new ItemStackEntry("iron_helmet"),
+                        new ItemStackEntry(new ResourceLocation("defiledlands", "umbrium_helmet")),
+                        new ItemStackEntry(new ResourceLocation("mod_lavacow", "chitinarmor_helmet")),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "deathworm_yellow_helmet")),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "deathworm_white_helmet")),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "deathworm_red_helmet")),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "myrmex_desert_helmet")),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "myrmex_jungle_helmet"))
+                ))),
+                new Pair<>(4, new ArrayList<>(Arrays.asList(
+                        new ItemStackEntry("diamond_helmet"),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "forest_troll_leather_helmet")),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "frost_troll_leather_helmet")),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "mountain_troll_leather_helmet"))
+                )))
         ));
 
         @Config.Comment({
@@ -178,11 +214,36 @@ public class BlightConfig {
         })
         @Config.Name("Possible Chestplate")
         public Map<Integer, ArrayList<ItemStackEntry>> possibleChestplate = ConfigHandler.linkedMapOf(Arrays.asList(
-                new Pair<>(0, new ArrayList<>(Collections.singletonList(new ItemStackEntry("leather_chestplate")))),
-                new Pair<>(1, new ArrayList<>(Collections.singletonList(new ItemStackEntry("golden_chestplate")))),
-                new Pair<>(2, new ArrayList<>(Collections.singletonList(new ItemStackEntry("chainmail_chestplate")))),
-                new Pair<>(3, new ArrayList<>(Collections.singletonList(new ItemStackEntry("iron_chestplate")))),
-                new Pair<>(4, new ArrayList<>(Collections.singletonList(new ItemStackEntry("diamond_chestplate"))))
+                new Pair<>(0, new ArrayList<>(Arrays.asList(
+                        new ItemStackEntry("leather_chestplate"),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "sheep_chestplate"))
+                ))),
+                new Pair<>(1, new ArrayList<>(Arrays.asList(
+                        new ItemStackEntry("golden_chestplate"),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "armor_silver_metal_chestplate")),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "armor_copper_metal_chestplate"))
+                ))),
+                new Pair<>(2, new ArrayList<>(Arrays.asList(
+                        new ItemStackEntry("chainmail_chestplate"),
+                        new ItemStackEntry(new ResourceLocation("defiledlands", "scale_chestplate")),
+                        new ItemStackEntry(new ResourceLocation("mod_lavacow", "swinearmor_chestplate"))
+                ))),
+                new Pair<>(3, new ArrayList<>(Arrays.asList(
+                        new ItemStackEntry("iron_chestplate"),
+                        new ItemStackEntry(new ResourceLocation("defiledlands", "umbrium_chestplate")),
+                        new ItemStackEntry(new ResourceLocation("mod_lavacow", "chitinarmor_chestplate")),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "deathworm_yellow_chestplate")),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "deathworm_white_chestplate")),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "deathworm_red_chestplate")),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "myrmex_desert_chestplate")),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "myrmex_jungle_chestplate"))
+                ))),
+                new Pair<>(4, new ArrayList<>(Arrays.asList(
+                        new ItemStackEntry("diamond_chestplate"),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "forest_troll_leather_chestplate")),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "frost_troll_leather_chestplate")),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "mountain_troll_leather_chestplate"))
+                )))
         ));
 
         @Config.Comment({
@@ -192,11 +253,36 @@ public class BlightConfig {
         })
         @Config.Name("Possible Leggings")
         public Map<Integer, ArrayList<ItemStackEntry>> possibleLeggings = ConfigHandler.linkedMapOf(Arrays.asList(
-                new Pair<>(0, new ArrayList<>(Collections.singletonList(new ItemStackEntry("leather_leggings")))),
-                new Pair<>(1, new ArrayList<>(Collections.singletonList(new ItemStackEntry("golden_leggings")))),
-                new Pair<>(2, new ArrayList<>(Collections.singletonList(new ItemStackEntry("chainmail_leggings")))),
-                new Pair<>(3, new ArrayList<>(Collections.singletonList(new ItemStackEntry("iron_leggings")))),
-                new Pair<>(4, new ArrayList<>(Collections.singletonList(new ItemStackEntry("diamond_leggings"))))
+                new Pair<>(0, new ArrayList<>(Arrays.asList(
+                        new ItemStackEntry("leather_leggings"),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "sheep_leggings"))
+                ))),
+                new Pair<>(1, new ArrayList<>(Arrays.asList(
+                        new ItemStackEntry("golden_leggings"),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "armor_silver_metal_leggings")),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "armor_copper_metal_leggings"))
+                ))),
+                new Pair<>(2, new ArrayList<>(Arrays.asList(
+                        new ItemStackEntry("chainmail_leggings"),
+                        new ItemStackEntry(new ResourceLocation("defiledlands", "scale_leggings")),
+                        new ItemStackEntry(new ResourceLocation("mod_lavacow", "swinearmor_leggings"))
+                ))),
+                new Pair<>(3, new ArrayList<>(Arrays.asList(
+                        new ItemStackEntry("iron_leggings"),
+                        new ItemStackEntry(new ResourceLocation("defiledlands", "umbrium_leggings")),
+                        new ItemStackEntry(new ResourceLocation("mod_lavacow", "chitinarmor_leggings")),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "deathworm_yellow_leggings")),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "deathworm_white_leggings")),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "deathworm_red_leggings")),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "myrmex_desert_leggings")),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "myrmex_jungle_leggings"))
+                ))),
+                new Pair<>(4, new ArrayList<>(Arrays.asList(
+                        new ItemStackEntry("diamond_leggings"),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "forest_troll_leather_leggings")),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "frost_troll_leather_leggings")),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "mountain_troll_leather_leggings"))
+                )))
         ));
 
         @Config.Comment({
@@ -206,11 +292,36 @@ public class BlightConfig {
         })
         @Config.Name("Possible Boots")
         public Map<Integer, ArrayList<ItemStackEntry>> possibleBoots = ConfigHandler.linkedMapOf(Arrays.asList(
-                new Pair<>(0, new ArrayList<>(Collections.singletonList(new ItemStackEntry("leather_boots")))),
-                new Pair<>(1, new ArrayList<>(Collections.singletonList(new ItemStackEntry("golden_boots")))),
-                new Pair<>(2, new ArrayList<>(Collections.singletonList(new ItemStackEntry("chainmail_boots")))),
-                new Pair<>(3, new ArrayList<>(Collections.singletonList(new ItemStackEntry("iron_boots")))),
-                new Pair<>(4, new ArrayList<>(Collections.singletonList(new ItemStackEntry("diamond_boots"))))
+                new Pair<>(0, new ArrayList<>(Arrays.asList(
+                        new ItemStackEntry("leather_boots"),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "sheep_boots"))
+                ))),
+                new Pair<>(1, new ArrayList<>(Arrays.asList(
+                        new ItemStackEntry("golden_boots"),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "armor_silver_metal_boots")),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "armor_copper_metal_boots"))
+                ))),
+                new Pair<>(2, new ArrayList<>(Arrays.asList(
+                        new ItemStackEntry("chainmail_boots"),
+                        new ItemStackEntry(new ResourceLocation("defiledlands", "scale_boots")),
+                        new ItemStackEntry(new ResourceLocation("mod_lavacow", "swinearmor_boots"))
+                ))),
+                new Pair<>(3, new ArrayList<>(Arrays.asList(
+                        new ItemStackEntry("iron_boots"),
+                        new ItemStackEntry(new ResourceLocation("defiledlands", "umbrium_boots")),
+                        new ItemStackEntry(new ResourceLocation("mod_lavacow", "chitinarmor_boots")),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "deathworm_yellow_boots")),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "deathworm_white_boots")),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "deathworm_red_boots")),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "myrmex_desert_boots")),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "myrmex_jungle_boots"))
+                ))),
+                new Pair<>(4, new ArrayList<>(Arrays.asList(
+                        new ItemStackEntry("diamond_boots"),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "forest_troll_leather_boots")),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "frost_troll_leather_boots")),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "mountain_troll_leather_boots"))
+                )))
         ));
 
         @Config.Comment({
@@ -221,11 +332,398 @@ public class BlightConfig {
         })
         @Config.Name("Possible Mainhand")
         public Map<Integer, ArrayList<ItemStackEntry>> possibleMainhand = ConfigHandler.linkedMapOf(Arrays.asList(
-//                new Pair<>(0, new ArrayList<>(Arrays.asList(new ItemStackEntry("wooden_sword"), new ItemStackEntry("wooden_axe")))),
-//                new Pair<>(1, new ArrayList<>(Arrays.asList(new ItemStackEntry("golden_sword"), new ItemStackEntry("golden_axe")))),
-//                new Pair<>(2, new ArrayList<>(Arrays.asList(new ItemStackEntry("stone_sword"), new ItemStackEntry("stone_axe")))),
-                new Pair<>(3, new ArrayList<>(Arrays.asList(new ItemStackEntry("iron_sword"), new ItemStackEntry("iron_axe")))),
-                new Pair<>(4, new ArrayList<>(Arrays.asList(new ItemStackEntry("diamond_sword"), new ItemStackEntry("diamond_axe"))))
+                new Pair<>(1, new ArrayList<>(Arrays.asList(
+                        new ItemStackEntry("wooden_sword"),
+                        new ItemStackEntry("wooden_axe"),
+                        // Better Survival
+                        new ItemStackEntry(new ResourceLocation("mujmajnkraftsbettersurvival", "itemwoodhammer")),
+                        new ItemStackEntry(new ResourceLocation("mujmajnkraftsbettersurvival", "itemwooddagger")),
+                        new ItemStackEntry(new ResourceLocation("mujmajnkraftsbettersurvival", "itemwoodbattleaxe")),
+                        new ItemStackEntry(new ResourceLocation("mujmajnkraftsbettersurvival", "itemwoodnunchaku")),
+                        // Nanos Arsenal
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "morning_star_wood")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "scimitar_wood")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "claws_wood")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "flail_wood")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "battering_ram_wood")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "ball_and_chain_wood")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "double_bladed_scimitar_wood")),
+                        // Spartan Weaponry
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "dagger_wood")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "mace_wood")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "parrying_dagger_wood")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "battleaxe_wood")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "longsword_wood")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "katana_wood")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "saber_wood")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "rapier_wood")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "greatsword_wood")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "hammer_wood")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "warhammer_wood")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "spear_wood")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "halberd_wood")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "pike_wood")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "lance_wood")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "glaive_wood")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "staff_wood")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "scythe_wood"))
+                ))),
+                new Pair<>(1, new ArrayList<>(Arrays.asList(
+                        new ItemStackEntry("golden_sword"),
+                        new ItemStackEntry("golden_axe"),
+                        // Better Survival
+                        new ItemStackEntry(new ResourceLocation("mujmajnkraftsbettersurvival", "itemgoldhammer")),
+                        new ItemStackEntry(new ResourceLocation("mujmajnkraftsbettersurvival", "itemgolddagger")),
+                        new ItemStackEntry(new ResourceLocation("mujmajnkraftsbettersurvival", "itemgoldbattleaxe")),
+                        new ItemStackEntry(new ResourceLocation("mujmajnkraftsbettersurvival", "itemgoldnunchaku")),
+                        // Nanos Arsenal
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "morning_star_gold")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "scimitar_gold")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "claws_gold")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "flail_gold")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "battering_ram_gold")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "ball_and_chain_gold")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "double_bladed_scimitar_gold")),
+                        // Spartan Weaponry
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "dagger_gold")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "mace_gold")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "parrying_dagger_gold")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "battleaxe_gold")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "longsword_gold")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "katana_gold")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "saber_gold")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "rapier_gold")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "greatsword_gold")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "hammer_gold")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "warhammer_gold")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "spear_gold")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "halberd_gold")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "pike_gold")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "lance_gold")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "glaive_gold")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "staff_gold")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "scythe_gold")),
+                        // Silver
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "silver_sword")),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "silver_axe")),
+                        // Better Survival
+                        new ItemStackEntry(new ResourceLocation("mujmajnkraftsbettersurvival", "itemsilverhammer")),
+                        new ItemStackEntry(new ResourceLocation("mujmajnkraftsbettersurvival", "itemsilverdagger")),
+                        new ItemStackEntry(new ResourceLocation("mujmajnkraftsbettersurvival", "itemsilverbattleaxe")),
+                        new ItemStackEntry(new ResourceLocation("mujmajnkraftsbettersurvival", "itemsilvernunchaku")),
+                        // Nanos Arsenal
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "morning_star_silver")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "scimitar_silver")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "claws_silver")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "flail_silver")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "battering_ram_silver")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "ball_and_chain_silver")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "double_bladed_scimitar_silver")),
+                        // Spartan Weaponry
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "dagger_silver")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "mace_silver")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "parrying_dagger_silver")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "battleaxe_silver")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "longsword_silver")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "katana_silver")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "saber_silver")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "rapier_silver")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "greatsword_silver")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "hammer_silver")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "warhammer_silver")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "spear_silver")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "halberd_silver")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "pike_silver")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "lance_silver")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "glaive_silver")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "staff_silver")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "scythe_silver"))
+                ))),
+                new Pair<>(2, new ArrayList<>(Arrays.asList(
+                        new ItemStackEntry("stone_sword"),
+                        new ItemStackEntry("stone_axe"),
+                        // Better Survival
+                        new ItemStackEntry(new ResourceLocation("mujmajnkraftsbettersurvival", "itemstonehammer")),
+                        new ItemStackEntry(new ResourceLocation("mujmajnkraftsbettersurvival", "itemstonedagger")),
+                        new ItemStackEntry(new ResourceLocation("mujmajnkraftsbettersurvival", "itemstonebattleaxe")),
+                        new ItemStackEntry(new ResourceLocation("mujmajnkraftsbettersurvival", "itemstonenunchaku")),
+                        // Nanos Arsenal
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "morning_star_stone")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "scimitar_stone")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "claws_stone")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "flail_stone")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "battering_ram_stone")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "ball_and_chain_stone")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "double_bladed_scimitar_stone")),
+                        // Spartan Weaponry
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "dagger_stone")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "mace_stone")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "parrying_dagger_stone")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "battleaxe_stone")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "longsword_stone")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "katana_stone")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "saber_stone")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "rapier_stone")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "greatsword_stone")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "hammer_stone")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "warhammer_stone")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "spear_stone")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "halberd_stone")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "pike_stone")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "lance_stone")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "glaive_stone")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "staff_stone")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "scythe_stone"))
+                ))),
+                new Pair<>(3, new ArrayList<>(Arrays.asList(
+                        new ItemStackEntry("iron_sword"),
+                        new ItemStackEntry("iron_axe"),
+                        new ItemStackEntry(new ResourceLocation("mod_lavacow", "tooth_dagger")),
+                        // Better Survival
+                        new ItemStackEntry(new ResourceLocation("mujmajnkraftsbettersurvival", "itemironhammer")),
+                        new ItemStackEntry(new ResourceLocation("mujmajnkraftsbettersurvival", "itemirondagger")),
+                        new ItemStackEntry(new ResourceLocation("mujmajnkraftsbettersurvival", "itemironbattleaxe")),
+                        new ItemStackEntry(new ResourceLocation("mujmajnkraftsbettersurvival", "itemironnunchaku")),
+                        // Nanos Arsenal
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "morning_star_iron")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "scimitar_iron")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "claws_iron")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "flail_iron")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "battering_ram_iron")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "ball_and_chain_iron")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "double_bladed_scimitar_iron")),
+                        // Spartan Weaponry
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "dagger_iron")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "mace_iron")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "parrying_dagger_iron")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "battleaxe_iron")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "longsword_iron")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "katana_iron")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "saber_iron")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "rapier_iron")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "greatsword_iron")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "hammer_iron")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "warhammer_iron")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "spear_iron")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "halberd_iron")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "pike_iron")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "lance_iron")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "glaive_iron")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "staff_iron")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "scythe_iron")),
+                        // Umbrium
+                        new ItemStackEntry(new ResourceLocation("defiledlands", "umbrium_sword")),
+                        new ItemStackEntry(new ResourceLocation("defiledlands", "umbrium_axe")),
+                        // Nanos Arsenal
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "morning_star_umbrium")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "scimitar_umbrium")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "claws_umbrium")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "flail_umbrium")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "battering_ram_umbrium")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "ball_and_chain_umbrium")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "double_bladed_scimitar_umbrium")),
+                        // Spartan Weaponry
+                        new ItemStackEntry(new ResourceLocation("spartandefiled", "dagger_umbrium")),
+                        new ItemStackEntry(new ResourceLocation("spartandefiled", "mace_umbrium")),
+                        new ItemStackEntry(new ResourceLocation("spartandefiled", "parrying_dagger_umbrium")),
+                        new ItemStackEntry(new ResourceLocation("spartandefiled", "battleaxe_umbrium")),
+                        new ItemStackEntry(new ResourceLocation("spartandefiled", "longsword_umbrium")),
+                        new ItemStackEntry(new ResourceLocation("spartandefiled", "katana_umbrium")),
+                        new ItemStackEntry(new ResourceLocation("spartandefiled", "saber_umbrium")),
+                        new ItemStackEntry(new ResourceLocation("spartandefiled", "rapier_umbrium")),
+                        new ItemStackEntry(new ResourceLocation("spartandefiled", "greatsword_umbrium")),
+                        new ItemStackEntry(new ResourceLocation("spartandefiled", "hammer_umbrium")),
+                        new ItemStackEntry(new ResourceLocation("spartandefiled", "warhammer_umbrium")),
+                        new ItemStackEntry(new ResourceLocation("spartandefiled", "spear_umbrium")),
+                        new ItemStackEntry(new ResourceLocation("spartandefiled", "halberd_umbrium")),
+                        new ItemStackEntry(new ResourceLocation("spartandefiled", "pike_umbrium")),
+                        new ItemStackEntry(new ResourceLocation("spartandefiled", "lance_umbrium")),
+                        new ItemStackEntry(new ResourceLocation("spartandefiled", "glaive_umbrium")),
+                        new ItemStackEntry(new ResourceLocation("spartandefiled", "staff_umbrium")),
+                        new ItemStackEntry(new ResourceLocation("spartandefiled", "scythe_umbrium")),
+                        // Desert Mex
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "myrmex_desert_sword")),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "myrmex_desert_axe")),
+                        // Better Survival
+                        new ItemStackEntry(new ResourceLocation("mujmajnkraftsbettersurvival", "itemdesertchitinhammer")),
+                        new ItemStackEntry(new ResourceLocation("mujmajnkraftsbettersurvival", "itemdesertchitindagger")),
+                        new ItemStackEntry(new ResourceLocation("mujmajnkraftsbettersurvival", "itemdesertchitinbattleaxe")),
+                        new ItemStackEntry(new ResourceLocation("mujmajnkraftsbettersurvival", "itemdesertchitinnunchaku")),
+                        // Nanos Arsenal
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "morning_star_desert_myrmex")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "scimitar_desert_myrmex")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "claws_desert_myrmex")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "flail_desert_myrmex")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "battering_ram_desert_myrmex")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "ball_and_chain_desert_myrmex")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "double_bladed_scimitar_desert_myrmex")),
+                        // Spartan Weaponry
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "dagger_desert")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "mace_desert")),
+//                        new ItemStackEntry(new ResourceLocation("spartanfire", "parrying_dagger_desert")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "battleaxe_desert")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "longsword_desert")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "katana_desert")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "saber_desert")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "rapier_desert")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "greatsword_desert")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "hammer_desert")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "warhammer_desert")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "spear_desert")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "halberd_desert")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "pike_desert")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "lance_desert")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "glaive_desert")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "staff_desert")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "scythe_desert")),
+                        // Desert Venom
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "myrmex_desert_sword_venom")),
+                        // Better Survival
+                        new ItemStackEntry(new ResourceLocation("mujmajnkraftsbettersurvival", "itemdesertstingerhammer")),
+                        new ItemStackEntry(new ResourceLocation("mujmajnkraftsbettersurvival", "itemdesertstingerdagger")),
+                        new ItemStackEntry(new ResourceLocation("mujmajnkraftsbettersurvival", "itemdesertstingerbattleaxe")),
+                        new ItemStackEntry(new ResourceLocation("mujmajnkraftsbettersurvival", "itemdesertstingernunchaku")),
+                        // Nanos Arsenal
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "morning_star_desert_venom")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "scimitar_desert_venom")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "claws_desert_venom")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "flail_desert_venom")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "battering_ram_desert_venom")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "ball_and_chain_desert_venom")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "double_bladed_scimitar_desert_venom")),
+                        // Spartan Weaponry
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "dagger_desert_venom")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "mace_desert_venom")),
+//                        new ItemStackEntry(new ResourceLocation("spartanfire", "parrying_dagger_desert_venom")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "battleaxe_desert_venom")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "longsword_desert_venom")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "katana_desert_venom")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "saber_desert_venom")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "rapier_desert_venom")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "greatsword_desert_venom")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "hammer_desert_venom")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "warhammer_desert_venom")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "spear_desert_venom")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "halberd_desert_venom")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "pike_desert_venom")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "lance_desert_venom")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "glaive_desert_venom")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "staff_desert_venom")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "scythe_desert_venom")),
+                        // Jungle Mex
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "myrmex_jungle_sword")),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "myrmex_jungle_axe")),
+                        // Better Survival
+                        new ItemStackEntry(new ResourceLocation("mujmajnkraftsbettersurvival", "itemjunglechitinhammer")),
+                        new ItemStackEntry(new ResourceLocation("mujmajnkraftsbettersurvival", "itemjunglechitindagger")),
+                        new ItemStackEntry(new ResourceLocation("mujmajnkraftsbettersurvival", "itemjunglechitinbattleaxe")),
+                        new ItemStackEntry(new ResourceLocation("mujmajnkraftsbettersurvival", "itemjunglechitinnunchaku")),
+                        // Nanos Arsenal
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "morning_star_jungle_myrmex")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "scimitar_jungle_myrmex")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "claws_jungle_myrmex")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "flail_jungle_myrmex")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "battering_ram_jungle_myrmex")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "ball_and_chain_jungle_myrmex")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "double_bladed_scimitar_jungle_myrmex")),
+                        // Spartan Weaponry
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "dagger_jungle")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "mace_jungle")),
+//                        new ItemStackEntry(new ResourceLocation("spartanfire", "parrying_dagger_jungle")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "battleaxe_jungle")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "longsword_jungle")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "katana_jungle")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "saber_jungle")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "rapier_jungle")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "greatsword_jungle")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "hammer_jungle")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "warhammer_jungle")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "spear_jungle")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "halberd_jungle")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "pike_jungle")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "lance_jungle")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "glaive_jungle")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "staff_jungle")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "scythe_jungle")),
+                        // Jungle Venom
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "myrmex_jungle_sword_venom")),
+                        // Better Survival
+                        new ItemStackEntry(new ResourceLocation("mujmajnkraftsbettersurvival", "itemjunglestingerhammer")),
+                        new ItemStackEntry(new ResourceLocation("mujmajnkraftsbettersurvival", "itemjunglestingerdagger")),
+                        new ItemStackEntry(new ResourceLocation("mujmajnkraftsbettersurvival", "itemjunglestingerbattleaxe")),
+                        new ItemStackEntry(new ResourceLocation("mujmajnkraftsbettersurvival", "itemjunglestingernunchaku")),
+                        // Nanos Arsenal
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "morning_star_jungle_venom")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "scimitar_jungle_venom")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "claws_jungle_venom")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "flail_jungle_venom")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "battering_ram_jungle_venom")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "ball_and_chain_jungle_venom")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "double_bladed_scimitar_jungle_venom")),
+                        // Spartan Weaponry
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "dagger_jungle_venom")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "mace_jungle_venom")),
+//                        new ItemStackEntry(new ResourceLocation("spartanfire", "parrying_dagger_jungle_venom")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "battleaxe_jungle_venom")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "longsword_jungle_venom")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "katana_jungle_venom")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "saber_jungle_venom")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "rapier_jungle_venom")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "greatsword_jungle_venom")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "hammer_jungle_venom")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "warhammer_jungle_venom")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "spear_jungle_venom")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "halberd_jungle_venom")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "pike_jungle_venom")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "lance_jungle_venom")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "glaive_jungle_venom")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "staff_jungle_venom")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "scythe_jungle_venom"))
+                ))),
+                new Pair<>(4, new ArrayList<>(Arrays.asList(
+                        new ItemStackEntry("diamond_sword"),
+                        new ItemStackEntry("diamond_axe"),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "troll_weapon.column")),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "troll_weapon.axe")),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "troll_weapon.column_frost")),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "troll_weapon.column_forest")),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "troll_weapon.trunk")),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "troll_weapon.hammer")),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "troll_weapon.trunk_frost")),
+                        new ItemStackEntry(new ResourceLocation("mod_lavacow", "bonesword")),
+                        // Better Survival
+                        new ItemStackEntry(new ResourceLocation("mujmajnkraftsbettersurvival", "itemdiamondhammer")),
+                        new ItemStackEntry(new ResourceLocation("mujmajnkraftsbettersurvival", "itemdiamonddagger")),
+                        new ItemStackEntry(new ResourceLocation("mujmajnkraftsbettersurvival", "itemdiamondbattleaxe")),
+                        new ItemStackEntry(new ResourceLocation("mujmajnkraftsbettersurvival", "itemdiamondnunchaku")),
+                        // Nanos Arsenal
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "morning_star_diamond")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "scimitar_diamond")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "claws_diamond")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "flail_diamond")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "battering_ram_diamond")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "ball_and_chain_diamond")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "double_bladed_scimitar_diamond")),
+                        // Spartan Weaponry
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "dagger_diamond")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "mace_diamond")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "parrying_dagger_diamond")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "battleaxe_diamond")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "longsword_diamond")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "katana_diamond")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "saber_diamond")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "rapier_diamond")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "greatsword_diamond")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "hammer_diamond")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "warhammer_diamond")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "spear_diamond")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "halberd_diamond")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "pike_diamond")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "lance_diamond")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "glaive_diamond")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "staff_diamond")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "scythe_diamond"))
+                )))
         ));
 
         @Config.Comment({
@@ -235,8 +733,34 @@ public class BlightConfig {
         })
         @Config.Name("Possible Offhand")
         public Map<Integer, ArrayList<ItemStackEntry>> possibleOffhand = ConfigHandler.linkedMapOf(Arrays.asList(
-                new Pair<>(2, new ArrayList<>(Collections.singletonList(new ItemStackEntry("shield")))),
-                new Pair<>(4, new ArrayList<>(Collections.singletonList(new ItemStackEntry("totem_of_undying"))))
+                new Pair<>(0, new ArrayList<>(Arrays.asList(
+                        new ItemStackEntry(new ResourceLocation("spartanshields", "shield_basic_wood")),
+                        new ItemStackEntry(new ResourceLocation("spartanshields", "shield_tower_wood"))
+                ))),
+                new Pair<>(1, new ArrayList<>(Arrays.asList(
+                        new ItemStackEntry(new ResourceLocation("spartanshields", "shield_basic_gold")),
+                        new ItemStackEntry(new ResourceLocation("spartanshields", "shield_tower_gold")),
+                        new ItemStackEntry(new ResourceLocation("spartanshields", "shield_basic_silver")),
+                        new ItemStackEntry(new ResourceLocation("spartanshields", "shield_tower_silver"))
+                ))),
+                new Pair<>(2, new ArrayList<>(Arrays.asList(
+                        new ItemStackEntry("shield")
+                ))),
+                new Pair<>(3, new ArrayList<>(Arrays.asList(
+                        new ItemStackEntry(new ResourceLocation("spartanshields", "shield_basic_iron")),
+                        new ItemStackEntry(new ResourceLocation("spartanshields", "shield_tower_iron"))
+                ))),
+                new Pair<>(4, new ArrayList<>(Arrays.asList(
+                        new ItemStackEntry("totem_of_undying"),
+                        new ItemStackEntry(new ResourceLocation("spartanshields", "shield_basic_diamond")),
+                        new ItemStackEntry(new ResourceLocation("spartanshields", "shield_tower_diamond")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "tartsy_shield"))
+                ))),
+                new Pair<>(5, new ArrayList<>(Arrays.asList(
+                        new ItemStackEntry("totem_of_undying", 4, 0),
+                        new ItemStackEntry(new ResourceLocation("bountifulbaubles", "shieldcobalt")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "sun_war_bulwark"))
+                )))
         ));
 
         @Config.Comment({
@@ -246,8 +770,25 @@ public class BlightConfig {
                 "    If the mob spawned holding any kind of Bow, it will use this list."
         })
         @Config.Name("Possible Bow")
-        public Map<Integer, ArrayList<ItemStackEntry>> possibleBow = ConfigHandler.linkedMapOf(Collections.singletonList(
-                new Pair<>(0, new ArrayList<>(Collections.singletonList(new ItemStackEntry("bow"))))
+        public Map<Integer, ArrayList<ItemStackEntry>> possibleBow = ConfigHandler.linkedMapOf(Arrays.asList(
+                new Pair<>(0, new ArrayList<>(Arrays.asList(
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "longbow_wood")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "crossbow_wood"))
+                ))),
+                new Pair<>(2, new ArrayList<>(Arrays.asList(
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "longbow_leather")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "crossbow_leather"))
+                ))),
+                new Pair<>(3, new ArrayList<>(Arrays.asList(
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "longbow_iron")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "crossbow_iron")),
+                        new ItemStackEntry(new ResourceLocation("spartandefiled", "longbow_umbrium")),
+                        new ItemStackEntry(new ResourceLocation("spartandefiled", "crossbow_umbrium"))
+                ))),
+                new Pair<>(4, new ArrayList<>(Arrays.asList(
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "longbow_diamond")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "crossbow_diamond"))
+                )))
         ));
     }
 
@@ -306,8 +847,11 @@ public class BlightConfig {
             map.putIfAbsent(tier, new ArrayList<>());
             itemIDs.forEach(configEntry -> {
                 Item item = ForgeRegistries.ITEMS.getValue(configEntry.id);
-                if(item != null)
+                if(item != null) {
                     map.get(tier).add(new ItemStack(item, configEntry.amount, configEntry.meta, configEntry.getForgeCaps()));
+                }
+                else if(ConfigHandler.debug.logConfig)
+                    ScalingHealthIssues.LOGGER.log(Level.DEBUG, "Tiered Item Map unable to find in Registry: {}", configEntry.id);
             });
         });
     }

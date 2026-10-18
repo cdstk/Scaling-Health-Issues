@@ -157,6 +157,8 @@ public class ConfigHandler {
 
 		@Config.Comment({
 				"Enables Blight Equipment on spawn to be Configurable",
+				"    * Allows Equipment to be Defined per Tier",
+				"    * Allows Equipment/Enchantment chances to be configured per minimum Blight Difficulty",
 				"Any equipment added through ScalingHealthAPI will be respected and used",
 				"Available in Mob/Blights/Enchantments and Mob/Blights/Equipment"
 		})
