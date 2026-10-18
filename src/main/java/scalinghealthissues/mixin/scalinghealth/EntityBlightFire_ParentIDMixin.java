@@ -47,9 +47,13 @@ public abstract class EntityBlightFire_ParentIDMixin extends Entity {
         if(this.scalingHealthIssues$parentUUID != null) {
             if(this.world instanceof WorldServer) {
                 Entity entity = ((WorldServer) this.world).getEntityFromUuid(this.scalingHealthIssues$parentUUID);
-                if(entity instanceof EntityLivingBase && this.parent == null)
+                if(entity instanceof EntityLivingBase && this.parent == null) {
                     this.parent = (EntityLivingBase) entity;
-
+                    this.scalingHealthIssues$parentUUID = null;
+                }
+            }
+            // Give up
+            else if(this.ticksExisted > 20) {
                 this.scalingHealthIssues$parentUUID = null;
             }
         }
@@ -57,11 +61,14 @@ public abstract class EntityBlightFire_ParentIDMixin extends Entity {
         // Process old numerical ID
         if(this.scalingHealthIssues$parentID != null) {
             Entity entity = this.world.getEntityByID(this.scalingHealthIssues$parentID);
-
-            if(entity instanceof EntityLivingBase && this.parent == null)
+            if(entity instanceof EntityLivingBase && this.parent == null) {
                 this.parent = (EntityLivingBase) entity;
-
-            this.scalingHealthIssues$parentID = null;
+                this.scalingHealthIssues$parentID = null;
+            }
+            // Give up
+            if(this.ticksExisted > 20) {
+                this.scalingHealthIssues$parentID = null;
+            }
         }
     }
 
