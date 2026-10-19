@@ -16,6 +16,7 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.PotionEvent;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.silentchaos512.scalinghealth.ScalingHealth;
 import net.silentchaos512.scalinghealth.api.ScalingHealthAPI;
 import net.silentchaos512.scalinghealth.config.Config;
@@ -178,7 +179,9 @@ public abstract class BetterBlightHandler {
             DifficultyHandler.INSTANCE.recalculate(entity);
         }
 
-        NetworkHandler.INSTANCE.sendToAllTracking(new MessageMarkBlight(entity, true), entity);
+        // Client isn't tracking yet, so have to a do a point, SH's builtin update cycle will sync anything else
+        NetworkHandler.INSTANCE.sendToAllAround(new MessageMarkBlight(entity, true),
+                new NetworkRegistry.TargetPoint(entity.dimension, entity.posX, entity.posY, entity.posZ, 64));
 
         if(BlightHandler_InvokerMixin.scalingHealthIssues$invokeGetBlightFire(entity) == null)
             BlightHandler_InvokerMixin.scalingHealthIssues$invokeSpawnBlightFire(entity);
