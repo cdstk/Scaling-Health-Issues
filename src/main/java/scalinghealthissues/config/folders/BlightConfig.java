@@ -19,6 +19,7 @@ import scalinghealthissues.config.data.ItemStackEntry;
 import scalinghealthissues.config.data.PotionConfigEntry;
 import scalinghealthissues.util.Pair;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -26,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("UnstableApiUsage") // For RangeMap, went out of Beta in Guava 32.0.0, but 1.12 Forge uses  21.0
 public class BlightConfig {
 
     // Post init stage ResourceLocation -> NonNull Object
@@ -44,6 +46,12 @@ public class BlightConfig {
     public static final RangeMap<Double, Float> TIER_UP_CHANCE_BY_DIFFICULTY = TreeRangeMap.create();
     public static final RangeMap<Double, Float> ARMOR_CHANCE_BY_DIFFICULTY = TreeRangeMap.create();
     public static final RangeMap<Double, Float> HAND_CHANCE_BY_DIFFICULTY = TreeRangeMap.create();
+
+    // Helper method to supress beta warning
+    @Nullable
+    public static <V> V getRangeMapValue(RangeMap<Double, V> configMap, Double key) {
+        return configMap.get(key);
+    }
 
     @Config.Name("Enchantments")
     public EnchantmentConfig enchantments = new EnchantmentConfig();
@@ -332,7 +340,7 @@ public class BlightConfig {
         })
         @Config.Name("Possible Mainhand")
         public Map<Integer, ArrayList<ItemStackEntry>> possibleMainhand = ConfigHandler.linkedMapOf(Arrays.asList(
-                new Pair<>(1, new ArrayList<>(Arrays.asList(
+                new Pair<>(0, new ArrayList<>(Arrays.asList(
                         new ItemStackEntry("wooden_sword"),
                         new ItemStackEntry("wooden_axe"),
                         // Better Survival

@@ -28,8 +28,21 @@ public class InfernalMobsConfig {
             "    Although an item randomly provided by another mod can be replaced"
     })
     @Config.Name("Replace Existing Equipment On Spawn")
-    @Order(1)
+    @Order(10)
     public boolean replaceExistingEquipment = true;
+
+    @Config.Comment({
+            "Defines the chance for each piece of equipment, the order of armor/hands is random.",
+            "    These values are used only for worn Equipment.",
+            "An undefined entry will default to a 0% chance"
+    })
+    @Config.Name("Infernal Equipment Chance")
+    @Order(20)
+    public Map<ConfigEnum.InfernalTier, Float> infernalEquipmentChance = ConfigHandler.linkedMapOf(Arrays.asList(
+            new Pair<>(ConfigEnum.InfernalTier.RARE, 0.5F),
+            new Pair<>(ConfigEnum.InfernalTier.ULTRA, 0.75F),
+            new Pair<>(ConfigEnum.InfernalTier.INFERNAL, 1.0F)
+    ));
 
     @Config.Comment({
             "Defines the value range for Equipment Enchantability value.",
@@ -38,7 +51,7 @@ public class InfernalMobsConfig {
             "    which is often lower than Vanilla naturally spawned enchanted equipped mobs of [5, 22]"
     })
     @Config.Name("Infernal Equipment Enchantability")
-    @Order(2)
+    @Order(30)
     public Map<ConfigEnum.InfernalTier, ValueRangeEntry> infernalEnchantability = ConfigHandler.linkedMapOf(Arrays.asList(
             new Pair<>(ConfigEnum.InfernalTier.RARE, new ValueRangeEntry(10, 20)),
             new Pair<>(ConfigEnum.InfernalTier.ULTRA, new ValueRangeEntry(20, 30)),
@@ -56,7 +69,7 @@ public class InfernalMobsConfig {
     })
     @Config.Name("Enchanted Book Loot Enchantment Pool")
     @Config.RequiresMcRestart
-    @Order(3)
+    @Order(40)
     public ConfigEnum.SingleEnchantmentList bookEnchantmentList = ConfigEnum.SingleEnchantmentList.ENCHANT_RANDOMLY;
 
     @Config.Comment({
@@ -68,6 +81,6 @@ public class InfernalMobsConfig {
             "Infernal Mobs originally used FORGE_REGISTRY "
     })
     @Config.Name("Enchanted Equipment Loot Enchantment Pool")
-    @Order(4)
+    @Order(50)
     public ConfigEnum.MultiEnchantmentList equipmentEnchantmentList = ConfigEnum.MultiEnchantmentList.ENCHANT_WITH_LEVELS;
 }

@@ -85,7 +85,13 @@ public abstract class InfernalMobsCore_EquipmentMixin {
         /* 0 for elite, 1 for ultra, 2 for infernal */
         int prefix = (modifierCount <= 5) ? 0 : (modifierCount <= 10) ? 1 : 2;
 
+        Float chance = ConfigHandler.compat.infernalMobs.infernalEquipmentChance.get(ConfigEnum.InfernalTier.values()[prefix]);
+        if(chance == null) chance = 0F;
         for(EntityEquipmentSlot equipmentSlot : EntityEquipmentSlot.values()) {
+            if(entity.world.rand.nextFloat() >= chance) {
+                continue;
+            }
+
             ItemStack current = entity.getItemStackFromSlot(equipmentSlot);
             ItemStack replacement = null;
             boolean canReplace = current.isEmpty();

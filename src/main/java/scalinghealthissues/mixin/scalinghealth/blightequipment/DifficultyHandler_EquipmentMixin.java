@@ -46,7 +46,7 @@ public abstract class DifficultyHandler_EquipmentMixin {
             remap = false
     )
     private int scalingHealthIssues_shDifficultyHandler_makeEntityBlightHighestCommonTier(int highestCommonTier, @Local(argsOnly = true) EntityLiving entityLiving){
-        Integer value = BlightConfig.COMMON_TIER_BY_DIFFICULTY.get(ScalingHealthAPI.getEntityDifficulty(entityLiving));
+        Integer value = BlightConfig.getRangeMapValue(BlightConfig.COMMON_TIER_BY_DIFFICULTY, ScalingHealthAPI.getEntityDifficulty(entityLiving));
         if(value != null) {
             return value;
         }
@@ -59,7 +59,7 @@ public abstract class DifficultyHandler_EquipmentMixin {
             remap = false
     )
     private float scalingHealthIssues_shDifficultyHandler_makeEntityBlightTierUpChance(float tierUpChance, @Local(argsOnly = true) EntityLiving entityLiving){
-        Float value = BlightConfig.TIER_UP_CHANCE_BY_DIFFICULTY.get(ScalingHealthAPI.getEntityDifficulty(entityLiving));
+        Float value = BlightConfig.getRangeMapValue(BlightConfig.TIER_UP_CHANCE_BY_DIFFICULTY, ScalingHealthAPI.getEntityDifficulty(entityLiving));
         if(value != null) {
             return value;
         }
@@ -98,7 +98,7 @@ public abstract class DifficultyHandler_EquipmentMixin {
             remap = false
     )
     private float scalingHealthIssues_shDifficultyHandler_makeEntityBlightArmorChance(float armorChance, @Local(argsOnly = true) EntityLiving entityLiving){
-        Float value = BlightConfig.ARMOR_CHANCE_BY_DIFFICULTY.get(ScalingHealthAPI.getEntityDifficulty(entityLiving));
+        Float value = BlightConfig.getRangeMapValue(BlightConfig.ARMOR_CHANCE_BY_DIFFICULTY, ScalingHealthAPI.getEntityDifficulty(entityLiving));
         if(value != null) {
             return value;
         }
@@ -122,7 +122,7 @@ public abstract class DifficultyHandler_EquipmentMixin {
             remap = false
     )
     private float scalingHealthIssues_shDifficultyHandler_makeEntityBlightHanceChance(float handChance, @Local(argsOnly = true) EntityLiving entityLiving){
-        Float value = BlightConfig.HAND_CHANCE_BY_DIFFICULTY.get(ScalingHealthAPI.getEntityDifficulty(entityLiving));
+        Float value = BlightConfig.getRangeMapValue(BlightConfig.HAND_CHANCE_BY_DIFFICULTY, ScalingHealthAPI.getEntityDifficulty(entityLiving));
         if(value != null) {
             return ConfigHandler.mixin.fixConfigEquipmentChance
                     ? value
@@ -183,7 +183,7 @@ public abstract class DifficultyHandler_EquipmentMixin {
     private ItemStack scalingHealthIssues_shDifficultyHandler_makeEntityBlightEnchantItem(Random random, ItemStack stack, int level, boolean allowTreasure, Operation<ItemStack> original, @Local(argsOnly = true) EntityLiving entityLiving, @Local(argsOnly = true) Random rand){
         if(stack.isItemEnchantable()) {
             double difficulty = ScalingHealthAPI.getEntityDifficulty(entityLiving);
-            EnchantWithLevelsEntry enchantConfig = BlightConfig.RANDOM_ENCHANT_BY_DIFFICULTY.get(difficulty);
+            EnchantWithLevelsEntry enchantConfig = BlightConfig.getRangeMapValue(BlightConfig.RANDOM_ENCHANT_BY_DIFFICULTY, difficulty);
             if(enchantConfig != null) {
                 switch (ConfigHandler.mob.blight.enchantments.equipmentEnchantmentList) {
                     case ENCHANTMENT_HELPER:
