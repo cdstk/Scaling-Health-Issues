@@ -97,11 +97,11 @@ public class FirstAidHandler {
         EntityLivingBase entity = event.getEntityLiving();
         if(entity.world.isRemote) return;
         if(!morphineApplyRulesEnabled()) return;
-        if(!event.getPotionEffect().getPotion().equals(EventHandler.MORPHINE)) return;
+        if(event.getPotionEffect().getPotion() != EventHandler.MORPHINE) return;
         if(event.isCanceled()) return;
 
         // Prevent removal from general cleanse, can still time out
-        if(!morphineRemovedInternally && entity.isPotionActive(EventHandler.MORPHINE)) {
+        if(!morphineRemovedInternally) {
             event.setCanceled(true);
         }
         morphineRemovedInternally = false;

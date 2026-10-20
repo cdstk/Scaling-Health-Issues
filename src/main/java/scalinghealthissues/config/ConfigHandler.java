@@ -166,6 +166,17 @@ public class ConfigHandler {
 		@MixinConfig.MixinToggle(lateMixin = "mixins.scalinghealthissues.scalinghealth.blightequipment.json", defaultValue = true)
 		@Config.RequiresMcRestart
 		public boolean blightEquipmentConfig = true;
+
+		@Config.Comment({
+				"Buffs the Totem of Undying to refresh various modded Death Protection mechanics as Totems are generally always used last.",
+				"    Bountiful Baubles Broken Heart - Max Health as a cost fatal damage protection",
+				"    Reskillable Undershirt - Cooldown based fatal damage protection",
+				"The supported mods do not need to be installed."
+		})
+		@Config.Name("Totem of Undying Refreshes Other Mechanics (Vanilla)")
+		@MixinConfig.MixinToggle(earlyMixin = "mixins.scalinghealthissues.vanilla.totemrefreshmechanics.json", defaultValue = true)
+		@Config.RequiresMcRestart
+		public boolean vanillaTotemRefreshMechanics = true;
 	}
 
 	@Mod.EventBusSubscriber(modid = Tags.MODID)
