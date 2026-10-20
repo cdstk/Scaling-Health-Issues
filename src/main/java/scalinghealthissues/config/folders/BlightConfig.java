@@ -373,7 +373,7 @@ public class BlightConfig {
                         new ItemStackEntry(new ResourceLocation("spartanweaponry", "pike_wood")),
                         new ItemStackEntry(new ResourceLocation("spartanweaponry", "lance_wood")),
                         new ItemStackEntry(new ResourceLocation("spartanweaponry", "glaive_wood")),
-                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "staff_wood")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "staff")),
                         new ItemStackEntry(new ResourceLocation("spartanweaponry", "scythe_wood"))
                 ))),
                 new Pair<>(1, new ArrayList<>(Arrays.asList(
@@ -481,7 +481,34 @@ public class BlightConfig {
                         new ItemStackEntry(new ResourceLocation("spartanweaponry", "lance_stone")),
                         new ItemStackEntry(new ResourceLocation("spartanweaponry", "glaive_stone")),
                         new ItemStackEntry(new ResourceLocation("spartanweaponry", "staff_stone")),
-                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "scythe_stone"))
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "scythe_stone")),
+                        // Copper
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "copper_sword")),
+                        new ItemStackEntry(new ResourceLocation("iceandfire", "copper_sword")),
+                        // Better Survival
+                        new ItemStackEntry(new ResourceLocation("mujmajnkraftsbettersurvival", "itemcopperhammer")),
+                        new ItemStackEntry(new ResourceLocation("mujmajnkraftsbettersurvival", "itemcopperdagger")),
+                        new ItemStackEntry(new ResourceLocation("mujmajnkraftsbettersurvival", "itemcopperbattleaxe")),
+                        new ItemStackEntry(new ResourceLocation("mujmajnkraftsbettersurvival", "itemcoppernunchaku")),
+                        // Spartan Weaponry
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "dagger_copper")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "mace_copper")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "parrying_dagger_copper")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "battleaxe_copper")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "longsword_copper")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "katana_copper")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "saber_copper")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "rapier_copper")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "greatsword_copper")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "hammer_copper")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "warhammer_copper")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "spear_copper")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "halberd_copper")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "pike_copper")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "lance_copper")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "glaive_copper")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "staff_copper")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "scythe_copper"))
                 ))),
                 new Pair<>(3, new ArrayList<>(Arrays.asList(
                         new ItemStackEntry("iron_sword"),
@@ -752,7 +779,11 @@ public class BlightConfig {
                         new ItemStackEntry(new ResourceLocation("spartanshields", "shield_tower_silver"))
                 ))),
                 new Pair<>(2, new ArrayList<>(Arrays.asList(
-                        new ItemStackEntry("shield")
+                        new ItemStackEntry("shield"),
+                        new ItemStackEntry(new ResourceLocation("spartanshields", "shield_basic_stone")),
+                        new ItemStackEntry(new ResourceLocation("spartanshields", "shield_tower_stone")),
+                        new ItemStackEntry(new ResourceLocation("spartanshields", "shield_basic_copper")),
+                        new ItemStackEntry(new ResourceLocation("spartanshields", "shield_tower_copper"))
                 ))),
                 new Pair<>(3, new ArrayList<>(Arrays.asList(
                         new ItemStackEntry(new ResourceLocation("spartanshields", "shield_basic_iron")),
@@ -779,13 +810,20 @@ public class BlightConfig {
         })
         @Config.Name("Possible Bow")
         public Map<Integer, ArrayList<ItemStackEntry>> possibleBow = ConfigHandler.linkedMapOf(Arrays.asList(
-                new Pair<>(0, new ArrayList<>(Arrays.asList(
+//                new Pair<>(0, new ArrayList<>(Arrays.asList(
+//                        new ItemStackEntry("bow")
+//                ))),
+                new Pair<>(1, new ArrayList<>(Arrays.asList(
                         new ItemStackEntry(new ResourceLocation("spartanweaponry", "longbow_wood")),
                         new ItemStackEntry(new ResourceLocation("spartanweaponry", "crossbow_wood"))
                 ))),
                 new Pair<>(2, new ArrayList<>(Arrays.asList(
                         new ItemStackEntry(new ResourceLocation("spartanweaponry", "longbow_leather")),
-                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "crossbow_leather"))
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "crossbow_leather")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "longbow_silver")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "crossbow_silver")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "longbow_copper")),
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "crossbow_copper"))
                 ))),
                 new Pair<>(3, new ArrayList<>(Arrays.asList(
                         new ItemStackEntry(new ResourceLocation("spartanweaponry", "longbow_iron")),
@@ -795,7 +833,15 @@ public class BlightConfig {
                 ))),
                 new Pair<>(4, new ArrayList<>(Arrays.asList(
                         new ItemStackEntry(new ResourceLocation("spartanweaponry", "longbow_diamond")),
-                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "crossbow_diamond"))
+                        new ItemStackEntry(new ResourceLocation("spartanweaponry", "crossbow_diamond")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "longbow_desert")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "crossbow_desert")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "longbow_jungle")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "crossbow_jungle")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "longbow_desert")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "crossbow_desert")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "longbow_jungle")),
+                        new ItemStackEntry(new ResourceLocation("spartanfire", "crossbow_jungle"))
                 )))
         ));
     }

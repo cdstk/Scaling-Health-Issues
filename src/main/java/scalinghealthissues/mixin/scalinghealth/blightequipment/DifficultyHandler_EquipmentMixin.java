@@ -136,8 +136,9 @@ public abstract class DifficultyHandler_EquipmentMixin {
             at = @At(value = "INVOKE", target = "Lnet/silentchaos512/scalinghealth/event/DifficultyHandler;selectEquipmentForSlot(Lnet/minecraft/inventory/EntityEquipmentSlot;I)Lnet/minecraft/item/ItemStack;", ordinal = 1),
             remap = false
     )
-    private ItemStack scalingHealthIssues_shDifficultyHandler_makeEntityBlightReplaceBow(ItemStack original, @Local(name = "tier") int tier, @Local ItemStack oldEquipment){
-        if(oldEquipment.getItem() instanceof ItemBow) {
+    private ItemStack scalingHealthIssues_shDifficultyHandler_makeEntityBlightReplaceBow(ItemStack apiOrConfigStack, @Local(name = "tier") int tier, @Local(name = "oldEquipment") ItemStack vanillaStack){
+        // If MET gives Spartan Crossbow, this won't work, I know I just don't want to make a Spartan Compat for this
+        if(vanillaStack.getItem() instanceof ItemBow) {
             List<ItemStack> possibleBows = null;
             int configTier = tier;
             while(configTier >= 0 && (possibleBows == null || possibleBows.isEmpty())) {
@@ -147,11 +148,11 @@ public abstract class DifficultyHandler_EquipmentMixin {
                 return possibleBows.get(ScalingHealth.random.nextInt(possibleBows.size()));
             }
 
-            if(!(original.getItem() instanceof ItemBow)) {
-                return oldEquipment;
+            if(!(apiOrConfigStack.getItem() instanceof ItemBow)) {
+                return vanillaStack;
             }
         }
-        return original;
+        return apiOrConfigStack;
     }
 
     @ModifyExpressionValue(
