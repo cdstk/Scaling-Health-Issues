@@ -3,6 +3,7 @@ package scalinghealthissues.config.folders;
 import com.google.common.collect.Range;
 import com.google.common.collect.RangeMap;
 import com.google.common.collect.TreeRangeMap;
+import fermiumbooter.annotations.MixinConfig;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -12,6 +13,7 @@ import net.minecraftforge.common.config.Config;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import org.apache.logging.log4j.Level;
 import scalinghealthissues.ScalingHealthIssues;
+import scalinghealthissues.Tags;
 import scalinghealthissues.config.ConfigHandler;
 import scalinghealthissues.config.data.ConfigEnum;
 import scalinghealthissues.config.data.EnchantWithLevelsEntry;
@@ -28,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("UnstableApiUsage") // For RangeMap, went out of Beta in Guava 32.0.0, but 1.12 Forge uses  21.0
+@MixinConfig(name = Tags.MODID)
 public class BlightConfig {
 
     // Post init stage ResourceLocation -> NonNull Object
@@ -61,6 +64,18 @@ public class BlightConfig {
 
     @Config.Name("Potion")
     public PotionConfig potion = new PotionConfig();
+
+    @Config.Comment({
+            "Enables Blight Equipment on spawn to be Configurable",
+            "    * Allows Equipment to be Defined per Tier",
+            "    * Allows Equipment/Enchantment chances to be configured per minimum Blight Difficulty",
+            "Any equipment added through ScalingHealthAPI will be respected and used",
+            "Available in Mob/Blights/Enchantments and Mob/Blights/Equipment"
+    })
+    @Config.Name("Mixin: Blight Equipment Config")
+    @MixinConfig.MixinToggle(lateMixin = "mixins.scalinghealthissues.scalinghealth.blightequipment.json", defaultValue = true)
+    @Config.RequiresMcRestart
+    public boolean equipmentConfig = true;
 
     public static class EnchantmentConfig {
 

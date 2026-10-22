@@ -156,18 +156,6 @@ public class ConfigHandler {
 		public boolean vanillaSignificantDamage = true;
 
 		@Config.Comment({
-				"Enables Blight Equipment on spawn to be Configurable",
-				"    * Allows Equipment to be Defined per Tier",
-				"    * Allows Equipment/Enchantment chances to be configured per minimum Blight Difficulty",
-				"Any equipment added through ScalingHealthAPI will be respected and used",
-				"Available in Mob/Blights/Enchantments and Mob/Blights/Equipment"
-		})
-		@Config.Name("Blight Equipment Config")
-		@MixinConfig.MixinToggle(lateMixin = "mixins.scalinghealthissues.scalinghealth.blightequipment.json", defaultValue = true)
-		@Config.RequiresMcRestart
-		public boolean blightEquipmentConfig = true;
-
-		@Config.Comment({
 				"Buffs the Totem of Undying to refresh various modded Death Protection mechanics as Totems are generally always used last.",
 				"    Bountiful Baubles Broken Heart - Max Health as a cost fatal damage protection",
 				"    Reskillable Undershirt - Cooldown based fatal damage protection",
