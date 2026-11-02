@@ -11,6 +11,7 @@ import net.silentchaos512.scalinghealth.utils.SHPlayerDataHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import scalinghealthissues.compat.LycanitesMobsUtil;
+import scalinghealthissues.config.ConfigHandler;
 
 @Mixin(ItemHeartContainer.class)
 public abstract class ItemHeartContainer_UnlockMobEventMixin {
@@ -25,7 +26,7 @@ public abstract class ItemHeartContainer_UnlockMobEventMixin {
 
         original.call(instance, newHealth);
 
-        if(previous != LycanitesMobsUtil.canExperienceMobEvent(player)) {
+        if(previous != LycanitesMobsUtil.canExperienceMobEvent(player) && ConfigHandler.compat.lycanitesMobs.heartContainerMessage) {
             ITextComponent unlockText = new TextComponentTranslation("scalinghealthissues.heartcontainer.unlockedevent");
             unlockText.appendText(" ").appendSibling(new TextComponentTranslation("lyc.command.mobevent.enable.random"));
             player.sendMessage(unlockText);

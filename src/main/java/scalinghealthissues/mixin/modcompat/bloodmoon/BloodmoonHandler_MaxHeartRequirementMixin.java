@@ -1,7 +1,6 @@
 package scalinghealthissues.mixin.modcompat.bloodmoon;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.llamalad7.mixinextras.sugar.Local;
 import lumien.bloodmoon.network.PacketHandler;
 import lumien.bloodmoon.network.messages.MessageBloodmoonStatus;
@@ -21,54 +20,60 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import scalinghealthissues.ScalingHealthIssues;
 import scalinghealthissues.compat.BloodmoonUtil;
+import scalinghealthissues.config.ConfigHandler;
 
 @Mixin(BloodmoonHandler.class)
 public abstract class BloodmoonHandler_MaxHeartRequirementMixin {
 
-    @WrapOperation(
+    @WrapWithCondition(
             method = "playerJoinedWorld",
             at = @At(value = "INVOKE", target = "Lnet/minecraftforge/fml/common/network/simpleimpl/SimpleNetworkWrapper;sendTo(Lnet/minecraftforge/fml/common/network/simpleimpl/IMessage;Lnet/minecraft/entity/player/EntityPlayerMP;)V"),
             remap = false
     )
-    private void scalingHealthIssues_bloodmoonBloodmoonHandler_playerJoinedWorldSafe(SimpleNetworkWrapper instance, IMessage message, EntityPlayerMP player, Operation<Void> original){
+    private boolean scalingHealthIssues_bloodmoonBloodmoonHandler_playerJoinedWorldSafe(SimpleNetworkWrapper instance, IMessage message, EntityPlayerMP player){
         if(!BloodmoonUtil.isSafeFromActive(player) && !BloodmoonUtil.canExperienceBloodmoon(player)) {
             BloodmoonUtil.addSafePlayer(player);
-
-            ITextComponent safeText = new TextComponentTranslation("scalinghealthissues.heartcontainer.lockedevent");
-            safeText.getStyle().setColor(TextFormatting.GREEN);
-            safeText.appendText(" ").appendSibling((new TextComponentTranslation("text.bloodmoon.notify")).setStyle((new Style()).setColor(TextFormatting.RED)));
-            player.sendMessage(safeText);
-
+        }
+        if(BloodmoonUtil.isSafeFromActive(player)) {
+            if(player.ticksExisted != 0 && ConfigHandler.compat.bloodmoon.heartContainerMessage) {
+                ITextComponent safeText = new TextComponentTranslation("scalinghealthissues.heartcontainer.lockedevent");
+                safeText.getStyle().setColor(TextFormatting.GREEN);
+                safeText.appendText(" ").appendSibling((new TextComponentTranslation("text.bloodmoon.notify")).setStyle((new Style()).setColor(TextFormatting.RED)));
+                player.sendMessage(safeText);
+            }
             if(!ScalingHealthIssues.PROXY.isSinglePlayer()) {
                 player.sendMessage((new TextComponentTranslation("text.bloodmoon.nosleep")).setStyle((new Style()).setColor(TextFormatting.RED)));
             }
+            return false;
         }
         else
-            original.call(instance, message, player);
+            return true;
     }
 
-    @WrapOperation(
+    @WrapWithCondition(
             method = "endWorldTick",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/EntityPlayer;sendMessage(Lnet/minecraft/util/text/ITextComponent;)V")
     )
-    private void scalingHealthIssues_bloodmoonBloodmoonHandler_endWorldTickSafe(EntityPlayer player, ITextComponent component, Operation<Void> original, @Local World world){
+    private boolean scalingHealthIssues_bloodmoonBloodmoonHandler_endWorldTickSafe(EntityPlayer player, ITextComponent iTextComponent, @Local World world){
         if(!BloodmoonUtil.isSafeFromActive(player) && !BloodmoonUtil.canExperienceBloodmoon(player)) {
             BloodmoonUtil.addSafePlayer(player);
 
-            ITextComponent safeText = new TextComponentTranslation("scalinghealthissues.heartcontainer.lockedevent");
-            safeText.getStyle().setColor(TextFormatting.GREEN);
-            safeText.appendText(" ").appendSibling((new TextComponentTranslation("text.bloodmoon.notify")).setStyle((new Style()).setColor(TextFormatting.RED)));
-            player.sendMessage(safeText);
-
-            if (player instanceof EntityPlayerMP) {
-                PacketHandler.INSTANCE.sendTo(new MessageBloodmoonStatus(false), (EntityPlayerMP) player);
+            if(ConfigHandler.compat.bloodmoon.heartContainerMessage) {
+                ITextComponent safeText = new TextComponentTranslation("scalinghealthissues.heartcontainer.lockedevent");
+                safeText.getStyle().setColor(TextFormatting.GREEN);
+                safeText.appendText(" ").appendSibling((new TextComponentTranslation("text.bloodmoon.notify")).setStyle((new Style()).setColor(TextFormatting.RED)));
+                player.sendMessage(safeText);
             }
             if(!ScalingHealthIssues.PROXY.isSinglePlayer()) {
                 player.sendMessage((new TextComponentTranslation("text.bloodmoon.nosleep")).setStyle((new Style()).setColor(TextFormatting.RED)));
             }
+            if (player instanceof EntityPlayerMP) {
+                PacketHandler.INSTANCE.sendTo(new MessageBloodmoonStatus(false), (EntityPlayerMP) player);
+            }
+            return false;
         }
         else
-            original.call(player, component);
+            return true;
     }
 
     @Inject(

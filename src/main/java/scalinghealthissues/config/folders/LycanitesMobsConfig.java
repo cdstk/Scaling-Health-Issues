@@ -4,6 +4,10 @@ import net.minecraftforge.common.config.Config;
 
 public class LycanitesMobsConfig {
 
+    @Config.Comment("Whether players will be notified if they unlock or can't experience Lycanites Mob Events")
+    @Config.Name("Mob Event Heart Container Messages")
+    public boolean heartContainerMessage = true;
+
     @Config.Comment("The number of Heart Containers that must be used in order to experience Lycanites Mob Events")
     @Config.Name("Mob Event Heart Container Requirement")
     public int heartContainersRequired = 3;

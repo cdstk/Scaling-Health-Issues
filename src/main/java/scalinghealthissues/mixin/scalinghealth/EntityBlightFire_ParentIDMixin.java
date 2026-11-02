@@ -1,8 +1,7 @@
 package scalinghealthissues.mixin.scalinghealth;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -87,13 +86,14 @@ public abstract class EntityBlightFire_ParentIDMixin extends Entity {
         return hasNumericalID;
     }
 
-    @WrapOperation(
+    @WrapWithCondition(
             method = "writeEntityToNBT",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/nbt/NBTTagCompound;setInteger(Ljava/lang/String;I)V")
     )
-    private void scalingHealthIssues_shEntityBlightFire_writeEntityToNBTParent(NBTTagCompound instance, String key, int value, Operation<Void> original){
+    private boolean scalingHealthIssues_shEntityBlightFire_writeEntityToNBTParent(NBTTagCompound instance, String key, int value){
         // Replace numerical ID with UUID
         instance.setUniqueId(NBT_PARENT_UUID, this.parent.getUniqueID());
+        return false;
     }
 
     @ModifyExpressionValue(

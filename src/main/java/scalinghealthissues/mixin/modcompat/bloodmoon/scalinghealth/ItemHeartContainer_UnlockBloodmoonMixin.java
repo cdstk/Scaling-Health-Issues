@@ -13,6 +13,7 @@ import net.silentchaos512.scalinghealth.utils.SHPlayerDataHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import scalinghealthissues.compat.BloodmoonUtil;
+import scalinghealthissues.config.ConfigHandler;
 
 @Mixin(ItemHeartContainer.class)
 public abstract class ItemHeartContainer_UnlockBloodmoonMixin {
@@ -27,7 +28,7 @@ public abstract class ItemHeartContainer_UnlockBloodmoonMixin {
 
         original.call(instance, newHealth);
 
-        if(previous != BloodmoonUtil.canExperienceBloodmoon(player)) {
+        if(previous != BloodmoonUtil.canExperienceBloodmoon(player) && ConfigHandler.compat.bloodmoon.heartContainerMessage) {
             ITextComponent unlockText = new TextComponentTranslation("scalinghealthissues.heartcontainer.unlockedevent");
             unlockText.appendText(" ").appendSibling((new TextComponentTranslation("text.bloodmoon.notify")).setStyle((new Style()).setColor(TextFormatting.RED)));
             player.sendMessage(unlockText);

@@ -14,6 +14,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import scalinghealthissues.ScalingHealthIssues;
 import scalinghealthissues.compat.LycanitesMobsUtil;
+import scalinghealthissues.config.ConfigHandler;
 
 @Mixin(MobEventPlayerClient.class)
 public abstract class MobEventPlayerClient_MaxHeartRequirementMixin {
@@ -28,24 +29,24 @@ public abstract class MobEventPlayerClient_MaxHeartRequirementMixin {
     private void scalingHealthIssues_lycanitesMobsMobEventPlayerClient_onStartPlayerHearts(EntityPlayer player, Operation<Void> original){
         boolean clientCanExperience = this.mobEvent.channel.equals("boss") || LycanitesMobsUtil.canExperienceMobEvent(player);
 
-        // Don't show are play sound
-        if(ScalingHealthIssues.PROXY.isSinglePlayer() && !clientCanExperience) {
-            this.ticks = 241;
+        if(clientCanExperience) {
+            original.call(player);
         }
         else {
-            original.call(player);
-            // Show for 3 seconds and play sound
-            if(!clientCanExperience) {
-                this.ticks = 60;
+            // Don't show or play sound
+            if(ScalingHealthIssues.PROXY.isSinglePlayer() || !ConfigHandler.compat.lycanitesMobs.heartContainerMessage) {
+                this.ticks = 241;
             }
-        }
-
-        // Safe Message
-        if(!clientCanExperience) {
-            ITextComponent safeText = new TextComponentString(I18n.format("scalinghealthissues.heartcontainer.lockedevent"));
-            safeText.getStyle().setColor(TextFormatting.GREEN);
-            safeText.appendText(" ").appendSibling((new TextComponentString(this.mobEvent.getTitle())).setStyle((new Style()).setColor(TextFormatting.RESET)));
-            player.sendMessage(safeText);
+            else {
+                // Show for 3 seconds and play sound
+                original.call(player);
+                this.ticks = 60;
+                // Safe Message
+                ITextComponent safeText = new TextComponentString(I18n.format("scalinghealthissues.heartcontainer.lockedevent"));
+                safeText.getStyle().setColor(TextFormatting.GREEN);
+                safeText.appendText(" ").appendSibling((new TextComponentString(this.mobEvent.getTitle())).setStyle((new Style()).setColor(TextFormatting.RESET)));
+                player.sendMessage(safeText);
+            }
         }
     }
 }
