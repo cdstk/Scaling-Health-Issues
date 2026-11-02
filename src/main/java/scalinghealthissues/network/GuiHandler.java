@@ -5,9 +5,13 @@ import com.google.common.cache.CacheBuilder;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.play.server.SPacketEntityEffect;
+import net.minecraft.network.play.server.SPacketEntityProperties;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
@@ -18,7 +22,9 @@ import net.minecraft.util.text.event.ClickEvent;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.storage.AnvilChunkLoader;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.silentchaos512.scalinghealth.api.ScalingHealthAPI;
 import net.silentchaos512.scalinghealth.config.Config;
@@ -80,6 +86,16 @@ public class GuiHandler implements IGuiHandler {
         if (ID == VIEW_ENTITY_INVENTORY) {
             Entity targetEntity = getLoadedOrCreateCached(world, x);
 
+            if(player instanceof EntityPlayerMP && targetEntity instanceof EntityLivingBase && targetEntity.isAddedToWorld()) {
+                EntityPlayerMP playerMP = (EntityPlayerMP) player;
+                EntityLivingBase entityLivingBase = (EntityLivingBase) targetEntity;
+
+                playerMP.connection.sendPacket(new SPacketEntityProperties(x, entityLivingBase.getAttributeMap().getAllAttributes()));
+                for (PotionEffect potioneffect : entityLivingBase.getActivePotionEffects()) {
+                    playerMP.connection.sendPacket(new SPacketEntityEffect(x, potioneffect));
+                }
+            }
+
             if(targetEntity instanceof EntityPlayer) {
                 if(ConfigHandler.server.entityViewPlayers) {
                     return new ContainerEntity(targetEntity, player);
@@ -103,16 +119,21 @@ public class GuiHandler implements IGuiHandler {
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         if (ID == VIEW_ENTITY_INVENTORY) {
             Entity targetEntity = getLoadedOrCreateCached(world, x);
-
-            if(targetEntity instanceof EntityPlayer) {
-                return new GuiScreenEntityInventory(new ContainerEntity(targetEntity, player));
-            }
-            else if(targetEntity != null) {
-                return new GuiScreenEntityInventory(new ContainerEntity(targetEntity, player));
-            }
-            else {
+            if(targetEntity == null) {
                 player.sendMessage(new TextComponentTranslation("scalinghealthissues.gui.entityinventory.nullerror").setStyle(new Style().setColor(TextFormatting.DARK_RED)));
+                return new GuiScreenEntityInventory(new ContainerEntity(player, player)).setDummy();
             }
+
+            // Update any readEntityFromNBT that is server only
+            NBTTagCompound clientNBT = VIEWABLE_ENTITY_DATA_CACHE.getIfPresent(x);
+            if(clientNBT != null && targetEntity instanceof EntityLivingBase) {
+                EntityLivingBase entityLivingBase = (EntityLivingBase) targetEntity;
+                if (clientNBT.hasKey("Attributes", 9)) {
+                    SharedMonsterAttributes.setAttributeModifiers(entityLivingBase.getAttributeMap(), clientNBT.getTagList("Attributes", 10));
+                }
+            }
+
+            return new GuiScreenEntityInventory(new ContainerEntity(targetEntity, player));
         }
         return null;
     }
@@ -149,6 +170,18 @@ public class GuiHandler implements IGuiHandler {
                 }
             }
         }
+    }
+
+    @SubscribeEvent
+    public static void onClientDisconnect(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
+        VIEWABLE_ENTITY_ID_CACHE.invalidateAll();
+        VIEWABLE_ENTITY_DATA_CACHE.invalidateAll();
+        GENERATED_VIEWED_CACHE.invalidateAll();
+    }
+
+    @SubscribeEvent
+    public static void onWorldUnload(WorldEvent.Unload event) {
+        GENERATED_VIEWED_CACHE.invalidateAll();
     }
 
     private static Entity getLoadedOrCreateCached(World world, int selectedEntityID) {

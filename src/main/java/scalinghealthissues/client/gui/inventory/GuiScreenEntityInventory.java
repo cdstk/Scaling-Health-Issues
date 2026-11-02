@@ -10,7 +10,6 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.inventory.Slot;
-import scalinghealthissues.ScalingHealthIssues;
 import scalinghealthissues.client.renderer.InventoryEntityEffectRenderer;
 import scalinghealthissues.inventory.ContainerEntity;
 import scalinghealthissues.inventory.SlotConditionalEdit;
@@ -25,10 +24,17 @@ public class GuiScreenEntityInventory extends InventoryEntityEffectRenderer {
     private float mousePosx;
     private float mousePosY;
 
+    private boolean isDummy = false;
+
     public GuiScreenEntityInventory(ContainerEntity containerEntity) {
         super(containerEntity, containerEntity.entity);
         this.entity = containerEntity.entity;
         this.allowUserInput = false;
+    }
+
+    public GuiScreenEntityInventory setDummy() {
+        this.isDummy = true;
+        return this;
     }
 
     protected static void addAttributeInfo(List<String> list, EntityLivingBase entityLivingBase, IAttribute attribute) {
@@ -37,9 +43,6 @@ public class GuiScreenEntityInventory extends InventoryEntityEffectRenderer {
             String attributeName = I18n.format("attribute.name." + attributeInstance.getAttribute().getName());
             if(GuiScreen.isShiftKeyDown()) {
                 list.add("[" + DECIMALFORMAT.format(attributeInstance.getBaseValue()) + " " + attributeName);
-            }
-            else if(!GuiScreen.isCtrlKeyDown() && !ScalingHealthIssues.PROXY.isSinglePlayer() && !entityLivingBase.isAddedToWorld()) {
-                list.add(I18n.format("entity.generic.name") + " " + attributeName);
             }
             else {
                 list.add(DECIMALFORMAT.format(attributeInstance.getAttributeValue()) + " " + attributeName);
@@ -88,6 +91,14 @@ public class GuiScreenEntityInventory extends InventoryEntityEffectRenderer {
             }
         }
         InventoryEntityEffectRenderer.drawEntityOnScreen(i + 51, j + 75, 30, (float) (i + 51) - this.mousePosx, (float) (j + 75 - 50) - this.mousePosY, this.entity);
+    }
+
+    @Override
+    public void updateScreen() {
+        super.updateScreen();
+        if (this.isDummy) {
+            this.mc.player.closeScreen();
+        }
     }
 
     @Override
