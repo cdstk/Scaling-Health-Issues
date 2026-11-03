@@ -1,5 +1,7 @@
 package scalinghealthissues.config;
 
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 import fermiumbooter.annotations.MixinConfig;
 import meldexun.betterconfig.api.BetterConfig;
 import meldexun.betterconfig.api.BetterConfigManager;
@@ -13,13 +15,8 @@ import scalinghealthissues.Tags;
 import scalinghealthissues.config.folders.BlightConfig;
 import scalinghealthissues.config.folders.CompatibilityConfig;
 import scalinghealthissues.config.folders.DamageScalingConfig;
-import scalinghealthissues.util.Pair;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 @BetterConfig(
@@ -116,11 +113,11 @@ public class ConfigHandler {
 		})
 		@Order(4)
 		@Config.Name("Entity Equipment - NBT Tags Not Synced")
-		public Set<String> entityNBTNoSync = linkedSetOf(Arrays.asList(
-				"Tags",
-				"ForgeData",
-				"ForgeCaps"
-		));
+		public Set<String> entityNBTNoSync = Sets.newLinkedHashSet(ImmutableSet.<String>builder()
+				.add("Tags")
+				.add("ForgeData")
+				.add("ForgeCaps")
+				.build());
 	}
 
 	@MixinConfig(name = Tags.MODID)
@@ -183,15 +180,5 @@ public class ConfigHandler {
 	public static void initConfig() {
 		ConfigHandler.mob.blight.init();
 		ConfigHandler.dmgScale.init();
-	}
-
-	public static <V> LinkedHashSet<V> linkedSetOf(Collection<V> entries) {
-        return new LinkedHashSet<>(entries);
-	}
-
-	public static <K, V> LinkedHashMap<K, V> linkedMapOf(Collection<Pair<K, V>> entries) {
-		LinkedHashMap<K, V> map = new LinkedHashMap<>();
-		for(Pair<K, V> pair : entries) map.put(pair.left, pair.right);
-		return map;
 	}
 }

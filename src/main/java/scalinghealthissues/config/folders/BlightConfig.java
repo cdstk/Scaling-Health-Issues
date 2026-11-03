@@ -1,5 +1,7 @@
 package scalinghealthissues.config.folders;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Range;
 import com.google.common.collect.RangeMap;
 import com.google.common.collect.TreeRangeMap;
@@ -19,7 +21,6 @@ import scalinghealthissues.config.data.ConfigEnum;
 import scalinghealthissues.config.data.EnchantWithLevelsEntry;
 import scalinghealthissues.config.data.ItemStackEntry;
 import scalinghealthissues.config.data.PotionConfigEntry;
-import scalinghealthissues.util.Pair;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -85,12 +86,12 @@ public class BlightConfig {
                 "    Minimum, Maximum, and Treasure follow the properties of the minecraft:enchant_with_levels loot function"
         })
         @Config.Name("Random Enchantments Per Difficulty")
-        public Map<Double, EnchantWithLevelsEntry> possibleRandomEnchantments = ConfigHandler.linkedMapOf(Arrays.asList(
-                new Pair<>(0D, new EnchantWithLevelsEntry(29, 30, false)),
+        public Map<Double, EnchantWithLevelsEntry> possibleRandomEnchantments = Maps.newLinkedHashMap(ImmutableMap.<Double, EnchantWithLevelsEntry>builder()
+                .put(0D, new EnchantWithLevelsEntry(29, 30, false))
                 // 20 is Max Difficulty in RLC
-                new Pair<>(30D, new EnchantWithLevelsEntry(30, 60, true)),
-                new Pair<>(60D, new EnchantWithLevelsEntry(60, 90, true))
-        ));
+                .put(30D, new EnchantWithLevelsEntry(30, 60, true))
+                .put(60D, new EnchantWithLevelsEntry(60, 90, true))
+                .build());
 
         @Config.Comment({
                 "Determines where the Enchanted Equipment Enchantsments Pool comes from.",
@@ -132,14 +133,14 @@ public class BlightConfig {
                 " iron, and diamond."
         })
         @Config.Name("Highest Common Tier Per Difficulty")
-        public Map<Double, Integer> highestCommonTiers = ConfigHandler.linkedMapOf(Arrays.asList(
-                new Pair<>(0D, 1),
+        public Map<Double, Integer> highestCommonTiers = Maps.newLinkedHashMap(ImmutableMap.<Double, Integer>builder()
+                .put(0D, 1)
                 // 20 is Max Difficulty in RLC
-                new Pair<>(100D, 2),
-                new Pair<>(200D, 3),
-                new Pair<>(300D, 4),
-                new Pair<>(400D, 5)
-        ));
+                .put(100D, 2)
+                .put(200D, 3)
+                .put(300D, 4)
+                .put(400D, 5)
+                .build());
 
         @Config.Comment({
                 "Just like the original config, however set by Difficulty",
@@ -149,14 +150,14 @@ public class BlightConfig {
                 " first, then it has a few chances to increase."
         })
         @Config.Name("Tier Up Chance Per Difficulty")
-        public Map<Double, Float> tierUpChances = ConfigHandler.linkedMapOf(Arrays.asList(
-                new Pair<>(0D, 0.095F),
+        public Map<Double, Float> tierUpChances = Maps.newLinkedHashMap(ImmutableMap.<Double, Float>builder()
+                .put(0D, 0.095F)
                 // 20 is Max Difficulty in RLC
-                new Pair<>(100D, 0.2F),
-                new Pair<>(200D, 0.3F),
-                new Pair<>(300D, 0.4F),
-                new Pair<>(400D, 0.5F)
-        ));
+                .put(100D, 0.2F)
+                .put(200D, 0.3F)
+                .put(300D, 0.4F)
+                .put(400D, 0.5F)
+                .build());
 
         @Config.Comment({
                 "Just like the original config, however set by Difficulty",
@@ -167,12 +168,12 @@ public class BlightConfig {
                 " this probability of receiving leggings, etc."
         })
         @Config.Name("Armor Piece Chance Per Difficulty")
-        public Map<Double, Float> armorChances = ConfigHandler.linkedMapOf(Arrays.asList(
-                new Pair<>(0D, 0.5F),
+        public Map<Double, Float> armorChances = Maps.newLinkedHashMap(ImmutableMap.<Double, Float>builder()
+                .put(0D, 0.5F)
                 // 20 is Max Difficulty in RLC
-                new Pair<>(30D, 0.75F),
-                new Pair<>(60D, 1.0F)
-        ));
+                .put(30D, 0.75F)
+                .put(60D, 1.0F)
+                .build());
 
         @Config.Comment({
                 "Just like the original config, however set by Difficulty",
@@ -183,13 +184,13 @@ public class BlightConfig {
                 " mods you have installed, there may not be any hand equipment to chose from."
         })
         @Config.Name("Hand Piece Chance Per Difficulty")
-        public Map<Double, Float> handChances = ConfigHandler.linkedMapOf(Arrays.asList(
+        public Map<Double, Float> handChances = Maps.newLinkedHashMap(ImmutableMap.<Double, Float>builder()
                 // Generally 0% chance in default since SH didn't populate hands itself
-                new Pair<>(0D, 0.25F),
+                .put(0D, 0.25F)
                 // 20 is Max Difficulty in RLC
-                new Pair<>(30D, 0.75F),
-                new Pair<>(60D, 1.0F)
-        ));
+                .put(30D, 0.75F)
+                .put(60D, 1.0F)
+                .build());
 
         @Config.Comment({
                 "Possible Equipment per Tier",
@@ -197,22 +198,22 @@ public class BlightConfig {
                 "If no list is set for a tier, lower tiers are checked until one or none are found."
         })
         @Config.Name("Possible Helmet")
-        public Map<Integer, ArrayList<ItemStackEntry>> possibleHelmet = ConfigHandler.linkedMapOf(Arrays.asList(
-                new Pair<>(0, new ArrayList<>(Arrays.asList(
+        public Map<Integer, ArrayList<ItemStackEntry>> possibleHelmet = Maps.newLinkedHashMap(ImmutableMap.<Integer, ArrayList<ItemStackEntry>>builder()
+                .put(0, new ArrayList<>(Arrays.asList(
                         new ItemStackEntry("leather_helmet"),
                         new ItemStackEntry(new ResourceLocation("iceandfire", "sheep_helmet"))
-                ))),
-                new Pair<>(1, new ArrayList<>(Arrays.asList(
+                )))
+                .put(1, new ArrayList<>(Arrays.asList(
                         new ItemStackEntry("golden_helmet"),
                         new ItemStackEntry(new ResourceLocation("iceandfire", "armor_silver_metal_helmet")),
                         new ItemStackEntry(new ResourceLocation("iceandfire", "armor_copper_metal_helmet"))
-                ))),
-                new Pair<>(2, new ArrayList<>(Arrays.asList(
+                )))
+                .put(2, new ArrayList<>(Arrays.asList(
                         new ItemStackEntry("chainmail_helmet"),
                         new ItemStackEntry(new ResourceLocation("defiledlands", "scale_helmet")),
                         new ItemStackEntry(new ResourceLocation("mod_lavacow", "swinemask"))
-                ))),
-                new Pair<>(3, new ArrayList<>(Arrays.asList(
+                )))
+                .put(3, new ArrayList<>(Arrays.asList(
                         new ItemStackEntry("iron_helmet"),
                         new ItemStackEntry(new ResourceLocation("defiledlands", "umbrium_helmet")),
                         new ItemStackEntry(new ResourceLocation("mod_lavacow", "chitinarmor_helmet")),
@@ -221,14 +222,14 @@ public class BlightConfig {
                         new ItemStackEntry(new ResourceLocation("iceandfire", "deathworm_red_helmet")),
                         new ItemStackEntry(new ResourceLocation("iceandfire", "myrmex_desert_helmet")),
                         new ItemStackEntry(new ResourceLocation("iceandfire", "myrmex_jungle_helmet"))
-                ))),
-                new Pair<>(4, new ArrayList<>(Arrays.asList(
+                )))
+                .put(4, new ArrayList<>(Arrays.asList(
                         new ItemStackEntry("diamond_helmet"),
                         new ItemStackEntry(new ResourceLocation("iceandfire", "forest_troll_leather_helmet")),
                         new ItemStackEntry(new ResourceLocation("iceandfire", "frost_troll_leather_helmet")),
                         new ItemStackEntry(new ResourceLocation("iceandfire", "mountain_troll_leather_helmet"))
                 )))
-        ));
+                .build());
 
         @Config.Comment({
                 "Possible Equipment per Tier",
@@ -236,22 +237,22 @@ public class BlightConfig {
                 "If no list is set for a tier, lower tiers are checked until one or none are found."
         })
         @Config.Name("Possible Chestplate")
-        public Map<Integer, ArrayList<ItemStackEntry>> possibleChestplate = ConfigHandler.linkedMapOf(Arrays.asList(
-                new Pair<>(0, new ArrayList<>(Arrays.asList(
+        public Map<Integer, ArrayList<ItemStackEntry>> possibleChestplate = Maps.newLinkedHashMap(ImmutableMap.<Integer, ArrayList<ItemStackEntry>>builder()
+                .put(0, new ArrayList<>(Arrays.asList(
                         new ItemStackEntry("leather_chestplate"),
                         new ItemStackEntry(new ResourceLocation("iceandfire", "sheep_chestplate"))
-                ))),
-                new Pair<>(1, new ArrayList<>(Arrays.asList(
+                )))
+                .put(1, new ArrayList<>(Arrays.asList(
                         new ItemStackEntry("golden_chestplate"),
                         new ItemStackEntry(new ResourceLocation("iceandfire", "armor_silver_metal_chestplate")),
                         new ItemStackEntry(new ResourceLocation("iceandfire", "armor_copper_metal_chestplate"))
-                ))),
-                new Pair<>(2, new ArrayList<>(Arrays.asList(
+                )))
+                .put(2, new ArrayList<>(Arrays.asList(
                         new ItemStackEntry("chainmail_chestplate"),
                         new ItemStackEntry(new ResourceLocation("defiledlands", "scale_chestplate")),
                         new ItemStackEntry(new ResourceLocation("mod_lavacow", "swinearmor_chestplate"))
-                ))),
-                new Pair<>(3, new ArrayList<>(Arrays.asList(
+                )))
+                .put(3, new ArrayList<>(Arrays.asList(
                         new ItemStackEntry("iron_chestplate"),
                         new ItemStackEntry(new ResourceLocation("defiledlands", "umbrium_chestplate")),
                         new ItemStackEntry(new ResourceLocation("mod_lavacow", "chitinarmor_chestplate")),
@@ -260,14 +261,14 @@ public class BlightConfig {
                         new ItemStackEntry(new ResourceLocation("iceandfire", "deathworm_red_chestplate")),
                         new ItemStackEntry(new ResourceLocation("iceandfire", "myrmex_desert_chestplate")),
                         new ItemStackEntry(new ResourceLocation("iceandfire", "myrmex_jungle_chestplate"))
-                ))),
-                new Pair<>(4, new ArrayList<>(Arrays.asList(
+                )))
+                .put(4, new ArrayList<>(Arrays.asList(
                         new ItemStackEntry("diamond_chestplate"),
                         new ItemStackEntry(new ResourceLocation("iceandfire", "forest_troll_leather_chestplate")),
                         new ItemStackEntry(new ResourceLocation("iceandfire", "frost_troll_leather_chestplate")),
                         new ItemStackEntry(new ResourceLocation("iceandfire", "mountain_troll_leather_chestplate"))
                 )))
-        ));
+                .build());
 
         @Config.Comment({
                 "Possible Equipment per Tier",
@@ -275,22 +276,22 @@ public class BlightConfig {
                 "If no list is set for a tier, lower tiers are checked until one or none are found."
         })
         @Config.Name("Possible Leggings")
-        public Map<Integer, ArrayList<ItemStackEntry>> possibleLeggings = ConfigHandler.linkedMapOf(Arrays.asList(
-                new Pair<>(0, new ArrayList<>(Arrays.asList(
+        public Map<Integer, ArrayList<ItemStackEntry>> possibleLeggings = Maps.newLinkedHashMap(ImmutableMap.<Integer, ArrayList<ItemStackEntry>>builder()
+                .put(0, new ArrayList<>(Arrays.asList(
                         new ItemStackEntry("leather_leggings"),
                         new ItemStackEntry(new ResourceLocation("iceandfire", "sheep_leggings"))
-                ))),
-                new Pair<>(1, new ArrayList<>(Arrays.asList(
+                )))
+                .put(1, new ArrayList<>(Arrays.asList(
                         new ItemStackEntry("golden_leggings"),
                         new ItemStackEntry(new ResourceLocation("iceandfire", "armor_silver_metal_leggings")),
                         new ItemStackEntry(new ResourceLocation("iceandfire", "armor_copper_metal_leggings"))
-                ))),
-                new Pair<>(2, new ArrayList<>(Arrays.asList(
+                )))
+                .put(2, new ArrayList<>(Arrays.asList(
                         new ItemStackEntry("chainmail_leggings"),
                         new ItemStackEntry(new ResourceLocation("defiledlands", "scale_leggings")),
                         new ItemStackEntry(new ResourceLocation("mod_lavacow", "swinearmor_leggings"))
-                ))),
-                new Pair<>(3, new ArrayList<>(Arrays.asList(
+                )))
+                .put(3, new ArrayList<>(Arrays.asList(
                         new ItemStackEntry("iron_leggings"),
                         new ItemStackEntry(new ResourceLocation("defiledlands", "umbrium_leggings")),
                         new ItemStackEntry(new ResourceLocation("mod_lavacow", "chitinarmor_leggings")),
@@ -299,14 +300,14 @@ public class BlightConfig {
                         new ItemStackEntry(new ResourceLocation("iceandfire", "deathworm_red_leggings")),
                         new ItemStackEntry(new ResourceLocation("iceandfire", "myrmex_desert_leggings")),
                         new ItemStackEntry(new ResourceLocation("iceandfire", "myrmex_jungle_leggings"))
-                ))),
-                new Pair<>(4, new ArrayList<>(Arrays.asList(
+                )))
+                .put(4, new ArrayList<>(Arrays.asList(
                         new ItemStackEntry("diamond_leggings"),
                         new ItemStackEntry(new ResourceLocation("iceandfire", "forest_troll_leather_leggings")),
                         new ItemStackEntry(new ResourceLocation("iceandfire", "frost_troll_leather_leggings")),
                         new ItemStackEntry(new ResourceLocation("iceandfire", "mountain_troll_leather_leggings"))
                 )))
-        ));
+                .build());
 
         @Config.Comment({
                 "Possible Equipment per Tier",
@@ -314,22 +315,22 @@ public class BlightConfig {
                 "If no list is set for a tier, lower tiers are checked until one or none are found."
         })
         @Config.Name("Possible Boots")
-        public Map<Integer, ArrayList<ItemStackEntry>> possibleBoots = ConfigHandler.linkedMapOf(Arrays.asList(
-                new Pair<>(0, new ArrayList<>(Arrays.asList(
+        public Map<Integer, ArrayList<ItemStackEntry>> possibleBoots = Maps.newLinkedHashMap(ImmutableMap.<Integer, ArrayList<ItemStackEntry>>builder()
+                .put(0, new ArrayList<>(Arrays.asList(
                         new ItemStackEntry("leather_boots"),
                         new ItemStackEntry(new ResourceLocation("iceandfire", "sheep_boots"))
-                ))),
-                new Pair<>(1, new ArrayList<>(Arrays.asList(
+                )))
+                .put(1, new ArrayList<>(Arrays.asList(
                         new ItemStackEntry("golden_boots"),
                         new ItemStackEntry(new ResourceLocation("iceandfire", "armor_silver_metal_boots")),
                         new ItemStackEntry(new ResourceLocation("iceandfire", "armor_copper_metal_boots"))
-                ))),
-                new Pair<>(2, new ArrayList<>(Arrays.asList(
+                )))
+                .put(2, new ArrayList<>(Arrays.asList(
                         new ItemStackEntry("chainmail_boots"),
                         new ItemStackEntry(new ResourceLocation("defiledlands", "scale_boots")),
                         new ItemStackEntry(new ResourceLocation("mod_lavacow", "swinearmor_boots"))
-                ))),
-                new Pair<>(3, new ArrayList<>(Arrays.asList(
+                )))
+                .put(3, new ArrayList<>(Arrays.asList(
                         new ItemStackEntry("iron_boots"),
                         new ItemStackEntry(new ResourceLocation("defiledlands", "umbrium_boots")),
                         new ItemStackEntry(new ResourceLocation("mod_lavacow", "chitinarmor_boots")),
@@ -338,14 +339,14 @@ public class BlightConfig {
                         new ItemStackEntry(new ResourceLocation("iceandfire", "deathworm_red_boots")),
                         new ItemStackEntry(new ResourceLocation("iceandfire", "myrmex_desert_boots")),
                         new ItemStackEntry(new ResourceLocation("iceandfire", "myrmex_jungle_boots"))
-                ))),
-                new Pair<>(4, new ArrayList<>(Arrays.asList(
+                )))
+                .put(4, new ArrayList<>(Arrays.asList(
                         new ItemStackEntry("diamond_boots"),
                         new ItemStackEntry(new ResourceLocation("iceandfire", "forest_troll_leather_boots")),
                         new ItemStackEntry(new ResourceLocation("iceandfire", "frost_troll_leather_boots")),
                         new ItemStackEntry(new ResourceLocation("iceandfire", "mountain_troll_leather_boots"))
                 )))
-        ));
+                .build());
 
         @Config.Comment({
                 "Possible Equipment per Tier",
@@ -354,8 +355,8 @@ public class BlightConfig {
                 "    If the mob spawned holding any kind of Bow, it will use the \"Possible Bow\" list instead."
         })
         @Config.Name("Possible Mainhand")
-        public Map<Integer, ArrayList<ItemStackEntry>> possibleMainhand = ConfigHandler.linkedMapOf(Arrays.asList(
-                new Pair<>(0, new ArrayList<>(Arrays.asList(
+        public Map<Integer, ArrayList<ItemStackEntry>> possibleMainhand = Maps.newLinkedHashMap(ImmutableMap.<Integer, ArrayList<ItemStackEntry>>builder()
+                .put(0, new ArrayList<>(Arrays.asList(
                         new ItemStackEntry("wooden_sword"),
                         new ItemStackEntry("wooden_axe"),
                         // Better Survival
@@ -390,8 +391,8 @@ public class BlightConfig {
                         new ItemStackEntry(new ResourceLocation("spartanweaponry", "glaive_wood")),
                         new ItemStackEntry(new ResourceLocation("spartanweaponry", "staff")),
                         new ItemStackEntry(new ResourceLocation("spartanweaponry", "scythe_wood"))
-                ))),
-                new Pair<>(1, new ArrayList<>(Arrays.asList(
+                )))
+                .put(1, new ArrayList<>(Arrays.asList(
                         new ItemStackEntry("golden_sword"),
                         new ItemStackEntry("golden_axe"),
                         // Better Survival
@@ -461,8 +462,8 @@ public class BlightConfig {
                         new ItemStackEntry(new ResourceLocation("spartanweaponry", "glaive_silver")),
                         new ItemStackEntry(new ResourceLocation("spartanweaponry", "staff_silver")),
                         new ItemStackEntry(new ResourceLocation("spartanweaponry", "scythe_silver"))
-                ))),
-                new Pair<>(2, new ArrayList<>(Arrays.asList(
+                )))
+                .put(2, new ArrayList<>(Arrays.asList(
                         new ItemStackEntry("stone_sword"),
                         new ItemStackEntry("stone_axe"),
                         // Better Survival
@@ -524,8 +525,8 @@ public class BlightConfig {
                         new ItemStackEntry(new ResourceLocation("spartanweaponry", "glaive_copper")),
                         new ItemStackEntry(new ResourceLocation("spartanweaponry", "staff_copper")),
                         new ItemStackEntry(new ResourceLocation("spartanweaponry", "scythe_copper"))
-                ))),
-                new Pair<>(3, new ArrayList<>(Arrays.asList(
+                )))
+                .put(3, new ArrayList<>(Arrays.asList(
                         new ItemStackEntry("iron_sword"),
                         new ItemStackEntry("iron_axe"),
                         new ItemStackEntry(new ResourceLocation("mod_lavacow", "tooth_dagger")),
@@ -729,8 +730,8 @@ public class BlightConfig {
                         new ItemStackEntry(new ResourceLocation("spartanfire", "glaive_jungle_venom")),
                         new ItemStackEntry(new ResourceLocation("spartanfire", "staff_jungle_venom")),
                         new ItemStackEntry(new ResourceLocation("spartanfire", "scythe_jungle_venom"))
-                ))),
-                new Pair<>(4, new ArrayList<>(Arrays.asList(
+                )))
+                .put(4, new ArrayList<>(Arrays.asList(
                         new ItemStackEntry("diamond_sword"),
                         new ItemStackEntry("diamond_axe"),
                         new ItemStackEntry(new ResourceLocation("iceandfire", "troll_weapon.column")),
@@ -774,7 +775,7 @@ public class BlightConfig {
                         new ItemStackEntry(new ResourceLocation("spartanweaponry", "staff_diamond")),
                         new ItemStackEntry(new ResourceLocation("spartanweaponry", "scythe_diamond"))
                 )))
-        ));
+                .build());
 
         @Config.Comment({
                 "Possible Equipment per Tier",
@@ -782,40 +783,40 @@ public class BlightConfig {
                 "If no list is set for a tier, lower tiers are checked until one or none are found."
         })
         @Config.Name("Possible Offhand")
-        public Map<Integer, ArrayList<ItemStackEntry>> possibleOffhand = ConfigHandler.linkedMapOf(Arrays.asList(
-                new Pair<>(0, new ArrayList<>(Arrays.asList(
+        public Map<Integer, ArrayList<ItemStackEntry>> possibleOffhand = Maps.newLinkedHashMap(ImmutableMap.<Integer, ArrayList<ItemStackEntry>>builder()
+                .put(0, new ArrayList<>(Arrays.asList(
                         new ItemStackEntry(new ResourceLocation("spartanshields", "shield_basic_wood")),
                         new ItemStackEntry(new ResourceLocation("spartanshields", "shield_tower_wood"))
-                ))),
-                new Pair<>(1, new ArrayList<>(Arrays.asList(
+                )))
+                .put(1, new ArrayList<>(Arrays.asList(
                         new ItemStackEntry(new ResourceLocation("spartanshields", "shield_basic_gold")),
                         new ItemStackEntry(new ResourceLocation("spartanshields", "shield_tower_gold")),
                         new ItemStackEntry(new ResourceLocation("spartanshields", "shield_basic_silver")),
                         new ItemStackEntry(new ResourceLocation("spartanshields", "shield_tower_silver"))
-                ))),
-                new Pair<>(2, new ArrayList<>(Arrays.asList(
+                )))
+                .put(2, new ArrayList<>(Arrays.asList(
                         new ItemStackEntry("shield"),
                         new ItemStackEntry(new ResourceLocation("spartanshields", "shield_basic_stone")),
                         new ItemStackEntry(new ResourceLocation("spartanshields", "shield_tower_stone")),
                         new ItemStackEntry(new ResourceLocation("spartanshields", "shield_basic_copper")),
                         new ItemStackEntry(new ResourceLocation("spartanshields", "shield_tower_copper"))
-                ))),
-                new Pair<>(3, new ArrayList<>(Arrays.asList(
+                )))
+                .put(3, new ArrayList<>(Arrays.asList(
                         new ItemStackEntry(new ResourceLocation("spartanshields", "shield_basic_iron")),
                         new ItemStackEntry(new ResourceLocation("spartanshields", "shield_tower_iron"))
-                ))),
-                new Pair<>(4, new ArrayList<>(Arrays.asList(
+                )))
+                .put(4, new ArrayList<>(Arrays.asList(
                         new ItemStackEntry("totem_of_undying"),
                         new ItemStackEntry(new ResourceLocation("spartanshields", "shield_basic_diamond")),
                         new ItemStackEntry(new ResourceLocation("spartanshields", "shield_tower_diamond")),
                         new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "tartsy_shield"))
-                ))),
-                new Pair<>(5, new ArrayList<>(Arrays.asList(
+                )))
+                .put(5, new ArrayList<>(Arrays.asList(
                         new ItemStackEntry("totem_of_undying", 4, 0),
                         new ItemStackEntry(new ResourceLocation("bountifulbaubles", "shieldcobalt")),
                         new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "sun_war_bulwark"))
                 )))
-        ));
+                .build());
 
         @Config.Comment({
                 "Possible Equipment per Tier",
@@ -824,29 +825,29 @@ public class BlightConfig {
                 "    If the mob spawned holding any kind of Bow, it will use this list."
         })
         @Config.Name("Possible Bow")
-        public Map<Integer, ArrayList<ItemStackEntry>> possibleBow = ConfigHandler.linkedMapOf(Arrays.asList(
-//                new Pair<>(0, new ArrayList<>(Arrays.asList(
+        public Map<Integer, ArrayList<ItemStackEntry>> possibleBow = Maps.newLinkedHashMap(ImmutableMap.<Integer, ArrayList<ItemStackEntry>>builder()
+//                .put(0, new ArrayList<>(Arrays.asList(
 //                        new ItemStackEntry("bow")
 //                ))),
-                new Pair<>(1, new ArrayList<>(Arrays.asList(
+                .put(1, new ArrayList<>(Arrays.asList(
                         new ItemStackEntry(new ResourceLocation("spartanweaponry", "longbow_wood")),
                         new ItemStackEntry(new ResourceLocation("spartanweaponry", "crossbow_wood"))
-                ))),
-                new Pair<>(2, new ArrayList<>(Arrays.asList(
+                )))
+                .put(2, new ArrayList<>(Arrays.asList(
                         new ItemStackEntry(new ResourceLocation("spartanweaponry", "longbow_leather")),
                         new ItemStackEntry(new ResourceLocation("spartanweaponry", "crossbow_leather")),
                         new ItemStackEntry(new ResourceLocation("spartanweaponry", "longbow_silver")),
                         new ItemStackEntry(new ResourceLocation("spartanweaponry", "crossbow_silver")),
                         new ItemStackEntry(new ResourceLocation("spartanweaponry", "longbow_copper")),
                         new ItemStackEntry(new ResourceLocation("spartanweaponry", "crossbow_copper"))
-                ))),
-                new Pair<>(3, new ArrayList<>(Arrays.asList(
+                )))
+                .put(3, new ArrayList<>(Arrays.asList(
                         new ItemStackEntry(new ResourceLocation("spartanweaponry", "longbow_iron")),
                         new ItemStackEntry(new ResourceLocation("spartanweaponry", "crossbow_iron")),
                         new ItemStackEntry(new ResourceLocation("spartandefiled", "longbow_umbrium")),
                         new ItemStackEntry(new ResourceLocation("spartandefiled", "crossbow_umbrium"))
-                ))),
-                new Pair<>(4, new ArrayList<>(Arrays.asList(
+                )))
+                .put(4, new ArrayList<>(Arrays.asList(
                         new ItemStackEntry(new ResourceLocation("spartanweaponry", "longbow_diamond")),
                         new ItemStackEntry(new ResourceLocation("spartanweaponry", "crossbow_diamond")),
                         new ItemStackEntry(new ResourceLocation("spartanfire", "longbow_desert")),
@@ -858,7 +859,7 @@ public class BlightConfig {
                         new ItemStackEntry(new ResourceLocation("spartanfire", "longbow_jungle")),
                         new ItemStackEntry(new ResourceLocation("spartanfire", "crossbow_jungle"))
                 )))
-        ));
+                .build());
     }
 
     public static class PotionConfig {

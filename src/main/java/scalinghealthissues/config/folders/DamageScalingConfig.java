@@ -15,6 +15,7 @@ import scalinghealthissues.config.ConfigHandler;
 
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -37,6 +38,13 @@ public class DamageScalingConfig {
     @Config.RequiresMcRestart
     @Order(0)
     public boolean overhaulDamageScaling = true;
+
+    @Config.Comment({
+            "List of Damage Sources by type name that will be considered non lethal",
+            "    Will change damage amounts and treat it similar to Poison"
+    })
+    @Config.Name("Non Lethal Damage Source Types")
+    public Set<String> nonLethalDamageSources = new LinkedHashSet<>();
 
     @Config.Comment({
             "List of exact Class names which the damaged Entity will be instance checked",

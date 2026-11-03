@@ -1,13 +1,12 @@
 package scalinghealthissues.config.folders;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import meldexun.betterconfig.api.Order;
 import net.minecraftforge.common.config.Config;
-import scalinghealthissues.config.ConfigHandler;
 import scalinghealthissues.config.data.ConfigEnum;
 import scalinghealthissues.config.data.ValueRangeEntry;
-import scalinghealthissues.util.Pair;
 
-import java.util.Arrays;
 import java.util.Map;
 
 public class InfernalMobsConfig {
@@ -38,11 +37,11 @@ public class InfernalMobsConfig {
     })
     @Config.Name("Infernal Equipment Chance")
     @Order(20)
-    public Map<ConfigEnum.InfernalTier, Float> infernalEquipmentChance = ConfigHandler.linkedMapOf(Arrays.asList(
-            new Pair<>(ConfigEnum.InfernalTier.RARE, 0.5F),
-            new Pair<>(ConfigEnum.InfernalTier.ULTRA, 0.75F),
-            new Pair<>(ConfigEnum.InfernalTier.INFERNAL, 1.0F)
-    ));
+    public Map<ConfigEnum.InfernalTier, Float> infernalEquipmentChance = Maps.newLinkedHashMap(ImmutableMap.<ConfigEnum.InfernalTier, Float>builder()
+            .put(ConfigEnum.InfernalTier.RARE, 0.5F)
+            .put(ConfigEnum.InfernalTier.ULTRA, 0.75F)
+            .put(ConfigEnum.InfernalTier.INFERNAL, 1.0F)
+            .build());
 
     @Config.Comment({
             "Defines the value range for Equipment Enchantability value.",
@@ -52,11 +51,11 @@ public class InfernalMobsConfig {
     })
     @Config.Name("Infernal Equipment Enchantability")
     @Order(30)
-    public Map<ConfigEnum.InfernalTier, ValueRangeEntry> infernalEnchantability = ConfigHandler.linkedMapOf(Arrays.asList(
-            new Pair<>(ConfigEnum.InfernalTier.RARE, new ValueRangeEntry(10, 20)),
-            new Pair<>(ConfigEnum.InfernalTier.ULTRA, new ValueRangeEntry(20, 30)),
-            new Pair<>(ConfigEnum.InfernalTier.INFERNAL, new ValueRangeEntry(30, 50))
-    ));
+    public Map<ConfigEnum.InfernalTier, ValueRangeEntry> infernalEnchantability = Maps.newLinkedHashMap(ImmutableMap.<ConfigEnum.InfernalTier, ValueRangeEntry>builder()
+            .put(ConfigEnum.InfernalTier.RARE, new ValueRangeEntry(10, 20))
+            .put(ConfigEnum.InfernalTier.ULTRA, new ValueRangeEntry(20, 30))
+            .put(ConfigEnum.InfernalTier.INFERNAL, new ValueRangeEntry(30, 50))
+            .build());
 
     @Config.Comment({
             "Determines where the Enchanted Book Enchantsments Pool comes from.",
