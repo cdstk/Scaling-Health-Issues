@@ -58,6 +58,6 @@ public abstract class EntityDamageSourceIndirect_DeathMessageMixin extends Entit
             at = @At("RETURN")
     )
     private ITextComponent scalingHealthIssues_vanillaEntityDamageSourceIndirect_getDeathMessageDifficulty(ITextComponent original, EntityLivingBase victim){
-        return BetterDifficultyHandler.wrapDifficultyHoverText(original, victim, this.getTrueSource());
+        return BetterDifficultyHandler.addDifficultyHoverText(original, victim, this.getTrueSource());
     }
 }

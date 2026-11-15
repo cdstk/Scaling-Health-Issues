@@ -39,7 +39,7 @@ public abstract class DamageSource_ScalingHealthIssuesMixin implements IDamageSo
             at = @At("RETURN")
     )
     private ITextComponent scalingHealthIssues_vanillaDamageSourceIndirect_getDeathMessageDifficulty(ITextComponent original, EntityLivingBase victim){
-        return BetterDifficultyHandler.wrapDifficultyHoverText(original, victim, victim.getAttackingEntity());
+        return BetterDifficultyHandler.addDifficultyHoverText(original, victim, victim.getAttackingEntity());
     }
 
     @Override

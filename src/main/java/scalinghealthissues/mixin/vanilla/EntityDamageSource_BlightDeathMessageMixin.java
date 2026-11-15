@@ -53,6 +53,6 @@ public abstract class EntityDamageSource_BlightDeathMessageMixin {
             at = @At("RETURN")
     )
     private ITextComponent scalingHealthIssues_vanillaEntityDamageSource_getDeathMessageDifficulty(ITextComponent original, EntityLivingBase victim){
-        return BetterDifficultyHandler.wrapDifficultyHoverText(original, victim, this.getTrueSource());
+        return BetterDifficultyHandler.addDifficultyHoverText(original, victim, this.getTrueSource());
     }
 }

@@ -28,12 +28,10 @@ public abstract class BetterDifficultyHandler {
     // So passed from SpecialSpawn -> EntityJoinWorldEvent in order to finalize
     public static final String FINALIZE_BLIGHT_SPAWN = Tags.MODID + ":FinalizeBlightSpawn";
 
-    /** Returns a new TextComponent, DOES NOT modify existing **/
+    /** DOES NOT modify existing **/
     public static ITextComponent wrapDifficultyHoverText(ITextComponent originalMessage, Entity victim, Entity killer) {
-        ITextComponent messageWrapper = new TextComponentString("");
-        BetterDifficultyHandler.addDifficultyHoverText(messageWrapper, victim, killer);
-        messageWrapper.appendSibling(originalMessage);
-        return messageWrapper;
+        BetterDifficultyHandler.addDifficultyHoverText(originalMessage, victim, killer);
+        return originalMessage;
     }
 
     /** Returns a new TextComponent, DOES NOT modify existing **/

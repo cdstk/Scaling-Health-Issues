@@ -38,8 +38,6 @@ public abstract class ChampionsUtil {
     /** Returns a new TextComponent, DOES NOT modify existing **/
     public static ITextComponent prependChampionText(ITextComponent message, @Nullable Entity entity) {
         ITextComponent messageWrapper = ChampionsUtil.createChampionText(entity);
-        messageWrapper.appendText(" ");
-
         if(message.getStyle().getColor() == null) message.getStyle().setColor(TextFormatting.RESET);
         messageWrapper.appendSibling(message);
         return messageWrapper;
@@ -54,6 +52,7 @@ public abstract class ChampionsUtil {
                 championText.getStyle().setColor(HexToColorMap.nearestColor(championship.getRank().getColor()));
 
                 addChampionHoverText(championText, (EntityLiving) entity);
+                championText.appendText(" ");
                 return championText;
             }
         }

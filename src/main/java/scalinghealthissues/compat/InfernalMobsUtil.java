@@ -64,8 +64,6 @@ public abstract class InfernalMobsUtil {
     /** Returns a new TextComponent, DOES NOT modify existing **/
     public static ITextComponent prependInfernalText(ITextComponent message, @Nullable Entity entity) {
         ITextComponent messageWrapper = InfernalMobsUtil.createInfernalText(entity);
-        messageWrapper.appendText(" ");
-
         if(message.getStyle().getColor() == null) message.getStyle().setColor(TextFormatting.RESET);
         messageWrapper.appendSibling(message);
         return messageWrapper;
@@ -91,6 +89,7 @@ public abstract class InfernalMobsUtil {
                     infernalText.getStyle().setColor(TextFormatting.AQUA);
                 }
                 addInfernalHoverText(infernalText, entityLivingBase);
+                infernalText.appendText(" ");
                 return infernalText;
             }
         }
