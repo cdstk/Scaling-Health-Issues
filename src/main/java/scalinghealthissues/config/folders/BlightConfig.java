@@ -371,7 +371,7 @@ public class BlightConfig {
                         new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "flail_wood")),
                         new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "battering_ram_wood")),
                         new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "ball_and_chain_wood")),
-                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "double_bladed_scimitar_wood")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "blade_staff_wood")),
                         // Spartan Weaponry
                         new ItemStackEntry(new ResourceLocation("spartanweaponry", "dagger_wood")),
                         new ItemStackEntry(new ResourceLocation("spartanweaponry", "mace_wood")),
@@ -407,7 +407,7 @@ public class BlightConfig {
                         new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "flail_gold")),
                         new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "battering_ram_gold")),
                         new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "ball_and_chain_gold")),
-                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "double_bladed_scimitar_gold")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "blade_staff_gold")),
                         // Spartan Weaponry
                         new ItemStackEntry(new ResourceLocation("spartanweaponry", "dagger_gold")),
                         new ItemStackEntry(new ResourceLocation("spartanweaponry", "mace_gold")),
@@ -442,7 +442,7 @@ public class BlightConfig {
                         new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "flail_silver")),
                         new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "battering_ram_silver")),
                         new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "ball_and_chain_silver")),
-                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "double_bladed_scimitar_silver")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "blade_staff_silver")),
                         // Spartan Weaponry
                         new ItemStackEntry(new ResourceLocation("spartanweaponry", "dagger_silver")),
                         new ItemStackEntry(new ResourceLocation("spartanweaponry", "mace_silver")),
@@ -478,7 +478,7 @@ public class BlightConfig {
                         new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "flail_stone")),
                         new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "battering_ram_stone")),
                         new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "ball_and_chain_stone")),
-                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "double_bladed_scimitar_stone")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "blade_staff_stone")),
                         // Spartan Weaponry
                         new ItemStackEntry(new ResourceLocation("spartanweaponry", "dagger_stone")),
                         new ItemStackEntry(new ResourceLocation("spartanweaponry", "mace_stone")),
@@ -542,7 +542,7 @@ public class BlightConfig {
                         new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "flail_iron")),
                         new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "battering_ram_iron")),
                         new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "ball_and_chain_iron")),
-                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "double_bladed_scimitar_iron")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "blade_staff_iron")),
                         // Spartan Weaponry
                         new ItemStackEntry(new ResourceLocation("spartanweaponry", "dagger_iron")),
                         new ItemStackEntry(new ResourceLocation("spartanweaponry", "mace_iron")),
@@ -572,7 +572,7 @@ public class BlightConfig {
                         new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "flail_umbrium")),
                         new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "battering_ram_umbrium")),
                         new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "ball_and_chain_umbrium")),
-                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "double_bladed_scimitar_umbrium")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "blade_staff_umbrium")),
                         // Spartan Weaponry
                         new ItemStackEntry(new ResourceLocation("spartandefiled", "dagger_umbrium")),
                         new ItemStackEntry(new ResourceLocation("spartandefiled", "mace_umbrium")),
@@ -607,7 +607,7 @@ public class BlightConfig {
                         new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "flail_desert_myrmex")),
                         new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "battering_ram_desert_myrmex")),
                         new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "ball_and_chain_desert_myrmex")),
-                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "double_bladed_scimitar_desert_myrmex")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "blade_staff_desert_myrmex")),
                         // Spartan Weaponry
                         new ItemStackEntry(new ResourceLocation("spartanfire", "dagger_desert")),
                         new ItemStackEntry(new ResourceLocation("spartanfire", "mace_desert")),
@@ -641,7 +641,7 @@ public class BlightConfig {
                         new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "flail_desert_venom")),
                         new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "battering_ram_desert_venom")),
                         new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "ball_and_chain_desert_venom")),
-                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "double_bladed_scimitar_desert_venom")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "blade_staff_desert_venom")),
                         // Spartan Weaponry
                         new ItemStackEntry(new ResourceLocation("spartanfire", "dagger_desert_venom")),
                         new ItemStackEntry(new ResourceLocation("spartanfire", "mace_desert_venom")),
@@ -676,7 +676,7 @@ public class BlightConfig {
                         new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "flail_jungle_myrmex")),
                         new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "battering_ram_jungle_myrmex")),
                         new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "ball_and_chain_jungle_myrmex")),
-                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "double_bladed_scimitar_jungle_myrmex")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "blade_staff_jungle_myrmex")),
                         // Spartan Weaponry
                         new ItemStackEntry(new ResourceLocation("spartanfire", "dagger_jungle")),
                         new ItemStackEntry(new ResourceLocation("spartanfire", "mace_jungle")),
@@ -710,7 +710,7 @@ public class BlightConfig {
                         new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "flail_jungle_venom")),
                         new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "battering_ram_jungle_venom")),
                         new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "ball_and_chain_jungle_venom")),
-                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "double_bladed_scimitar_jungle_venom")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "blade_staff_jungle_venom")),
                         // Spartan Weaponry
                         new ItemStackEntry(new ResourceLocation("spartanfire", "dagger_jungle_venom")),
                         new ItemStackEntry(new ResourceLocation("spartanfire", "mace_jungle_venom")),
@@ -754,7 +754,7 @@ public class BlightConfig {
                         new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "flail_diamond")),
                         new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "battering_ram_diamond")),
                         new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "ball_and_chain_diamond")),
-                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "double_bladed_scimitar_diamond")),
+                        new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "blade_staff_diamond")),
                         // Spartan Weaponry
                         new ItemStackEntry(new ResourceLocation("spartanweaponry", "dagger_diamond")),
                         new ItemStackEntry(new ResourceLocation("spartanweaponry", "mace_diamond")),
@@ -785,10 +785,14 @@ public class BlightConfig {
         @Config.Name("Possible Offhand")
         public Map<Integer, ArrayList<ItemStackEntry>> possibleOffhand = Maps.newLinkedHashMap(ImmutableMap.<Integer, ArrayList<ItemStackEntry>>builder()
                 .put(0, new ArrayList<>(Arrays.asList(
+
+                        new ItemStackEntry(new ResourceLocation("defenders", "defender_wood")),
                         new ItemStackEntry(new ResourceLocation("spartanshields", "shield_basic_wood")),
                         new ItemStackEntry(new ResourceLocation("spartanshields", "shield_tower_wood"))
                 )))
                 .put(1, new ArrayList<>(Arrays.asList(
+                        new ItemStackEntry(new ResourceLocation("defenders", "defender_gold")),
+                        new ItemStackEntry(new ResourceLocation("defenders", "defender_silver")),
                         new ItemStackEntry(new ResourceLocation("spartanshields", "shield_basic_gold")),
                         new ItemStackEntry(new ResourceLocation("spartanshields", "shield_tower_gold")),
                         new ItemStackEntry(new ResourceLocation("spartanshields", "shield_basic_silver")),
@@ -796,17 +800,25 @@ public class BlightConfig {
                 )))
                 .put(2, new ArrayList<>(Arrays.asList(
                         new ItemStackEntry("shield"),
+                        new ItemStackEntry(new ResourceLocation("defenders", "defender_stone")),
                         new ItemStackEntry(new ResourceLocation("spartanshields", "shield_basic_stone")),
                         new ItemStackEntry(new ResourceLocation("spartanshields", "shield_tower_stone")),
                         new ItemStackEntry(new ResourceLocation("spartanshields", "shield_basic_copper")),
                         new ItemStackEntry(new ResourceLocation("spartanshields", "shield_tower_copper"))
                 )))
                 .put(3, new ArrayList<>(Arrays.asList(
+                        new ItemStackEntry(new ResourceLocation("defenders", "defender_iron")),
+                        new ItemStackEntry(new ResourceLocation("defenders", "defender_umbrium")),
                         new ItemStackEntry(new ResourceLocation("spartanshields", "shield_basic_iron")),
                         new ItemStackEntry(new ResourceLocation("spartanshields", "shield_tower_iron"))
                 )))
                 .put(4, new ArrayList<>(Arrays.asList(
                         new ItemStackEntry("totem_of_undying"),
+                        new ItemStackEntry(new ResourceLocation("defenders", "defender_diamond")),
+                        new ItemStackEntry(new ResourceLocation("defenders", "defender_desert_myrmex")),
+                        new ItemStackEntry(new ResourceLocation("defenders", "defender_desert_venom")),
+                        new ItemStackEntry(new ResourceLocation("defenders", "defender_jungle_myrmex")),
+                        new ItemStackEntry(new ResourceLocation("defenders", "defender_jungle_venom")),
                         new ItemStackEntry(new ResourceLocation("spartanshields", "shield_basic_diamond")),
                         new ItemStackEntry(new ResourceLocation("spartanshields", "shield_tower_diamond")),
                         new ItemStackEntry(new ResourceLocation("nanonaitors_arsenal", "tartsy_shield"))
